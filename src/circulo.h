@@ -4,84 +4,107 @@
 
 #ifndef CIRCULO_H
 #define CIRCULO_H
+/*
+ Módulo encarregado de coordenar um círculo com operações de criar, get, set, calcularArea e eliminar
+ */
 
-
-typedef void* Circulo;
 /*
  Ponteiro void Circulo
  */
+typedef void* Circulo;
 
-Circulo criar_circulo(int id, float raio, float x, float y, char* corP,char* corB);
-/*
-  Cria um circulo com um id, raio, coordenadas x e y do centro do circulo e cor de borda e cor de preenchimento
-  O raio deve existir, diferente de 0
- */
+/// @brief Cria círculo com os atributos indicados
+/// @param i Identificador unico que se refere ao circulo
+/// @param x Coordenada x do centro do círculo
+/// @param y Coordenada y do centro do círculo
+/// @param r Raio do círculo
+/// @param corB Cor de borda do círculo
+/// @param corP Cor de preenchimento do círculo
+/// @return Ponteiro para o círculo criado
+/// @warning
+Circulo criar_circulo(int i, double x, double y, double r, char* corB,char* corP);
 
-int getId(Circulo c);
-/*
- Pega o valor do id do circulo
- */
+/// @brief Pega o Id do círculo sem modifica-lo
+/// @param c Ponteiro para o círculo analisado
+/// @return Um inteiro que representa o ID do círculo
+/// @warning
+int getIDCirculo(Circulo c);
 
-int setId(Circulo c, int id);
-/*
- Muda o valor do id do circulo
- */
+/// @brief Define o ID do círculo
+/// @param c Ponteiro para o círculo onde o ID será definido
+/// @param id ID que será definido
+/// @warning
+void setIDCirculo(Circulo c, int id);
 
-float getRaio(Circulo c);
-/*
- Pega o valor do raio do circulo
- */
+/// @brief Pega a coordenada x do círculo sem modifica-la
+/// @param c Ponteiro para o círculo analisado
+/// @return Um double que representa a coordenada x do círculo
+/// @warning
+double getXCirculo(Circulo c);
 
-void setRaio(Circulo c, float raio);
-/*
- Muda o valor do raio do circulo
- */
+/// @brief Define a nova coordenada x do círculo
+/// @param c Ponteiro para o círculo onde a coordenada x será definida
+/// @param x Nova coordenada x que será definida
+/// @warning
+void setXCirculo(Circulo c, double x);
 
-float getX(Circulo c);
-/*
- Pega o valor da coordedada x do centro do circulo
- */
+/// @brief Pega a coordenada y do círculo sem modifica-la
+/// @param c Ponteiro para o círculo analisado
+/// @return Um double que representa a coordenada y do círculo
+/// @warning
+double getYCirculo(Circulo c);
 
-void setX(Circulo c, float x);
-/*
- Muda o valor da coordedada x do centro do circulo
- */
+/// @brief Define a nova coordenada y do círculo
+/// @param c Ponteiro para o círculo onde a coordenada y será definida
+/// @param y Nova coordenada y que será definida
+/// @warning
+void setYCirculo(Circulo c, double y);
 
-float getY(Circulo c);
-/*
- Pega o valor da coordedada y do centro do circulo
- */
+/// @brief Pega o raio do círculo sem modifica-lo
+/// @param c Ponteiro para o círculo analisado
+/// @return Um double que representa o raio do círculo
+/// @warning
+double getRCirculo(Circulo c);
 
-void setY(Circulo c, float y);
-/*
- Muda o valor da coordedada y do centro do circulo
- */
+/// @brief Define o novo raio do círculo
+/// @param c Ponteiro para o círculo onde o raio será definida
+/// @param raio Novo raio que será definido
+/// @warning
+void setRCirculo(Circulo c, double raio);
 
+/// @brief Pega a cor de borda do círculo sem modifica-la
+/// @param c Ponteiro para o círculo analisado
+/// @return Uma string com a cor de borda do círculo
+/// @warning
+char* getCorBCirculo(Circulo c);
 
-char* getCorP(Circulo c);
-/*
- Pega o codigo svg(#FFFFFF) da cor de preenchimento do circulo
- */
+/// @brief Define a novo cor de borda do círculo
+/// @param c Ponteiro para o círculo onde a cor de borda será definida
+/// @param corB Nova cor de borda que será definida
+/// @warning
+void setCorBCirculo(Circulo c, char* corB);
 
-void setCorP(Circulo c, char* corP);
-/*
- Muda o codigo svg(#FFFFFF) da cor de preenchimento do circulo
- */
+/// @brief Pega a cor de preenchimento do círculo sem modifica-la
+/// @param c Ponteiro para o círculo analisado
+/// @return Uma string com a cor de preenchimento do círculo
+/// @warning
+char* getCorPCirculo(Circulo c);
 
+/// @brief Define a novo cor de preenchimento do círculo
+/// @param c Ponteiro para o círculo onde a cor de preenchimento será definida
+/// @param corP Nova cor de preenchimento que será definida
+/// @warning
+void setCorPCirculo(Circulo c, char* corP);
 
-char* getCorB(Circulo c);
-/*
- Pega o codigo svg(#FFFFFF) da cor de borda do circulo
- */
+/// @brief Calcula a área do círculo
+/// @param c Ponteiro para o círculo analisado
+/// @return Um double que representa a área do círculo
+/// @warning
+double calcAreaCirculo(Circulo c);///
 
-void setCorB(Circulo c, char* corB);
-/*
- Pega o codigo svg(#FFFFFF) da cor de borda do circulo
- */
-
-void eliminaCirculo(Circulo c);
-/*
- Elimina o circulo no caso da destruicao por outra forma de area maior
- */
+/// @brief Libera a memória alocada para do círculo
+/// @param c Ponteiro para o círculo que será eliminado
+/// @warning
+void eliminarCirculo(Circulo c);
 
 #endif //CIRCULO_H
