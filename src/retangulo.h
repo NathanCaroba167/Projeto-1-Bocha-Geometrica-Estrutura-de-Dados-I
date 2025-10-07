@@ -4,90 +4,121 @@
 
 #ifndef RETANGULO_H
 #define RETANGULO_H
-
-typedef void* Retangulo;
+/*
+Módulo encarregado de coordenar um retângulo com operações de criar, get, set, calcularArea e eliminar
+*/
 
 /*
  Ponteiro void Retangulo
 */
+typedef void* Retangulo;
 
-Retangulo criar_retangulo(int id,float x,float y,float w ,float h, char* corP, char* corB );
-/*
- Cria um retangulo com um id, raio, coordenadas x e y de um ponto ancora, valor w referente a largura , h referente a altura e cor de borda e cor de preenchimento
- */
+/// @brief Cria um retângulo com os atributos indicados
+/// @param id Identificador unico que se refere ao retângulo
+/// @param x Coordenada x do ponto ancora (canto inferior esquerdo) do retângulo
+/// @param y Coordenada y do ponto ancora (canto inferior esquerdo) do retângulo
+/// @param w Largura do retângulo
+/// @param h Altura do retângulo
+/// @param corB Cor de borda do retângulo
+/// @param corP Cor de preenchimento do retângulo
+/// @return Ponteiro para o retângulo criado
+/// @warning
+Retangulo criar_retangulo(int id,double x,double y,double w ,double h, char* corB, char* corP );
 
-int getId(Retangulo r);
-/*
- Pega o valor do id do retangulo
- */
+/// @brief Pega o Id do retângulo sem modifica-lo
+/// @param r Ponteiro para o retângulo analisado
+/// @return Um inteiro que representa o ID do retângulo
+/// @warning
+int getIDRetangulo(Retangulo r);
 
-void setId(Retangulo r,int id);
-/*
- Muda o valor do id do retangulo
-*/
-float getX(Retangulo r);
-/*
- Pega o valor da coordedada x do retangulo
- */
+/// @brief Define o ID do retângulo
+/// @param r Ponteiro para o retângulo onde o ID será definido
+/// @param id ID que será definido
+/// @warning
+void setIDRetangulo(Retangulo r,int id);
 
-void setX(Retangulo r,float x);
-/*
- Muda o valor da coordenada x do retangulo
- */
+/// @brief Pega a coordenada x do retângulo sem modifica-la
+/// @param r Ponteiro para o retângulo analisado
+/// @return Um double que representa a coordenada x do retângulo
+/// @warning
+double getXRetangulo(Retangulo r);
 
-float getY(Retangulo r);
-/*
- Pega o valor da coordedada y do retangulo
- */
+/// @brief Define a nova coordenada x do retângulo
+/// @param r Ponteiro para o retângulo onde a coordenada x será definida
+/// @param x Nova coordenada x que será definida
+/// @warning
+void setXRetangulo(Retangulo r,double x);
 
-void setY(Retangulo r,float y);
-/*
- Muda o valor da coordedada y do retangulo
- */
+/// @brief Pega a coordenada y do retângulo sem modifica-la
+/// @param r Ponteiro para o retângulo analisado
+/// @return Um double que representa a coordenada y do retângulo
+/// @warning
+double getYRetangulo(Retangulo r);
 
-
-float getW(Retangulo r);
-/*
- Pega o valor da largura w do retangulo
- */
-void setW(Retangulo r,float w);
-/*
- Muda o valor da largura w do retangulo
- */
-
-float getH(Retangulo r);
-/*
- Pega o valor da altura h do retangulo
- */
-void setH(Retangulo r,float h);
-/*
- Muda o valor da altura h do retangulo
- */
-
-char* getCorP(Retangulo r);
-/*
- Pega o codigo svg(#FFFFFF) da cor de preenchimento do retangulo
- */
-
-void setCorP(Retangulo r,char* corP);
-/*
- Muda o codigo svg(#FFFFFF) da cor de preenchimento do retangulo
- */
+/// @brief Define a nova coordenada y do retângulo
+/// @param r Ponteiro para o retângulo onde a coordenada y será definida
+/// @param y Nova coordenada y que será definida
+/// @warning
+void setYRetangulo(Retangulo r,double y);
 
 
-char* getCorB(Retangulo r);
-/*
- Pega o codigo svg(#FFFFFF) da cor de borda do retangulo
- */
+/// @brief Pega a largura do retângulo sem modifica-lo
+/// @param r Ponteiro para o retângulo analisado
+/// @return Um double que representa a largura do retângulo
+/// @warning
+double getWRetangulo(Retangulo r);
 
-void setCorB(Retangulo r,char* corB);
-/*
- Muda o codigo svg(#FFFFFF) da cor de borda do retangulo
- */
+/// @brief Define a nova largura do retângulo
+/// @param r Ponteiro para o retângulo onde a largura será definida
+/// @param w Nova largura que será definido
+/// @warning
+void setWRetangulo(Retangulo r,double w);
 
+/// @brief Pega a altura do retângulo sem modifica-lo
+/// @param r Ponteiro para o retângulo analisado
+/// @return Um double que representa a altura do retângulo
+/// @warning
+double getHRetangulo(Retangulo r);
 
-void eliminaRetangulo(Retangulo r);
-/*
- Elimina o retangulo no caso da destruicao por outra forma de area maior
- */
-#endif
+/// @brief Define a nova altura do retângulo
+/// @param r Ponteiro para o retângulo onde a altura será definida
+/// @param h Nova altura que será definido
+/// @warning
+void setHRetangulo(Retangulo r,double h);
+
+/// @brief Pega a cor de borda do retângulo sem modifica-la
+/// @param r Ponteiro para o retângulo analisado
+/// @return Uma string com a cor de borda do retângulo
+/// @warning
+char* getCorBRetangulo(Retangulo r);
+
+/// @brief Define a nova cor de borda do retângulo
+/// @param r Ponteiro para o retângulo onde a cor de borda será definida
+/// @param corB Nova cor de borda que será definida
+/// @warning
+void setCorBRetangulo(Retangulo r,char* corB);
+
+/// @brief Pega a cor de preenchimento do retângulo sem modifica-la
+/// @param r Ponteiro para o retângulo analisado
+/// @return Uma string com a cor de preenchimento do retângulo
+/// @warning
+char* getCorPRetangulo(Retangulo r);
+
+/// @brief Define a nova cor de preenchimento do retângulo
+/// @param r Ponteiro para o retângulo onde a cor de preenchimento será definida
+/// @param corP Nova cor de preenchimento que será definida
+/// @warning
+void setCorPRetangulo(Retangulo r,char* corP);
+
+/// @brief Calcula a área do retângulo
+/// @param r Ponteiro para o retângulo analisado
+/// @return Um double que representa a área do retângulo
+/// @warning
+double calcAreaRetangulo(Retangulo r);
+
+/// @brief Libera a memória alocada para o retângulo
+/// @param r Ponteiro para o retângulo que será eliminado
+/// @warning
+void eliminarRetangulo(Retangulo r);
+
+#endif//RETANGULO_H
