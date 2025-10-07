@@ -4,79 +4,108 @@
 
 #ifndef LINHA_H
 #define LINHA_H
+/*
+ Módulo encarregado de coordenar uma linha com operações de criar, get, set, calcularArea e eliminar
+*/
 
-typedef void* Linha;
 /*
  Ponteiro void Linha
  */
+typedef void* Linha;
 
-Linha criar_linha(int id, float x1, float y1, float x2, float y2 ,char* cor);
-/*
- * @brief Cria uma linha com id , coordedada de x1 e y1 e coordenadas x2 e y2 referentes ao comeco e fim na linha respectivamente e cor da linha
- */
+/// @brief Cria uma linha com os atributos indicados
+/// @param i Identificador unico que se refere a linha
+/// @param x1 Coordenada x do ponto do início da linha
+/// @param y1 Coordenada y do ponto do início da linha
+/// @param x2 Coordenada x do ponto do final da linha
+/// @param y2 Coordenada y do ponto do final da linha
+/// @param cor Cor da linha
+/// @return Ponteiro para a linha criada
+/// @warning
+Linha criar_linha(int i, double x1, double y1, double x2, double y2 ,char* cor);
 
-int getId(Linha l);
-/*
- Pega o valor do id da linha
- */
+/// @brief Pega o ID da linha sem modifica-lo
+/// @param l Ponteiro para a linha analisada
+/// @return Um inteiro que representa o ID da linha
+/// @warning
+int getIDLinha(Linha l);
 
-void setId(Linha l, int id);
-/*
- Muda o valor do id da linha
- */
+/// @brief Define o ID da linha
+/// @param l Ponteiro para a linha onde o ID será definido
+/// @param id ID que será definido
+/// @warning
+void setIDLinha(Linha l, int id);
 
-float getX1(Linha l);
-/*
- Pega o valor da coordedada x1 do ponto do comeco da linha
- */
-void setX1(Linha l, float x1);
-/*
- Muda o valor da coordedada x1 do ponto do comeco da linha
- */
+/// @brief Pega a coordenada x do ponto do início da linha sem modifica-la
+/// @param l Ponteiro para a linha analisada
+/// @return Um double que representa a coordenada x do ponto do início da linha
+/// @warning
+double getX1Linha(Linha l);
 
-float getY1(Linha l);
-/*
- Pega o valor da coordedada y1 do ponto do comeco da linha
- */
+/// @brief Define a nova coordenada x do ponto do início da linha
+/// @param l Ponteiro para a linha onde a coordenada x será definida
+/// @param x1 Nova coordenada x do ponto de início da linha que será definida
+/// @warning
+void setX1Linha(Linha l, double x1);
 
-void setY1(Linha l, float y1);
-/*
- Muda o valor da coordedada y1 do ponto do comeco da linha
- */
+/// @brief Pega a coordenada y do ponto do início da linha sem modifica-la
+/// @param l Ponteiro para a linha analisada
+/// @return Um double que representa a coordenada y do ponto do início da linha
+/// @warning
+double getY1Linha(Linha l);
 
-float getX2(Linha l);
-/*
- Pega o valor da coordedada x2 do ponto do fim da linha
- */
-void setX2(Linha l, float x2);
-/*
- Pega o valor da coordedada x2 do ponto do fim da linha
- */
+/// @brief Define a nova coordenada y do ponto do início da linha
+/// @param l Ponteiro para a linha onde a coordenada y será definida
+/// @param y1 Nova coordenada y do ponto de início da linha que será definida
+/// @warning
+void setY1Linha(Linha l, double y1);
 
-float getY2(Linha l);
-/*
- Pega o valor da coordedada y2 do ponto do fim da linha
- */
-void setY2(Linha l, float y2);
-/*
- Pega o valor da coordedada y2 do ponto do fim da linha
- */
+/// @brief Pega a coordenada x do ponto do início da linha sem modifica-la
+/// @param l Ponteiro para a linha analisada
+/// @return Um double que representa a coordenada x do ponto do início da linha
+/// @warning
+double getX2Linha(Linha l);
 
-char* getCor(Linha l);
-/*
- Pega o codigo svg(#FFFFFF) da cor da linha
- */
+/// @brief Define a nova coordenada x do ponto do início da linha
+/// @param l Ponteiro para a linha onde a coordenada x será definida
+/// @param x2 Nova coordenada x do ponto de início da linha que será definida
+/// @warning
+void setX2Linha(Linha l, double x2);
 
-void setCor(Linha l, char* cor);
-/*
- Muda o codigo svg(#FFFFFF) da cor da linha
- */
+/// @brief Pega a coordenada y do ponto do início da linha sem modifica-la
+/// @param l Ponteiro para a linha analisada
+/// @return Um double que representa a coordenada y do ponto do início da linha
+/// @warning
+double getY2Linha(Linha l);
 
+/// @brief Define a nova coordenada y do ponto do início da linha
+/// @param l Ponteiro para a linha onde a coordenada y será definida
+/// @param y2 Nova coordenada y do ponto de início da linha que será definida
+/// @warning
+void setY2Linha(Linha l, double y2);
+
+/// @brief Pega a cor da linha sem modifica-la
+/// @param l Ponteiro para a linha analisada
+/// @return Uma string com a cor da linha
+/// @warning
+char* getCorLinha(Linha l);
+
+/// @brief Define a nova cor da linha
+/// @param l Ponteiro para a linha onde a cor será definida
+/// @param cor Nova cor da linha que será definida
+/// @warning
+void setCorLinha(Linha l, char* cor);
+
+/// @brief Calcula a área da linha
+/// @param l Ponteiro para a linha analisada
+/// @return Um double que representa a área da linha
+/// @warning
+/// @details 2 * comprimento da linha
+double calcAreaTexto(Linha l);
+
+/// @brief Libera a memória alocada para a linha
+/// @param l Ponteiro para a linha que será eliminada
+/// @warning
 void eliminarLinha(Linha l);
-/*
- Elimina a linha no caso da destruicao por outra forma de area maior
- */
-
-
 
 #endif //LINHA_H
