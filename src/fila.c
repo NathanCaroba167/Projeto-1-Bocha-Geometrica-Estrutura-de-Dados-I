@@ -5,3 +5,99 @@
 #include <stdlib.h>
 #include <string.h>
 #include "fila.h"
+
+typedef struct Elemento {
+    Forma form;
+    struct Elemento* prox;
+}Elemento;
+
+typedef Elemento* pont;
+
+typedef struct Fila {
+    int tamanho;
+    pont inicio;
+    pont fim;
+}fila;
+
+Fila iniciarFila() {
+    fila* f = (fila*) malloc(sizeof(fila));
+    if (f == NULL) {
+        printf("Erro ao alocar memoria!\n");
+        exit(1);
+    }
+    f->inicio = NULL;
+    f->fim = NULL;
+    f->tamanho = 0;
+    return f;
+}
+
+void inserirFila(Fila f, Forma g) {
+    fila* FILA = (fila*)f;
+    pont nova = (Elemento*) malloc(sizeof(Elemento));
+    if (nova == NULL) {
+        printf("Erro ao alocar memoria!\n");
+        exit(1);
+    }
+    nova->form = g;
+    nova->prox = NULL;
+
+    if (filavazia(f)) {
+        FILA->inicio = nova;
+    }else {
+        FILA->fim->prox = nova;
+    }
+    FILA->fim = nova;
+    FILA->tamanho++;
+}
+
+void removerFila(Fila f) {
+    fila* FILA = (fila*)f;
+    if (filavazia(f)) {
+        printf("Pilha vazia!\n");
+        exit(1);
+    }
+    pont elemInicio = FILA->inicio;
+    FILA->inicio = FILA->inicio->prox;
+
+    if (filavazia(f)) {
+        FILA->fim = NULL;
+    }
+
+    FILA->tamanho--;
+    free(elemInicio -> form);
+    free(elemInicio);
+}
+
+Forma getPrimeiraFormaFila(Fila f) {
+    fila* FILA = (fila*)f;
+    if (filavazia(f)) {
+        printf("Fila vazia!\n");
+        return NULL;
+    }else {
+        return FILA->inicio->form;
+    }
+}
+
+int filavazia(Fila f) {
+    fila* FILA = (fila*)f;
+    return FILA->inicio == NULL ? 1 : 0;
+}
+
+int getNumeroElementosFila(Fila f) {
+    fila* FILA = (fila*)f;
+    return FILA->tamanho;
+}
+
+void liberarFila(Fila f) {
+    fila* FILA = (fila*)f;
+    pont elemInicio = FILA->inicio;
+    while (!filavazia(f)) {
+        pont proxInicio = elemInicio->prox;
+        free(elemInicio);
+        elemInicio = proxInicio;
+    }
+    FILA->inicio = NULL;
+    FILA->fim = NULL;
+    FILA->tamanho = 0;
+    free(FILA);
+}
