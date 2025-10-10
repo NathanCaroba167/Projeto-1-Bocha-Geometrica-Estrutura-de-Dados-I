@@ -4,16 +4,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "circulo.h"
 
+#define PI 3.14159265
+
 typedef struct{
-  int id;
-  float raio;
-  float x,y;
+  int i;
+  double r;
+  double x,y;
   char* corP,*corB;
 }circulo;
 
-Circulo criar_circulo(int id, float raio, float x, float y, char* corP,char* corB){
+Circulo CriarCirculo(int i, double x, double y, double r, char* corB,char* corP){
   circulo* c  = (circulo*)malloc(sizeof(circulo));
 
   if(c==NULL){
@@ -21,56 +24,62 @@ Circulo criar_circulo(int id, float raio, float x, float y, char* corP,char* cor
     exit(1);
   }
 
-  c->id=id;
-  c->raio=raio;
-  c->x=x;
-  c->y=y;
-  c->corP=corP;
-  c->corB=corB;
+  c->i = i;
+  c->x = x;
+  c->y = y;
+  c->r = r;
+  c->corB = corB;
+  c->corP = corP;
 }
 
-int getId(Circulo c){
-  circulo* c1 = ((circulo*)c);
-  return c1->id;
+int getIDCirculo(Circulo c){
+  return ((circulo*)c)->i;
+}
+
+void setIDCirculo(Circulo c, int id){
+  ((circulo*)c)->i = id;
+}
+
+double getXCirculo(Circulo c){
+  return ((circulo*)c)->x;
   }
 
-int setId(Circulo c, int id){
-  circulo* c1 = ((circulo*)c);
-  return c1->id = id;
+void setXCirculo(Circulo c,double x) {
+  ((circulo*)c)->x = x;
 }
 
-
-
-
-float getRaio(Circulo c){
-  circulo* c1 = ((circulo*)c);
-  return c1->raio;
-  }
-
-float setRaio(Circu)
-
-float getX(Circulo c){
-  circulo* c1 = ((circulo*)c);
-  return c1->x;
+double getYCirculo(Circulo c){
+  return ((circulo*)c)->y;
 }
 
-float getY(Circulo c){
-  circulo* c1 = ((circulo*)c);
-  return c1->y;
+void setYCirculo(Circulo c,double y){
+  ((circulo*)c)->y = y;
 }
 
-char* getCorP(Circulo c){
-  circulo* c1 = ((circulo*)c);
-  return c1->corP;
+double getRCirculo(Circulo c) {
+  return ((circulo*)c)->r;
 }
 
-char* getCorB(Circulo c){
-  circulo* c1 = ((circulo*)c);
-  return c1->corB;
+void setRCirculo(Circulo c,double r) {
+  ((circulo*)c)->r = r;
 }
 
+char* getCorBCirculo(Circulo c){
+  return ((circulo*)c)->corB;
+}
 
+void setCorBCirculo(Circulo c,char* corB) {
+  ((circulo*)c)->corB = corB;
+}
 
-int main(){
+char* getCorPCirculo(Circulo c){
+  return ((circulo*)c)->corP;
+}
 
-  }
+void setCorPCirculo(Circulo c, char* corP) {
+  ((circulo*)c)->corP = corP;
+}
+
+double calcAreaCirculo(Circulo c) {
+  return PI*pow(getRCirculo(c) ,2);
+}
