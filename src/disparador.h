@@ -5,58 +5,89 @@
 #ifndef DISPARADOR_H
 #define DISPARADOR_H
 
+
 /*
  Módulo responsavel de coordenar e executar um disparador com operações de criar, get, set, atirar e botões
  */
 
 /*
- Ponteiro void Pilha
- Ponteiro void Forma
  Ponteiro void Disparador
  */
-typedef void* Pilha;
-typedef void* Forma;
 typedef void* Disparador;
 
-/*
- Cria um disparador de formas, com duas pilhas como carregadores e as coordenadas do disparador
- */
-Disparador criar_disparador(Pilha e,Pilha d,double x , double y);
+/// @brief Cria um disparador
+/// @param id Identificador unico que se refere ao disparador
+/// @param x Coordenada x do disparador
+/// @param y Coordenada y do disparador
+/// @return Ponteiro para o novo disparador criado
+Disparador CriarDisparador(int id,double x ,double y);
 
-/*
- Pega a coordenada x do disparador sem modifica-la
- */
+/// @brief Pega o ID do disparador sem modifica-lo
+/// @param d Ponteiro para o disparador analisado
+/// @return Um inteiro que representa o ID do disparador
+/// @warning
+int getIDDisparador(Disparador d);
+
+/// @brief Pega a coordenada x do disparador sem modifica-la
+/// @param d Ponteiro para o disparador analisado
+/// @return Um double que representa a coordenada x do disparador
+/// @warning
 double getXDisparador(Disparador d);
 
-/*
- Define a nova coordenada x do disparador
- */
-void setXDispardor(Disparador d, double x);
+/// @brief Define a nova coordenada x do disparador
+/// @param d Ponteiro para o disparador onde a coordenada x será definida
+/// @param x Nova coordenada x que será definida
+/// @warning
+void setXDisparador(Disparador d,double x);
 
-/*
- Pega a coordenada y do disparador sem modifica-la
- */
+/// @brief Pega a coordenada y do disparador sem modifica-la
+/// @param d Ponteiro para o disparador analisado
+/// @return Um double que representa a coordenada y do disparador
+/// @warning
 double getYDisparador(Disparador d);
 
-/*
- Define a nova coordenada y do disparador
- */
-void setYDispardor(Disparador d, double y);
+/// @brief Define a nova coordenada y do disparador
+/// @param d Ponteiro para o disparador onde a coordenada y será definida
+/// @param y Nova coordenada y que será definida
+/// @warning
+void setYDisparador(Disparador d,double y);
 
-/*
- Lança a forma na arena mudando as coordenadas originais da forma
- */
-void atirarForma(Forma g,double mx,double my);
+/// @brief Pega a forma que está na posição de disparo do disparador sem remove-lá
+/// @param d Ponteiro para o disparador que a forma será pega
+/// @return Ponteiro para forma que foi pega
+/// @warning
+Forma getFormaDisparador(Disparador d);
 
-/*
- Botao que faz a mudanca da forma que esta no pente pela forma que esta na pilha direita e a forma que estava no pente para pilha esquerda
- */
-void botaoEsquerdo(Pilha e,Pilha d);
+/// @brief Define a nova forma da posição de disparo do disparador
+/// @param d Ponteiro para o disparador onde a forma será definida
+/// @param formaDisparo Nova forma da posição de disparo que será definida
+/// @warning
+void setFormaDisparador(Disparador d,Forma formaDisparo);
 
-/*
- Botao que faz a mudanca da forma que esta no pente pela forma que esta na pilha esquerda e a forma que estava no pente para pilha direita
- */
-void botaoDireiro(Pilha e,Pilha d);
+/// @brief Pega o carregador que está acoplado no lado esquerdo do disparador
+/// @param d Ponteiro para o disparador que o carregador será pego
+/// @return Ponteiro para o carregador que foi pego
+/// @warning
+Carregador getCarregadorEsq(Disparador d);
 
+/// @brief Pega o carregador que está acoplado no lado direito do disparador
+/// @param d Ponteiro para o disparador que o carregador será pego
+/// @return Ponteiro para o carregador que foi pego
+/// @warning
+Carregador getCarregadorDir(Disparador d);
+
+/// @brief Encaixa os novos carregadores no lado esquerdo e direito do disparador
+/// @param d Ponteiro para o disparador onde os carregadores serão encaixados
+/// @param esq Novo carregador esquerdo do disparador que será definido
+/// @param dir Novo carregador direito do disparador que será definido
+/// @warning
+void setCarregadoresDisparador(Disparador d,Carregador esq,Carregador dir);
+
+/// @brief Dispara formas na arena
+/// @param d Ponteiro para o disparador que fará o disparo
+/// @param dx Quantidade de acrescimo na coordenada x
+/// @param dy Quantidade de acrescimo na coordenada y
+/// @param arena Ponteiro para a arena que receberá as formas
+void dispararDisparador(Disparador d, double dx, double dy, Fila arena);
 
 #endif //DISPARADOR_H
