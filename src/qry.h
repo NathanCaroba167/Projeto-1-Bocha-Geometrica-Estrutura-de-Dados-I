@@ -16,14 +16,19 @@
 typedef FILE* Arquivo;
 typedef char* Nome;
 
-/// @rief Abre o arquivo .qry para leitura
-/// @param qry Ponteiro para o arquivo que será aberto
+/// @brief Abre o arquivo .qry para leitura
 /// @param arquivo Ponteiro para o nome do arquivo que será aberto
-void abrirQry(Arquivo *qry,Nome arquivo);
+/// @return Ponteiro para o arquivo que será aberto
+Arquivo abrirQry(Nome arquivo);
 
-/// @brief Cria formas lidas do (.qry) e coloca-as no chao
+/// @brief Lê comandos do (.qry) e executa na arena
+/// @param txt Ponteiro para o arquivo que será escrito os dados da leitura
 /// @param qry Ponteiro para o arquivo que será lido
 /// @param chao Ponteiro para o chao que receberá as formas
-void LerComandosExecutar(Arquivo qry,Fila chao);
+/// @param arena Ponteiro para a arena onde estão as formas
+/// @param disparadores Ponteiro para o estoque de disparadores
+/// @param carregadores Ponteiro para o estoque de carregadores
+/// @warning
+void LerComandosExecutar(Arquivo txt,Arquivo qry,Fila chao,Fila arena,EstoqueD disparadores, EstoqueC carregadores);
 
 #endif //QRY_H
