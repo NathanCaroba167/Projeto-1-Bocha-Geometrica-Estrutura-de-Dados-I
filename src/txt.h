@@ -9,6 +9,13 @@
  Módulo encarregado de criar um arquivo (.txt) e reportar os resultados de comandos com as operações de abrir e reportar
  */
 
+/*
+ Ponteiro do tipo FILE Arquivo
+ Ponteiro char Nome
+ */
+typedef FILE* Arquivo;
+typedef char* Nome;
+
 /// @brief Cria e abre o arquivo TXT para escrita
 /// @param arquivo Ponteiro para o nome do arquivo que será criado e aberto
 /// @return Ponteiro para o arquivo que será criado e aberto

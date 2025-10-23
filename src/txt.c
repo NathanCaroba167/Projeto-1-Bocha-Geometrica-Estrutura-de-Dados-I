@@ -5,11 +5,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "forma.h"
+
 #include "circulo.h"
 #include "retangulo.h"
 #include "linha.h"
 #include "texto.h"
+#include "forma.h"
+
+#include "fila.h"
+
 #include "geo.h"
 #include "txt.h"
 
@@ -145,10 +149,6 @@ void reportarPosiçãoFinal(Arquivo txt, Pacote p) {
             printf("ERRO: tipo inválido!\n");
             break;
     }
-}
-
-void reportarResultadoVerificação(Arquivo txt, Pacote p) {
-
 }
 
 void reportarÁreaTotalEsmagada(Arquivo txt, double areaRound, double areaTotal) {

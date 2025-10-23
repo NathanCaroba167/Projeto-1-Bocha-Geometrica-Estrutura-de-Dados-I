@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
-#include "geo.h"
+
 #include "circulo.h"
 #include "retangulo.h"
 #include "linha.h"
@@ -54,8 +54,8 @@ Box getBox(Pacote g1) {
         }
         case TEXTO: {
             Texto t = getDadosForma(g1);
-            Linha l = transformarTextoLinha(t);
-            return getBox(l);
+            //Linha l = transformarTextoLinha(t);
+            //return getBox(l);
         }
         default:
             box.xmin = box.ymin = box.xmax = box.ymax = 0;
@@ -63,16 +63,16 @@ Box getBox(Pacote g1) {
     return box;
 }
 
-bool boxSobrepoem(Box b1,Box b2) {
-    return !(b1.xmax < b2.xmin || b1.xmin > b2.xmax || b1.ymax < b2.ymin || b1.ymin > b2.ymax);
+bool boxVerificaNaoSobreposição(Box b1,Box b2) {
+    return (b1.xmax < b2.xmin || b1.xmin > b2.xmax || b1.ymax < b2.ymin || b1.ymin > b2.ymax);
 }
 
 bool verificarSobreposicao(Pacote g1,Pacote g2) {
 
-    Box b1= getBox(g1);
-    Box b2= getBox(g2);
+    Box b1 = getBox(g1);
+    Box b2 = getBox(g2);
 
-    if (boxSobrepoem(b1,b2)) return false;
+    if (boxVerificaNaoSobreposição(b1,b2)) return false;
 
     TipoForma t1 = getTipoForma(g1);
     TipoForma t2 = getTipoForma(g2);
@@ -80,23 +80,26 @@ bool verificarSobreposicao(Pacote g1,Pacote g2) {
     if (t1 == RETANGULO && t2 == RETANGULO) {
         return true;
     }else if (t1 == CIRCULO && t2 == CIRCULO) {
-        double dx = getXCirculo(g1) - getXCirculo(g2);
-        double dy = getYCirculo(g1) - getYCirculo(g2);
+        Circulo c = getDadosForma(g1);
+        double dx = getXCirculo(c) - getXCirculo(c);
+        double dy = getYCirculo(c) - getYCirculo(c);
         double dT = sqrt(dx*dx + dy*dy);
 
-        return dT <= (getRCirculo(g1) + getRCirculo(g2));
+        return dT <= (getRCirculo(c) + getRCirculo(c));
     }else if (t1 == RETANGULO && t2 == CIRCULO || t1 == CIRCULO && t2 == RETANGULO) {
         return true;
     }else if (t1 == LINHA && t2 == LINHA) {
-        double x1 = getX1Linha(g1);
-        double y1 = getY1Linha(g1);
-        double x2 = getX2Linha(g1);
-        double y2 = getY2Linha(g1);
+        Linha l = getDadosForma(g1);
 
-        double x3 = getX1Linha(g2);
-        double y3 = getY1Linha(g2);
-        double x4 = getX2Linha(g2);
-        double y4 = getY2Linha(g2);
+        double x1 = getX1Linha(l);
+        double y1 = getY1Linha(l);
+        double x2 = getX2Linha(l);
+        double y2 = getY2Linha(l);
+
+        double x3 = getX1Linha(l);
+        double y3 = getY1Linha(l);
+        double x4 = getX2Linha(l);
+        double y4 = getY2Linha(l);
 
         double denom = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
         if (denom == 0) return false;

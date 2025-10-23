@@ -10,8 +10,16 @@
 
 /*
  Ponteiro void Texto
+ Ponteiro void Estilo
  */
+typedef void* Estilo;
 typedef void* Texto;
+
+/// @param fFamily Família da fonte do texto
+/// @param fWeight Peso da fonte do texto
+/// @param fSize Tamanho da fonte do texto
+/// @return Ponteiro para o estilo criado (fFamily,fWeight,fSize)
+Estilo CriarEstilo(char* fFamily ,char* fWeight, char* fSize);
 
 /// @brief Cria um texto com os atributos indicados
 /// @param i Identificador unico que se refere ao texto
@@ -20,25 +28,22 @@ typedef void* Texto;
 /// @param corB Cor de borda do texto
 /// @param corP Cor de preenchimento do texto
 /// @param a Ponto âncora do texto ('i' - Inìcio // 'm' - Meio // 'f' - Fim)
-/// @param txt O conteúdo do texto (o texto em si)
-/// @param fFamily Família da fonte do texto
-/// @param fWeight Peso da fonte do texto
-/// @param fSize Tamanho da fonte do texto
+/// @param txto O conteúdo do texto (o texto em si)
 /// @return Ponteiro para o texto criado
 /// @warning
-Texto CriarTexto(int i, double x, double y, char* corB, char* corP, char a, char* txt, char* fFamily ,char* fWeight, char* fSize);
+Texto CriarTexto(int i, double x, double y, char* corB, char* corP, char a, char* txto);
 
 /// @brief Pega o ID do texto sem modifica-lo
 /// @param t Ponteiro para o texto analisada
 /// @return Um inteiro que representa o ID do texto
 /// @warning
-int getIdTexto(Texto t);
+int getIDTexto(Texto t);
 
 /// @brief Define o ID do texto
 /// @param t Ponteiro para o texto onde o ID será definido
 /// @param id ID que será definido
 /// @warning
-void setIdTexto(Texto t, int id);
+void setIDTexto(Texto t, int id);
 
 /// @brief Pega a coordenada x do ponto âncora do texto sem modifica-la
 /// @param t Ponteiro para o texto analisada
@@ -48,9 +53,9 @@ double getXTexto(Texto t);
 
 /// @brief Define a nova coordenada x do ponto âncora do texto
 /// @param t Ponteiro para o texto onde a coordenada x do ponto âncora será definida
-/// @param x1 Nova coordenada x do ponto âncora do texto que será definida
+/// @param x Nova coordenada x do ponto âncora do texto que será definida
 /// @warning
-void setXTexto(Texto t, double x1);
+void setXTexto(Texto t, double x);
 
 /// @brief Pega a coordenada y do ponto âncora do texto sem modifica-la
 /// @param t Ponteiro para o texto analisado
@@ -60,9 +65,9 @@ double getYTexto(Texto t);
 
 /// @brief Define a nova coordenada y do ponto âncora do texto
 /// @param t Ponteiro para o texto onde a coordenada y do ponto âncora será definida
-/// @param y1 Nova coordenada y do ponto âncora do texto que será definida
+/// @param y Nova coordenada y do ponto âncora do texto que será definida
 /// @warning
-void setYTexto(Texto t, double y1);
+void setYTexto(Texto t, double y);
 
 /// @brief Pega a cor de borda do texto sem modifica-la
 /// @param t Ponteiro para o texto analisado
@@ -104,54 +109,70 @@ void setATexto(Texto t, char a);///
 /// @param t Ponteiro para o texto analisado
 /// @return Uma string que representa o conteúdo do texto
 /// @warning
-char* getTxtTexto(Texto t);
+char* getTxtoTexto(Texto t);
 
 /// @brief Define o novo conteúdo do texto
 /// @param t Ponteiro para o texto onde o conteúdo será definido
-/// @param txt Novo conteúdo que será definido
+/// @param txto Novo conteúdo que será definido
 /// @warning
-void setTxtTexto(Texto t, char* txt);
+void setTxtoTexto(Texto t, char* txto);
 
 /// @brief Pega a família da fonte do texto sem modifica-lo
-/// @param t Ponteiro para o texto analisado
+/// @param e Ponteiro para o estilo analisado
 /// @return Uma string que representa a família da fonte do texto
 /// @warning
-char* getFontFamilyTexto(Texto t);///
+char* getFontFamilyTexto(Estilo e);
 
 /// @brief Define a nova família da fonte do texto
 /// @param t Ponteiro para o texto onde a família da fonte será definida
 /// @param family Nova família da fonte que será definida
 /// @warning
-void setFontFamilyTexto(Texto t, char* family);///
+void setFontFamilyTexto(Texto t, char* family);
 
 /// @brief Pega o peso da fonte do texto sem modifica-lo
-/// @param t Ponteiro para o texto analisado
+/// @param e Ponteiro para o estilo analisado
 /// @return Uma string que representa o peso da fonte do texto
 /// @warning
-char* getFontWeightTexto(Texto t);///
+char* getFontWeightTexto(Estilo e);
 
 /// @brief Define o novo peso da fonte do texto
 /// @param t Ponteiro para o texto onde o peso da fonte será definido
 /// @param weight Novo peso da fonte que será definido
 /// @warning
-void setFontWeightTexto(Texto t, char* weight);///
+void setFontWeightTexto(Texto t, char* weight);
 
 /// @brief Pega o tamanho da fonte do texto sem modifica-lo
-/// @param t Ponteiro para o texto analisado
+/// @param e Ponteiro para o estilo analisado
 /// @return Uma string que representa o tamanho da fonte do texto
 /// @warning
-char* getFontSizeTexto(Texto t);///
+char* getFontSizeTexto(Estilo e);
 
 /// @brief Define o novo tamanho da fonte do texto
 /// @param t Ponteiro para o texto onde o tamanho da fonte será definido
 /// @param size Novo tamanho da fonte que será definido
 /// @warning
-void setFontSizeTexto(Texto t, char* size);///
+void setFontSizeTexto(Texto t, char* size);
+
+/// @brief Pega o estilo do texto sem modifica-lo
+/// @param t Ponteiro para o texto analisado
+/// @return Ponteiro para o estilo do texto
+/// @warning
+Estilo getEstilo(Texto t);
 
 /// @brief Calcula os pontos extremos do texto(inicio e fim)
 /// @param t Ponteiro para o texto analisado
 /// @warning
-void calcExtremosTexto(Texto t);////
+///void calcExtremosTexto(Texto t);///
+
+/// @brief Pega a quantidade de caracteres o texto possui
+/// @param t Ponteiro para texto analisado
+/// @return A quantidade de caracteres do texto
+/// @warning
+size_t quantidadeCaracteresTexto(Texto t);
+
+/// @brief Transforma uma forma texto em uma forma linha
+/// @warning
+///Linha transformarTextoLinha(Texto t);
 
 /// @brief Calcula a área do texto
 /// @param t Ponteiro para o texto analisado

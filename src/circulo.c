@@ -11,9 +11,9 @@
 
 typedef struct{
   int i;
-  double r;
   double x,y;
-  char* corP,*corB;
+  double r;
+  char* corB,*corP;
 }circulo;
 
 Circulo CriarCirculo(int i, double x, double y, double r, char* corB,char* corP){
@@ -28,8 +28,21 @@ Circulo CriarCirculo(int i, double x, double y, double r, char* corB,char* corP)
   c->x = x;
   c->y = y;
   c->r = r;
-  c->corB = corB;
-  c->corP = corP;
+  c->corB = (char*) malloc (strlen(corB) + 1);
+  if (c->corB == NULL) {
+    printf("Erro ao alocar memoria!\n");
+    exit(1);
+  }
+  strcpy(c->corB,corB);
+
+  c->corP = (char*) malloc (strlen(corP) + 1);
+  if (c->corP == NULL) {
+    printf("Erro ao alocar memoria!\n");
+    exit(1);
+  }
+  strcpy(c->corP,corP);
+
+  return c;
 }
 
 int getIDCirculo(Circulo c){
@@ -69,7 +82,13 @@ char* getCorBCirculo(Circulo c){
 }
 
 void setCorBCirculo(Circulo c,char* corB) {
-  ((circulo*)c)->corB = corB;
+  circulo* circ = (circulo*)c;
+  circ->corB = realloc (circ->corB,strlen(corB) + 1);
+  if (circ->corB == NULL) {
+    printf("Erro ao realocar memoria!\n");
+    exit(1);
+  }
+  strcpy(circ->corB,corB);
 }
 
 char* getCorPCirculo(Circulo c){
@@ -77,9 +96,22 @@ char* getCorPCirculo(Circulo c){
 }
 
 void setCorPCirculo(Circulo c, char* corP) {
-  ((circulo*)c)->corP = corP;
+  circulo* circ = (circulo*)c;
+  circ->corP = realloc (circ->corP,strlen(corP) + 1);
+  if (circ->corP == NULL) {
+    printf("Erro ao realocar memoria!\n");
+    exit(1);
+  }
+  strcpy(circ->corP,corP);
 }
 
 double calcAreaCirculo(Circulo c) {
   return PI*pow(getRCirculo(c) ,2);
+}
+
+void eliminarCirculo(Circulo c) {
+  circulo* circ = (circulo*)c;
+  free(circ->corB);
+  free(circ->corP);
+  free(circ);
 }

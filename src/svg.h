@@ -18,9 +18,10 @@ typedef char* Nome;
 
 
 /// @brief Cria e abre o arquivo SVG para escrita
-/// @param svg Ponteiro para o arquivo que será criado e aberto
 /// @param arquivo Ponteiro para o nome do arquivo que será criado e aberto
-void abrirSVG(Arquivo *svg, Nome arquivo);
+/// @return Ponteiro para o arquivo que será criado e aberto
+/// @warning
+Arquivo abrirSVG(Nome arquivo);
 
 /// @brief Adiciona a tag do arquivo SVG
 /// @param svg Ponteiro para o arquivo que será inicializado
@@ -67,10 +68,23 @@ void desenharAsteriscoSVG(Arquivo svg, double x, double y);
 /// @warning
 void desenharDimensoesDisparoSVG(Arquivo svg, Disparador d, double dx, double dy);
 
+/// @brief Desenha formas da fila no arquivo SVG
+/// @param svg Ponteiro para o arquivo SVG que receberá o desenho
+/// @param chao Fila chao que mandará as formas
+/// @warning
+void desenharFormasDaFila(Arquivo svg, Fila chao);
+
 /// @brief Fecha o arquivo SVG
 /// @param svg Ponteiro para o arquivo que será fechado
 /// @warning
 void fecharSVG(Arquivo svg);
+
+/// @brief Gera arquivo SVG após a leitura da fila
+/// @param chao Fila chao que mandará as formas
+/// @param caminho Caminho para o arquivo SVG
+/// @warning
+void gerarSVG(Fila chao, char* caminho);
+
 
 
 #endif //SVG_H

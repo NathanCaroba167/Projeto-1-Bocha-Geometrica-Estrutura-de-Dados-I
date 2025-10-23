@@ -5,9 +5,6 @@
 #ifndef CARREGADOR_H
 #define CARREGADOR_H
 
-#include "pilha.h"
-#include "fila.h"
-
 /*
  Módulo encarregado de executar e coordenar um carregador com operações de criar, get, carregar, 'carregadorvazio' e eliminar
  */
@@ -32,7 +29,7 @@ int getIDCarregador(Carregador cr);
 /// @param cr Ponteiro para o carregador que a forma será pega
 /// @return Ponteiro para forma que foi pega ou NULL se o carregador estiver vazio
 /// @warning
-Forma getPrimeiraFormaCarregador(Carregador cr);///
+Pacote getPrimeiraFormaCarregador(Carregador cr);///
 
 /// @brief Pega a pilha relacionada ao carregador
 /// @param cr Ponteiro para o carregador que a pilha será pega
@@ -40,9 +37,10 @@ Forma getPrimeiraFormaCarregador(Carregador cr);///
 Pilha getPilhaCarregador(Carregador cr);
 
 /// @brief Carrega o carregador com formas vindas do chao
+/// @param txt Ponteiro para o arquivo que será escrito os dados da forma carregada
 /// @param cr Ponteiro para o carregador que será carregado
 /// @param chao Ponteiro para o chao que mandará as formas
-void carregarCarregador(Carregador cr, Fila chao);
+void carregarCarregador(Arquivo txt,Carregador cr, Fila chao);
 
 /// @brief Verifica se o carregador esta vazio
 /// @param cr Ponteiro para o carregador que será verificado

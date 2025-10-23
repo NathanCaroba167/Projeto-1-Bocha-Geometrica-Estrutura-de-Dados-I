@@ -22,7 +22,7 @@ typedef void* Linha;
 /// @param cor Cor da linha
 /// @return Ponteiro para a linha criada
 /// @warning
-Linha criar_linha(int i, double x1, double y1, double x2, double y2 ,char* cor);
+Linha CriarLinha(int i, double x1, double y1, double x2, double y2 ,char* cor);
 
 /// @brief Pega o ID da linha sem modifica-lo
 /// @param l Ponteiro para a linha analisada
@@ -101,7 +101,7 @@ void setCorLinha(Linha l, char* cor);
 /// @return Um double que representa a área da linha
 /// @warning
 /// @details 2 * comprimento da linha
-double calcAreaTexto(Linha l);
+double calcAreaLinha(Linha l);
 
 /// @brief Libera a memória alocada para a linha
 /// @param l Ponteiro para a linha que será eliminada

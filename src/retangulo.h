@@ -14,7 +14,7 @@ Módulo encarregado de coordenar um retângulo com operações de criar, get, se
 typedef void* Retangulo;
 
 /// @brief Cria um retângulo com os atributos indicados
-/// @param id Identificador unico que se refere ao retângulo
+/// @param i Identificador unico que se refere ao retângulo
 /// @param x Coordenada x do ponto ancora (canto inferior esquerdo) do retângulo
 /// @param y Coordenada y do ponto ancora (canto inferior esquerdo) do retângulo
 /// @param w Largura do retângulo
@@ -23,9 +23,9 @@ typedef void* Retangulo;
 /// @param corP Cor de preenchimento do retângulo
 /// @return Ponteiro para o retângulo criado
 /// @warning
-Retangulo criar_retangulo(int id,double x,double y,double w ,double h, char* corB, char* corP );
+Retangulo CriarRetangulo(int i,double x,double y,double w,double h,char* corB,char* corP );
 
-/// @brief Pega o Id do retângulo sem modifica-lo
+/// @brief Pega o ID do retângulo sem modifica-lo
 /// @param r Ponteiro para o retângulo analisado
 /// @return Um inteiro que representa o ID do retângulo
 /// @warning

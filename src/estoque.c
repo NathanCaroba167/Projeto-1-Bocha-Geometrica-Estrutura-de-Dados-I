@@ -4,8 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "disparador.h"
+#include <stdbool.h>
+#include "forma.h"
+#include "pilha.h"
+#include "fila.h"
+#include "geo.h"
 #include "carregador.h"
+#include "disparador.h"
 #include "estoque.h"
 
 typedef struct {
@@ -26,7 +31,7 @@ EstoqueD CriarEstoqueDisparadores(int capacidadeInicial) {
         printf("Erro ao alocar memoria\n");
         exit(1);
     }
-    est->disparadores = (Disparador*)malloc(sizeof(Disparador*) * capacidadeInicial);
+    est->disparadores = (Disparador**)malloc(sizeof(Disparador) * capacidadeInicial);
     est->quantidadeD = 0;
     est->capacidadeD = capacidadeInicial;
     return est;
@@ -37,7 +42,7 @@ void adicionarDisparador(EstoqueD e, Disparador d) {
 
     if (est->quantidadeD == est->capacidadeD) {
         est->capacidadeD *= 2;
-        est->disparadores = realloc(est->disparadores, sizeof(Disparador*)*est->capacidadeD);
+        est->disparadores = realloc(est->disparadores, sizeof(Disparador)*est->capacidadeD);
     }
     est->disparadores[est->quantidadeD] = d;
     est->quantidadeD++;
@@ -73,7 +78,7 @@ EstoqueC CriarEstoqueCarregadores(int capacidadeInicial) {
         printf("Erro ao alocar memoria\n");
         exit(1);
     }
-    est->carregadores = (Carregador*)malloc(sizeof(Carregador*) * capacidadeInicial);
+    est->carregadores = (Carregador**)malloc(sizeof(Carregador) * capacidadeInicial);
     est->quantidadeC = 0;
     est->capacidadeC = capacidadeInicial;
     return est;

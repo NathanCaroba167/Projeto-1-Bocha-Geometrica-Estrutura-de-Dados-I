@@ -7,6 +7,8 @@
 #include <math.h>
 #include "texto.h"
 
+#include "linha.h"
+
 typedef struct{
     char* fFamily;
     char* fWeight;
@@ -20,7 +22,7 @@ typedef struct{
     char* corP;
     char a;
     char* txto;
-    estilo* Estilo;
+    Estilo Estilo;
 }texto;
 
 Estilo CriarEstilo(char* fFamily, char* fWeight, char* fSize) {
@@ -54,7 +56,7 @@ Estilo CriarEstilo(char* fFamily, char* fWeight, char* fSize) {
     return e;
 }
 
-Texto CriarTexto(int i, double x, double y, char* corB, char* corP, char a, char* txto, char* Estilo) {
+Texto CriarTexto(int i, double x, double y, char* corB, char* corP, char a, char* txto) {
     texto* t = (texto*)malloc(sizeof(texto));
 
     if (t == NULL) {
@@ -164,33 +166,97 @@ void setTxtoTexto(Texto t, char* txto) {
     strcpy(tex->txto,txto);
 }
 
-char* getFontFamilyTexto(Texto t) {
-    return NULL;
+char* getFontFamilyTexto(Estilo e) {
+    return ((estilo*)e)->fFamily;
 }
 
-void setFontFamilyTexto(Texto t, char* family) {
-
+void setFontFamilyTexto(Estilo e, char* family) {
+    estilo* est = (estilo*)e;
+    est->fFamily = realloc (est->fFamily,strlen(family) + 1);
+    if (est->fFamily == NULL) {
+        printf("Erro ao realocar memoria!\n");
+        exit(1);
+    }
+    strcpy (est->fFamily,family);
 }
 
-char* getFontWeightTexto(Texto t) {
-    return NULL;
+char* getFontWeightTexto(Estilo e) {
+    return ((estilo*)e)->fWeight;
 }
 
-void setFontWeightTexto(Texto t, char* weight) {
-
+void setFontWeightTexto(Estilo e, char* weight) {
+    estilo* est = (estilo*)e;
+    est->fWeight = realloc (est->fWeight,strlen(weight) + 1);
+    if (est->fWeight == NULL) {
+        printf("Erro ao realocar memoria!\n");
+        exit(1);
+    }
+    strcpy (est->fWeight,weight);
 }
 
-char* getFontSizeTexto(Texto t) {
-    return NULL;
+char* getFontSizeTexto(Estilo e) {
+    return ((estilo*)e)->fSize;
 }
 
-void setFontSizeTexto(Texto t, char* size) {
-
+void setFontSizeTexto(Estilo e, char* size) {
+    estilo* est = (estilo*)e;
+    est->fSize = realloc (est->fSize,strlen(size) + 1);
+    if (est->fSize == NULL) {
+        printf("Erro ao realocar memoria!\n");
+        exit(1);
+    }
+    strcpy (est->fSize,size);
 }
 
-void calcExtremosTexto(Texto t) {
+Estilo getEstilo(Texto t) {
+    return ((texto*)t)->Estilo;
+}
+
+/*void calcExtremosTexto(Texto t) {
+
 
 }
+*/
+
+size_t quantidadeCaracteresTexto(Texto t) {
+    return strlen(((texto*)t)->txto);
+}
+
+/*Linha transformarTextoLinha(Texto t) {
+    double x1,y1,x2,y2;
+    switch (getATexto(t)) {
+        case 'i':
+            x1 = getXTexto(t);
+            y1 = getYTexto(t);
+
+            x2 = getXTexto(t) + 10.0 * quantidadeCaracteresTexto(t);
+            y2 = getYTexto(t);
+
+            break;
+        case 'm':
+            x1 = getXTexto(t) - 10.0 * quantidadeCaracteresTexto(t);
+            y1 = getYTexto(t);
+
+            x2 = (getXTexto(t) + 10.0 * quantidadeCaracteresTexto(t))/2;
+            y2 = getYTexto(t);
+
+            break;
+        case 'f':
+            x1 = getXTexto(t) - 10.0 * quantidadeCaracteresTexto(t);
+            y1 = getYTexto(t);
+
+            x2 = getXTexto(t);
+            y2 = getYTexto(t);
+
+            break;
+        default:
+            printf("Indice de ancora '%c' incorreto!\n",getATexto(t));
+            break;
+    }
+    return l;
+
+}*/
+
 
 double calcAreaTexto(Texto t) {
     return 20 * (double) strlen(getTxtoTexto(t));

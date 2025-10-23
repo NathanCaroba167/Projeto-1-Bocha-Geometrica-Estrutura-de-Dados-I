@@ -5,7 +5,6 @@
 #ifndef DISPARADOR_H
 #define DISPARADOR_H
 
-
 /*
  Módulo responsavel de coordenar e executar um disparador com operações de criar, get, set, atirar e botões
  */
@@ -56,13 +55,13 @@ void setYDisparador(Disparador d,double y);
 /// @param d Ponteiro para o disparador que a forma será pega
 /// @return Ponteiro para forma que foi pega
 /// @warning
-Forma getFormaDisparador(Disparador d);
+Pacote getFormaDisparador(Disparador d);
 
 /// @brief Define a nova forma da posição de disparo do disparador
 /// @param d Ponteiro para o disparador onde a forma será definida
 /// @param formaDisparo Nova forma da posição de disparo que será definida
 /// @warning
-void setFormaDisparador(Disparador d,Forma formaDisparo);
+void setFormaDisparador(Disparador d,Pacote formaDisparo);
 
 /// @brief Pega o carregador que está acoplado no lado esquerdo do disparador
 /// @param d Ponteiro para o disparador que o carregador será pego
@@ -83,11 +82,21 @@ Carregador getCarregadorDir(Disparador d);
 /// @warning
 void setCarregadoresDisparador(Disparador d,Carregador esq,Carregador dir);
 
+/// @brief Desarma o disparador (tira a forma da posição de disparo)
+/// @param d Ponteiro para o disparador que será desarmado
+/// @warning
+void desarmarDisparador(Disparador d);
+
 /// @brief Dispara formas na arena
 /// @param d Ponteiro para o disparador que fará o disparo
 /// @param dx Quantidade de acrescimo na coordenada x
 /// @param dy Quantidade de acrescimo na coordenada y
 /// @param arena Ponteiro para a arena que receberá as formas
-void dispararDisparador(Disparador d, double dx, double dy, Fila arena);
+//void dispararDisparador(Disparador d, double dx, double dy, Fila arena);
+
+/// @brief Liberar a memória alocada para o disparador
+/// @param d Ponteiro para o disparador que será liberado
+/// @warning
+void eliminarDisparador(Disparador d);
 
 #endif //DISPARADOR_H

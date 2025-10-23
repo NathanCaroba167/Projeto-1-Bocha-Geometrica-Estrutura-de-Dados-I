@@ -6,6 +6,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "forma.h"
+#include "pilha.h"
+#include "fila.h"
+#include "geo.h"
+#include "txt.h"
 #include "carregador.h"
 
 typedef struct {
@@ -14,7 +19,7 @@ typedef struct {
 }carregador;
 
 Carregador CriarCarregador(int id) {
-    carregador* cr = malloc(sizeof(carregador));
+    carregador* cr = (carregador*)malloc(sizeof(carregador));
 
     if (cr == NULL) {
         printf("Erro ao alocar memoria!\n");
@@ -30,7 +35,7 @@ int getIDCarregador(Carregador cr) {
     return ((carregador*)cr)->id;
 }
 
-Forma getPrimeiraFormaCarregador(Carregador cr) {
+Pacote getPrimeiraFormaCarregador(Carregador cr) {
     carregador* carr = (carregador*)cr;
     return getPrimeiraFormaPilha(carr->p);
 }
@@ -39,9 +44,11 @@ Pilha getPilhaCarregador(Carregador cr) {
     return ((carregador*)cr)->p;
 }
 
-void carregarCarregador(Carregador cr, Fila chao) {
+void carregarCarregador(Arquivo txt, Carregador cr, Fila chao) {
     carregador* carr = (carregador*)cr;
+    Pacote p = getPrimeiraFormaPilha(chao);
     empilharPilha(carr->p, getPrimeiraFormaFila(chao));
+    reportarForma(txt,p);
     removerFila(chao);
 }
 

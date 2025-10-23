@@ -4,16 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "forma.h"
 #include "fila.h"
 
 typedef struct Elemento {
-    Forma form;
+    Pacote form;
     struct Elemento* prox;
 }Elemento;
 
 typedef Elemento* pont;
 
-typedef struct Fila {
+typedef struct {
     int tamanho;
     pont inicio;
     pont fim;
@@ -31,14 +32,14 @@ Fila iniciarFila() {
     return f;
 }
 
-void inserirFila(Fila f, Forma g) {
+void inserirFila(Fila f, Pacote p) {
     fila* FILA = (fila*)f;
     pont nova = (Elemento*) malloc(sizeof(Elemento));
     if (nova == NULL) {
         printf("Erro ao alocar memoria!\n");
         exit(1);
     }
-    nova->form = g;
+    nova->form = p;
     nova->prox = NULL;
 
     if (filavazia(f)) {
@@ -68,7 +69,7 @@ void removerFila(Fila f) {
     free(elemInicio);
 }
 
-Forma getPrimeiraFormaFila(Fila f) {
+Pacote getPrimeiraFormaFila(Fila f) {
     fila* FILA = (fila*)f;
     if (filavazia(f)) {
         printf("Fila vazia!\n");
@@ -76,6 +77,19 @@ Forma getPrimeiraFormaFila(Fila f) {
     }else {
         return FILA->inicio->form;
     }
+}
+
+Pacote getFormaElementoFila(pont p) {
+    return p->form;
+}
+
+pont getPrimeiroElementoFila(Fila f) {
+    fila* FILA = (fila*)f;
+    return FILA->inicio;
+}
+
+pont getProximoElementoFila(pont p) {
+    return p->prox;
 }
 
 int filavazia(Fila f) {

@@ -4,15 +4,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "carregador.h"
+#include <stdbool.h>
+#include "forma.h"
+#include "pilha.h"
+#include "fila.h"
 #include "geo.h"
+#include "carregador.h"
 #include "disparador.h"
+
 
 typedef struct {
     int id;
     double x;
     double y;
-    Forma formaDisparo;
+    Pacote formaDisparo;
     Carregador carregadorEsq;
     Carregador carregadorDir;
 }disparador;
@@ -51,11 +56,11 @@ void setYDisparador(Disparador d,double y) {
     ((disparador*)d)->y = y;
 }
 
-Forma getFormaDisparador(Disparador d) {
+Pacote getFormaDisparador(Disparador d) {
     return ((disparador*)d)->formaDisparo;
 }
 
-void setFormaDisparador(Disparador d,Forma formaDisparo) {
+void setFormaDisparador(Disparador d,Pacote formaDisparo) {
     ((disparador*)d)->formaDisparo = formaDisparo;
 }
 
@@ -72,6 +77,15 @@ void setCarregadoresDisparador(Disparador d, Carregador esq, Carregador dir) {
     ((disparador*)d)->carregadorDir = dir;
 }
 
-void dispararDisparador(Disparador d, double dx,double dy, Fila arena) {
+void desarmarDisparador(Disparador d) {
+    free(((disparador*)d)->formaDisparo);
+}
 
+/*void dispararDisparador(Disparador d, double dx,double dy, Fila arena) {
+
+}*/
+
+void eliminarDisparador(Disparador d) {
+    disparador* dis = ((disparador*)d);
+    free(dis);
 }

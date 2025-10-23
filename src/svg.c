@@ -4,25 +4,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+
 #include "circulo.h"
 #include "retangulo.h"
 #include "linha.h"
 #include "texto.h"
+#include "forma.h"
+
+#include "pilha.h"
+#include "fila.h"
+#include "txt.h"
+#include "carregador.h"
 #include "disparador.h"
 #include "svg.h"
 
-void abrirSVG(Arquivo *svg,Nome arquivo) {
-    *svg = fopen(arquivo,"w");
-    if (*svg == NULL) {
+Arquivo abrirSVG(Nome arquivo) {
+    Arquivo svg = fopen(arquivo,"w");
+    if (svg == NULL) {
         printf("Erro ao abrir o arquivo\n");
         exit(1);
     }
+    return svg;
 }
 
 void inicializarSVG(Arquivo svg) {
     fprintf(svg,"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
     fprintf(svg,"<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" width=\"1000\" height=\"1000\">\n");
-    fprintf(svg,"</g>\n");
+    fprintf(svg,"\t<g>\n");
 }
 
 void desenharCirculoSVG(Arquivo svg, Circulo c) {
@@ -101,9 +110,9 @@ void desenharTextoSVG(Arquivo svg, Texto t, Estilo e) {
                  getYTexto(t),
                  getCorBTexto(t),
                  getCorPTexto(t),
-                 getFontFamilyTexto(t),
-                 getFontWeightTexto(t),
-                 getFontSizeTexto(t));
+                 getFontFamilyTexto(e),
+                 getFontWeightTexto(e),
+                 getFontSizeTexto(e));
 
     switch (getATexto(t)) {
         case 'i':
@@ -210,11 +219,52 @@ void desenharDimensoesDisparoSVG(Arquivo svg, Disparador d, double dx, double dy
                  22);
 }
 
+void desenharFormasDaFila(Arquivo svg, Fila chao) {
+    if (chao == NULL || filavazia(chao)) {
+        exit(1);
+    }
+
+    pont atual = getProximoElementoFila(chao);
+    while (atual != NULL) {
+        Pacote p = getPrimeiraFormaFila(chao);
+
+        TipoForma tipo = getTipoForma(p);
+        Forma forma = getDadosForma(p);
+
+        switch (tipo) {
+            case CIRCULO:
+                desenharCirculoSVG(svg, forma);
+                break;
+            case RETANGULO:
+                desenharRetanguloSVG(svg, forma);
+                break;
+            case LINHA:
+                desenharLinhaSVG(svg, forma);
+                break;
+            case TEXTO:
+                desenharTextoSVG(svg, forma, getEstilo(forma));
+                break;
+            default:
+                break;
+        }
+
+        atual = getProximoElementoFila(atual);
+    }
+}
+
 void fecharSVG(Arquivo svg) {
     fprintf(svg, "</g>\n");
     fprintf(svg,"</svg>\n");
-    fclose(svg);
 
     printf("Arquivo SVG gerado com sucesso!\n");
+
+}
+
+void gerarSVG(Fila chao, char* caminho) {
+    Arquivo arqSvg = abrirSVG(caminho);
+    inicializarSVG(arqSvg);
+    desenharFormasDaFila(arqSvg, chao);
+    fecharSVG(arqSvg);
+    fclose(arqSvg);
 
 }

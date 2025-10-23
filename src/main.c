@@ -4,11 +4,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "circulo.h"
 #include "retangulo.h"
 #include "linha.h"
 #include "texto.h"
+#include "forma.h"
+#include "fila.h"
+#include "pilha.h"
+#include "txt.h"
 #include "carregador.h"
 #include "disparador.h"
 #include "estoque.h"
@@ -17,6 +22,7 @@
 #include "qry.h"
 #include "svg.h"
 
+#define MAX_CAMINHO 512
 
 int main(int argc, char* argv[]) {
     char* dirEntrada = NULL; // -e
@@ -49,43 +55,43 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    char caminhoCompletoGeo[256];
+    char caminhoCompletoGeo[MAX_CAMINHO];
     if (dirEntrada != NULL) {
-        sprintf(caminhoCompletoGeo, "%s/%s", dirEntrada, nomeArqGeo);
+        snprintf(caminhoCompletoGeo,MAX_CAMINHO, "%s/%s", dirEntrada, nomeArqGeo);
     } else {
-        sprintf(caminhoCompletoGeo, "%s", nomeArqGeo);
+        snprintf(caminhoCompletoGeo,MAX_CAMINHO, "%s", nomeArqGeo);
     }
 
-    char* nomeBaseGeo = pegarNomeBase(nomeArqGeo);
+    char* nomeBaseGeo = getNomeBase(nomeArqGeo);
     if (nomeBaseGeo ==  NULL) {
         printf("Erro: nome base do arquivo geo");
         return 1;
     }
 
-    char caminhoSaidaSvgInicial[256];
-    sprintf(caminhoSaidaSvgInicial, "%s/%s.svg", dirSaida, nomeBaseGeo);
+    char caminhoSaidaSvgInicial[MAX_CAMINHO];
+    snprintf(caminhoSaidaSvgInicial,MAX_CAMINHO, "%s/%s.svg", dirSaida, nomeBaseGeo);
 
-    char caminhoCompletoQry[256];
-    char caminhoSaidaSvgFinal[256];
-    char caminhoSaidaTxt[256];
+    char caminhoCompletoQry[MAX_CAMINHO];
+    char caminhoSaidaSvgFinal[MAX_CAMINHO];
+    char caminhoSaidaTxt[MAX_CAMINHO];
     if (nomeArqQry != NULL) {
         if (dirEntrada != NULL) {
-            sprintf(caminhoCompletoQry, "%s/%s", dirEntrada, nomeArqQry);
+            snprintf(caminhoCompletoQry,MAX_CAMINHO, "%s/%s", dirEntrada, nomeArqQry);
         }else {
             strcpy(caminhoCompletoQry, nomeArqQry);
         }
 
 
-        char* nomeBaseQry = pegarNomeBase(nomeArqQry);
+        char* nomeBaseQry = getNomeBase(nomeArqQry);
         if (nomeBaseQry ==  NULL) {
             free(nomeBaseGeo);
             return 1;
         }
-        char nomeCombinado[256];
-        sprintf(nomeCombinado, "%s-%s", nomeBaseGeo, nomeBaseQry);
+        char nomeCombinado[MAX_CAMINHO];
+        snprintf(nomeCombinado,MAX_CAMINHO, "%s-%s", nomeBaseGeo, nomeBaseQry);
 
-        sprintf(caminhoSaidaSvgFinal, "%s/%s.svg", dirSaida, nomeCombinado);
-        sprintf(caminhoSaidaTxt, "%s/%s.txt", dirSaida, nomeCombinado);
+        snprintf(caminhoSaidaSvgFinal,MAX_CAMINHO, "%s/%s.svg", dirSaida, nomeCombinado);
+        snprintf(caminhoSaidaTxt,MAX_CAMINHO, "%s/%s.txt", dirSaida, nomeCombinado);
 
         free(nomeBaseQry);
     }
@@ -120,6 +126,8 @@ int main(int argc, char* argv[]) {
     if (nomeArqQry != NULL) {
         Arquivo arqQry = NULL;
         arqQry = abrirQry(caminhoCompletoQry);
+        Arquivo arqTxt = NULL;
+        arqTxt = abrirTXT(caminhoSaidaTxt);
         if (arqQry == NULL) {
             printf("ERRO: ao tentar abrir o arquivo .qry");
             free(nomeBaseGeo);
@@ -129,11 +137,11 @@ int main(int argc, char* argv[]) {
             liberarEstoqueCarregadores(carregadores);
             return 1;
         }
-        LerComandosExecutar(arqQry, chao, arena, disparadores, carregadores);///
+        LerComandosExecutar(arqTxt,arqQry, chao, arena, disparadores, carregadores);///
         fclose(arqQry);
+        fclose(arqTxt);
 
         gerarSVG(chao,caminhoSaidaSvgFinal);
-        gerarTXT(caminhoSaidaTxt);///
     }
 
     printf("Limpando a memória ...\n");

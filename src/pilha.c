@@ -4,10 +4,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+#include "forma.h"
 #include "pilha.h"
 
 typedef struct Elemento {
-    Forma form;
+    Pacote form;
     struct Elemento* prox;
 }Elemento;
 
@@ -21,7 +23,7 @@ typedef struct Pilha {
 Pilha iniciarPilha() {
     pilha* p = (pilha*) malloc(sizeof(pilha));
     if (p == NULL) {
-        printf("Erro ao alocar memoria!");
+        printf("Erro ao alocar memoria!\n");
         exit(1);
     }
     p->topo = NULL;
@@ -29,11 +31,11 @@ Pilha iniciarPilha() {
     return p;
 }
 
-void empilharPilha(Pilha p, Forma g) {
+void empilharPilha(Pilha p, Pacote g) {
     pilha* PILHA = (pilha*)p;
     pont nova = (Elemento*) malloc(sizeof(Elemento));
     if (nova == NULL) {
-        printf("Erro ao alocar memoria!");
+        printf("Erro ao alocar memoria!\n");
         exit(1);
     }
     nova->form = g;
@@ -45,7 +47,7 @@ void empilharPilha(Pilha p, Forma g) {
 void desempilharPilha(Pilha p) {
     pilha* PILHA = (pilha*)p;
     if (pilhavazia(p)) {
-        printf("Pilha vazia!");
+        printf("Pilha vazia!\n");
         exit(1);
     }
     pont elemTopo = PILHA->topo;
@@ -56,19 +58,19 @@ void desempilharPilha(Pilha p) {
     free(elemTopo);
 }
 
-Forma getPrimeiraFormaPilha(Pilha p) {
+Pacote getPrimeiraFormaPilha(Pilha p) {
     pilha* PILHA = (pilha*)p;
     if (pilhavazia(p)) {
-        printf("Pilha vazia!");
+        printf("Pilha vazia!\n");
         return NULL;
     }else {
         return PILHA->topo->form;
     }
 }
 
-int pilhavazia(Pilha p) {
+bool pilhavazia(Pilha p) {
     pilha* PILHA = (pilha*)p;
-    return PILHA->topo == NULL ? 1 : 0;
+    return PILHA->topo == NULL ? true : false;
 }
 
 int getNumeroElementosPilha(Pilha p) {

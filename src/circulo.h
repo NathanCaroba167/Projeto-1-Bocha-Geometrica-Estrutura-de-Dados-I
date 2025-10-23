@@ -13,7 +13,7 @@
  */
 typedef void* Circulo;
 
-/// @brief Cria círculo com os atributos indicados
+/// @brief Cria um círculo com os atributos indicados
 /// @param i Identificador unico que se refere ao circulo
 /// @param x Coordenada x do centro do círculo
 /// @param y Coordenada y do centro do círculo
@@ -22,9 +22,9 @@ typedef void* Circulo;
 /// @param corP Cor de preenchimento do círculo
 /// @return Ponteiro para o círculo criado
 /// @warning
-Circulo criar_circulo(int i, double x, double y, double r, char* corB,char* corP);
+Circulo CriarCirculo(int i, double x, double y, double r, char* corB,char* corP);
 
-/// @brief Pega o Id do círculo sem modifica-lo
+/// @brief Pega o ID do círculo sem modifica-lo
 /// @param c Ponteiro para o círculo analisado
 /// @return Um inteiro que representa o ID do círculo
 /// @warning
@@ -78,7 +78,7 @@ void setRCirculo(Circulo c, double raio);
 /// @warning
 char* getCorBCirculo(Circulo c);
 
-/// @brief Define a novo cor de borda do círculo
+/// @brief Define a nova cor de borda do círculo
 /// @param c Ponteiro para o círculo onde a cor de borda será definida
 /// @param corB Nova cor de borda que será definida
 /// @warning
@@ -90,7 +90,7 @@ void setCorBCirculo(Circulo c, char* corB);
 /// @warning
 char* getCorPCirculo(Circulo c);
 
-/// @brief Define a novo cor de preenchimento do círculo
+/// @brief Define a nova cor de preenchimento do círculo
 /// @param c Ponteiro para o círculo onde a cor de preenchimento será definida
 /// @param corP Nova cor de preenchimento que será definida
 /// @warning
@@ -102,7 +102,7 @@ void setCorPCirculo(Circulo c, char* corP);
 /// @warning
 double calcAreaCirculo(Circulo c);///
 
-/// @brief Libera a memória alocada para do círculo
+/// @brief Libera a memória alocada para o círculo
 /// @param c Ponteiro para o círculo que será eliminado
 /// @warning
 void eliminarCirculo(Circulo c);
