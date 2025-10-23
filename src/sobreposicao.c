@@ -15,6 +15,10 @@
 #include "forma.h"
 #include "sobreposicao.h"
 
+typedef struct {
+    double x, y;
+}Ponto;
+
 
 typedef struct {
     double xmin,ymin,xmax,ymax;
@@ -54,8 +58,29 @@ Box getBox(Pacote g1) {
         }
         case TEXTO: {
             Texto t = getDadosForma(g1);
-            //Linha l = transformarTextoLinha(t);
-            //return getBox(l);
+
+            double x1, x2;
+            switch (getATexto(t)) {
+                case 'i':
+                    x1 = getXTexto(t);
+                    x2 = getXTexto(t) + 10.0 * quantidadeCaracteresTexto(t);
+                    break;
+                case 'm':
+                    x1 = (getXTexto(t) - 10.0 * quantidadeCaracteresTexto(t))/2;
+                    x2 = (getXTexto(t) + 10.0 * quantidadeCaracteresTexto(t))/2;
+                    break;
+                case 'f':
+                    x1 = getXTexto(t) - 10.0 * quantidadeCaracteresTexto(t);
+                    x2 = getXTexto(t);
+                    break;
+                default:
+                    printf("Indice de ancora '%c' incorreto!\n",getATexto(t));
+                    exit(1);
+            }
+            box.xmin = fmin(x1, x2);
+            box.xmax = fmax(x1, x2);
+            box.ymin = getYTexto(t);
+            box.ymax = getYTexto(t);
         }
         default:
             box.xmin = box.ymin = box.xmax = box.ymax = 0;
@@ -66,6 +91,157 @@ Box getBox(Pacote g1) {
 bool boxVerificaNaoSobreposição(Box b1,Box b2) {
     return (b1.xmax < b2.xmin || b1.xmin > b2.xmax || b1.ymax < b2.ymin || b1.ymin > b2.ymax);
 }
+
+double max(double a, double b) {
+    return a > b ? a : b;
+}
+double min(double a, double b) {
+    return a < b ? a : b;
+}
+
+int calcularOrientacao(Ponto p, Ponto q, Ponto r) {
+    double val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+
+    if (val > -1e-9 && val < 1e-9) {
+        return 0;
+    }
+
+    return (val > 0) ? 1 : 2;
+}
+
+int estaNoSegmento(Ponto p, Ponto q, Ponto r) {
+    if (q.x <= fmax(p.x, r.x) && q.x >= fmin(p.x, r.x) && q.y <= fmax(p.y, r.y) && q.y >= fmin(p.y, r.y)) {
+        return 1;
+    }
+    return 0;
+}
+
+bool pontoDentroRetangulo(Retangulo r, Ponto p) {
+    double rx = getXRetangulo(r);
+    double ry = getYRetangulo(r);
+    double rw = getWRetangulo(r);
+    double rh = getHRetangulo(r);
+
+    if (p.x >= rx && p.x <= rx + rw && p.y >= ry && p.y <= ry + rh) {
+        return true;
+    }
+    return false;
+}
+
+bool verificarIntersecaoSegmentos(Ponto p1,Ponto p2,Ponto p3, Ponto p4) {
+    int o1 = calcularOrientacao(p1, p2, p3);
+    int o2 = calcularOrientacao(p1, p2, p4);
+    int o3 = calcularOrientacao(p3, p4, p1);
+    int o4 = calcularOrientacao(p3, p4, p2);
+
+    if (o1 != o2 && o3 != o4) {
+        return true;
+    }
+
+    if (o1 == 0 && estaNoSegmento(p1, p3, p2)) {
+        return true;
+    }
+
+    if (o2 == 0 && estaNoSegmento(p1, p4, p2)) {
+        return true;
+    }
+
+    if (o3 == 0 && estaNoSegmento(p3, p1, p4)) {
+        return true;
+    }
+
+    if (o4 == 0 && estaNoSegmento(p3, p2, p4)) {
+        return true;
+    }
+
+    return false;
+
+}
+
+bool SobrepoeRetanguloCirculo(Retangulo r , Circulo c) {
+    double PontoX_MaisProximo = max(getXRetangulo(r), min(getXCirculo(c),(getXRetangulo(r) + getWRetangulo(r))));
+    double PontoY_MaisProximo = max(getYRetangulo(r), min(getYCirculo(c),(getYRetangulo(r) + getHRetangulo(r))));
+
+    if (PontoX_MaisProximo == getXCirculo(c) && PontoY_MaisProximo ==  getYCirculo(c)) {
+        return true;
+    }
+
+    double distX = getXCirculo(c) - PontoX_MaisProximo;
+    double distY = getYCirculo(c) - PontoY_MaisProximo;
+
+    double distTotal = (distX * distX) + (distY * distY);
+    double raioQuadrado = getRCirculo(c) * getRCirculo(c);
+
+    if (distTotal <= raioQuadrado) {
+        return true;
+    }
+    return false;
+}
+
+bool SobrepoeLinhaLinha(Linha l1, Linha l2) {
+    Ponto p1 = {getX1Linha(l1), getY1Linha(l1)};
+    Ponto p2 = {getX2Linha(l1), getY2Linha(l1)};
+    Ponto p3 = {getX1Linha(l2), getY1Linha(l2)};
+    Ponto p4 = {getX2Linha(l2), getY2Linha(l2)};
+
+    return verificarIntersecaoSegmentos(p1, p2, p3, p4);
+}
+
+bool SobrepoeLinhaCirculo(Linha l, Circulo c) {
+    double PontoX_MaisProximo = max(getX1Linha(l), min(getXCirculo(c),(getX1Linha(l) + getX2Linha(l))));
+    double PontoY_MaisProximo = max(getY1Linha(l), min(getYCirculo(c),(getY1Linha(l) + getY2Linha(l))));
+
+    if (PontoX_MaisProximo == getXCirculo(c) && PontoY_MaisProximo ==  getYCirculo(c)) {
+        return true;
+    }
+
+    double distX = getXCirculo(c) - PontoX_MaisProximo;
+    double distY = getYCirculo(c) - PontoY_MaisProximo;
+
+    double distTotal = (distX * distX) + (distY * distY);
+    double raioQuadrado = getRCirculo(c) * getRCirculo(c);
+
+    if (distTotal <= raioQuadrado) {
+        return true;
+    }
+    return false;
+
+}
+
+bool SobrepoeLinhaRetangulo(Linha l, Retangulo r) {
+    Ponto p1 = {getX1Linha(l), getY1Linha(l)};
+    Ponto p2 = {getX2Linha(l), getY2Linha(l)};
+
+    if (pontoDentroRetangulo(r,p1) || pontoDentroRetangulo(r,p2)) {
+        return true;
+    }
+
+    double rx = getXRetangulo(r);
+    double ry = getYRetangulo(r);
+    double rw = getWRetangulo(r);
+    double rh = getHRetangulo(r);
+
+    Ponto c1 = {rx, ry};
+    Ponto c2 = {rx + rw, ry};
+    Ponto c3 = {rx + rw, ry + rh};
+    Ponto c4 = {rx, ry + rh};
+
+    if (verificarIntersecaoSegmentos(p1,p2,c2,c2)) {
+        return true;
+    }
+    if (verificarIntersecaoSegmentos(p1,p2,c4,c3)) {
+        return true;
+    }
+    if (verificarIntersecaoSegmentos(p1,p2,c1,c4)) {
+        return true;
+    }
+    if (verificarIntersecaoSegmentos(p1,p2,c2,c3)) {
+        return true;
+    }
+
+    return false;
+}
+
 
 bool verificarSobreposicao(Pacote g1,Pacote g2) {
 
@@ -80,42 +256,48 @@ bool verificarSobreposicao(Pacote g1,Pacote g2) {
     if (t1 == RETANGULO && t2 == RETANGULO) {
         return true;
     }else if (t1 == CIRCULO && t2 == CIRCULO) {
-        Circulo c = getDadosForma(g1);
-        double dx = getXCirculo(c) - getXCirculo(c);
-        double dy = getYCirculo(c) - getYCirculo(c);
+        Circulo c1 = getDadosForma(g1);
+        Circulo c2 = getDadosForma(g2);
+        double dx = getXCirculo(c1) - getXCirculo(c2);
+        double dy = getYCirculo(c1) - getYCirculo(c2);
         double dT = sqrt(dx*dx + dy*dy);
 
-        return dT <= (getRCirculo(c) + getRCirculo(c));
-    }else if (t1 == RETANGULO && t2 == CIRCULO || t1 == CIRCULO && t2 == RETANGULO) {
-        return true;
+        return dT <= (getRCirculo(c1) + getRCirculo(c2));
+    }else if ((t1 == RETANGULO && t2 == CIRCULO) || (t1 == CIRCULO && t2 == RETANGULO)) {
+        if (t1 == RETANGULO) {
+            Retangulo r = getDadosForma(g1);
+            Circulo c = getDadosForma(g2);
+            return SobrepoeRetanguloCirculo(r,c);
+        }else {
+            Retangulo r = getDadosForma(g2);
+            Circulo c = getDadosForma(g1);
+            return SobrepoeRetanguloCirculo(r,c);
+        }
     }else if (t1 == LINHA && t2 == LINHA) {
-        Linha l = getDadosForma(g1);
-
-        double x1 = getX1Linha(l);
-        double y1 = getY1Linha(l);
-        double x2 = getX2Linha(l);
-        double y2 = getY2Linha(l);
-
-        double x3 = getX1Linha(l);
-        double y3 = getY1Linha(l);
-        double x4 = getX2Linha(l);
-        double y4 = getY2Linha(l);
-
-        double denom = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
-        if (denom == 0) return false;
-
-        double px = ((x1*y2 - y1*x2)*(x3 - x4) - (x1-x2)*(x3*y4 - y3*x4)) / denom;
-        double py = ((x1*y2 - y1*x2)*(y3-y4) - (y1-y2)*(x3*y4 - y3*x4)) / denom;
-
-        bool dentro1 = px >= fmin(x1,x2) && px <= fmax(x1,x2) && py >= fmin(y1,y2) && py <= fmax(y1,y2);
-        bool dentro2 = px >= fmin(x3,x4) && px <= fmax(x3,x4) && py >= fmin(y3,y4) && py <= fmax(y3,y4);
-
-        return dentro1 && dentro2;
-    }else if (t1 == LINHA && t2 == CIRCULO || t1 == CIRCULO && t2 == LINHA) {
-        return true;
-    }else if (t1 == LINHA && t2 == RETANGULO || t1 == RETANGULO && t2 == LINHA) {
-        return true;
+        Linha l1 = getDadosForma(g1);
+        Linha l2 = getDadosForma(g2);
+        return SobrepoeLinhaLinha(l1,l2);
+    }else if ((t1 == LINHA && t2 == CIRCULO) || (t1 == CIRCULO && t2 == LINHA)) {
+        if (t1 == LINHA) {
+            Linha l = getDadosForma(g1);
+            Circulo c = getDadosForma(g2);
+            return SobrepoeLinhaCirculo(l,c);
+        } else {
+            Linha l = getDadosForma(g2);
+            Circulo c = getDadosForma(g1);
+            return SobrepoeLinhaCirculo(l,c);
+        }
+    }else if ((t1 == LINHA && t2 == RETANGULO) || (t1 == RETANGULO && t2 == LINHA)) {
+        if (t1 == LINHA) {
+            Linha l = getDadosForma(g1);
+            Retangulo r = getDadosForma(g2);
+            return SobrepoeLinhaRetangulo(l,r);
+        } else {
+            Linha l = getDadosForma(g2);
+            Retangulo r = getDadosForma(g1);
+            return SobrepoeLinhaRetangulo(l,r);
+        }
     }
-
+    return false;
 }
 
