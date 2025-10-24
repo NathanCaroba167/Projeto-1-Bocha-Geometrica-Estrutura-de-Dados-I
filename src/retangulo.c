@@ -5,39 +5,47 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <errno.h>
+
 #include "retangulo.h"
 
 typedef struct{
-    int i;
+    int id;
     double x,y;
     double w,h;
     char* corB;
     char* corP;
 }retangulo;
 
-Retangulo CriarRetangulo(int i,double x,double y,double w,double h,char* corB,char* corP) {
+Retangulo CriarRetangulo(int id,double x,double y,double w,double h,char* corB,char* corP) {
     retangulo* r = (retangulo*)malloc(sizeof(retangulo));
 
     if(r == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criarRetangulo!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
 
-    r->i = i;
+    r->id = id;
     r->x = x;
     r->y = y;
     r->w = w;
     r->h = h;
     r->corB = (char*) malloc (strlen(corB) + 1);
     if (r->corB == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criar cor de borda do retângulo!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(r->corB,corB);
 
     r->corP = (char*) malloc (strlen(corP) + 1);
     if (r->corP == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criar cor de preenchimento do retângulo!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(r->corP,corP);
@@ -45,11 +53,11 @@ Retangulo CriarRetangulo(int i,double x,double y,double w,double h,char* corB,ch
 }
 
 int getIDRetangulo(Retangulo r) {
-    return ((retangulo*)r)->i;
+    return ((retangulo*)r)->id;
 }
 
 void setIDRetangulo(Retangulo r,int id) {
-    ((retangulo*)r)->i = id;
+    ((retangulo*)r)->id = id;
 }
 
 double getXRetangulo(Retangulo r) {
@@ -99,7 +107,9 @@ void setCorBRetangulo(Retangulo r,char* corB) {
     retangulo* retan = (retangulo*)r;
     retan->corB = realloc (retan->corB,strlen(corB) + 1);
     if (retan->corB == NULL) {
-        printf("Erro ao realocar memoria!\n");
+        printf("Erro ao realocar memória da cor de borda do retângulo!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(retan->corB,corB);
@@ -114,7 +124,9 @@ void setCorPRetangulo(Retangulo r,char* corP) {
     retangulo* retan = (retangulo*)r;
     retan->corP = realloc (retan->corP,strlen(corP) + 1);
     if (retan->corP == NULL) {
-        printf("Erro ao realocar memoria!\n");
+        printf("Erro ao realocar memória da cor de preenchimento do retângulo!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(retan->corP,corP);

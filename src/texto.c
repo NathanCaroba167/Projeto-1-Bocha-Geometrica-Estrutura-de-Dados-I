@@ -5,9 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <errno.h>
+
 #include "texto.h"
 
-#include "linha.h"
+
 
 typedef struct{
     char* fFamily;
@@ -16,7 +18,7 @@ typedef struct{
 }estilo;
 
 typedef struct{
-    int i;
+    int id;
     double x,y;
     char* corB;
     char* corP;
@@ -28,27 +30,35 @@ typedef struct{
 Estilo CriarEstilo(char* fFamily, char* fWeight, char* fSize) {
     estilo* e = (estilo*)malloc(sizeof(estilo));
     if (e == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criarEstilo!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
 
     e->fFamily = (char*) malloc (strlen(fFamily) + 1);
     if (e->fFamily == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criar fonte Family!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(e->fFamily,fFamily);
 
     e->fWeight = (char*) malloc (strlen(fWeight) + 1);
     if (e->fWeight == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criar fonte Weight!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(e->fWeight,fWeight);
 
     e->fSize = (char*) malloc (strlen(fSize) + 1);
     if (e->fSize == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criar fonte Size!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(e->fSize,fSize);
@@ -56,27 +66,33 @@ Estilo CriarEstilo(char* fFamily, char* fWeight, char* fSize) {
     return e;
 }
 
-Texto CriarTexto(int i, double x, double y, char* corB, char* corP, char a, char* txto) {
+Texto CriarTexto(int id, double x, double y, char* corB, char* corP, char a, char* txto) {
     texto* t = (texto*)malloc(sizeof(texto));
 
     if (t == NULL) {
-        printf("Erro ao alocar memoria\n");
+        printf("Erro ao alocar memória ao criarTexto!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
 
-    t->i = i;
+    t->id = id;
     t->x = x;
     t->y = y;
     t->corB = (char*) malloc (strlen(corB) + 1);
     if (t->corB == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criar cor de borda do texto!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(t->corB,corB);
 
     t->corP = (char*) malloc (strlen(corP) + 1);
     if (t->corP == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criar cor de preenchimento do texto!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(t->corP,corP);
@@ -84,7 +100,9 @@ Texto CriarTexto(int i, double x, double y, char* corB, char* corP, char a, char
     t->a = a;
     t->txto = (char*) malloc (strlen(txto) + 1);
     if (t->txto == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criar conteúdo do texto!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(t->txto,txto);
@@ -93,11 +111,11 @@ Texto CriarTexto(int i, double x, double y, char* corB, char* corP, char a, char
 }
 
 int getIDTexto(Texto t) {
-    return ((texto*)t)->i;
+    return ((texto*)t)->id;
 }
 
 void setIDTexto(Texto t, int id) {
-    ((texto*)t)->i = id;
+    ((texto*)t)->id = id;
 }
 
 double getXTexto(Texto t) {
@@ -124,7 +142,9 @@ void setCorBTexto(Texto t,char* corB) {
     texto* tex = (texto*)t;
     tex->corB = realloc (tex->corB,strlen(corB) + 1);
     if (tex->corB == NULL) {
-        printf("Erro ao realocar memoria!\n");
+        printf("Erro ao realocar memória da cor de borda do texto!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(tex->corB,corB);
@@ -138,7 +158,9 @@ void setCorPTexto(Texto t,char* corP) {
     texto* tex = (texto*)t;
     tex->corP = realloc (tex->corP,strlen(corP) + 1);
     if (tex->corP == NULL) {
-        printf("Erro ao realocar memoria!\n");
+        printf("Erro ao realocar memória da cor de preenchimento do texto!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(tex->corP,corP);
@@ -160,7 +182,9 @@ void setTxtoTexto(Texto t, char* txto) {
     texto* tex = (texto*)t;
     tex->txto = realloc (tex->txto,strlen(txto) + 1);
     if (tex->txto == NULL) {
-        printf("Erro ao realocar memoria!\n");
+        printf("Erro ao realocar memória do conteúdo do texto!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(tex->txto,txto);
@@ -174,7 +198,9 @@ void setFontFamilyTexto(Estilo e, char* family) {
     estilo* est = (estilo*)e;
     est->fFamily = realloc (est->fFamily,strlen(family) + 1);
     if (est->fFamily == NULL) {
-        printf("Erro ao realocar memoria!\n");
+        printf("Erro ao realocar memória da fonte Family!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy (est->fFamily,family);
@@ -188,7 +214,9 @@ void setFontWeightTexto(Estilo e, char* weight) {
     estilo* est = (estilo*)e;
     est->fWeight = realloc (est->fWeight,strlen(weight) + 1);
     if (est->fWeight == NULL) {
-        printf("Erro ao realocar memoria!\n");
+        printf("Erro ao realocar memória da fonte Weight!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy (est->fWeight,weight);
@@ -202,7 +230,9 @@ void setFontSizeTexto(Estilo e, char* size) {
     estilo* est = (estilo*)e;
     est->fSize = realloc (est->fSize,strlen(size) + 1);
     if (est->fSize == NULL) {
-        printf("Erro ao realocar memoria!\n");
+        printf("Erro ao realocar memória da fonte Size!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy (est->fSize,size);
@@ -212,51 +242,9 @@ Estilo getEstilo(Texto t) {
     return ((texto*)t)->Estilo;
 }
 
-/*void calcExtremosTexto(Texto t) {
-
-
-}
-*/
-
 size_t quantidadeCaracteresTexto(Texto t) {
     return strlen(((texto*)t)->txto);
 }
-
-/*Linha transformarTextoLinha(Texto t) {
-    double x1,y1,x2,y2;
-    switch (getATexto(t)) {
-        case 'i':
-            x1 = getXTexto(t);
-            y1 = getYTexto(t);
-
-            x2 = getXTexto(t) + 10.0 * quantidadeCaracteresTexto(t);
-            y2 = getYTexto(t);
-
-            break;
-        case 'm':
-            x1 = getXTexto(t) - 10.0 * quantidadeCaracteresTexto(t);
-            y1 = getYTexto(t);
-
-            x2 = (getXTexto(t) + 10.0 * quantidadeCaracteresTexto(t))/2;
-            y2 = getYTexto(t);
-
-            break;
-        case 'f':
-            x1 = getXTexto(t) - 10.0 * quantidadeCaracteresTexto(t);
-            y1 = getYTexto(t);
-
-            x2 = getXTexto(t);
-            y2 = getYTexto(t);
-
-            break;
-        default:
-            printf("Indice de ancora '%c' incorreto!\n",getATexto(t));
-            break;
-    }
-    return l;
-
-}*/
-
 
 double calcAreaTexto(Texto t) {
     return 20 * (double) strlen(getTxtoTexto(t));

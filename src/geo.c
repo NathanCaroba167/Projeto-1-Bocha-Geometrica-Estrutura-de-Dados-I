@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+
 #include "forma.h"
 #include "fila.h"
 
@@ -19,13 +21,16 @@
 Arquivo abrirGeo(Nome arquivo) {
     Arquivo geo = fopen(arquivo,"r");
     if (geo == NULL) {
-        printf("Erro ao abrir o arquivo\n");
+        printf("Erro ao abrir o arquivo geo!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     return geo;
 }
 
 void criarFormasNoChao(Arquivo geo, Fila chao) {
+    int maiorID = 0;
     char buffer[TAMANHO_MAX_BUFFER];
     while(fgets(buffer,sizeof(buffer),geo) != NULL) {
         if (buffer[0] == '\n') {
@@ -50,6 +55,9 @@ void criarFormasNoChao(Arquivo geo, Fila chao) {
                 double x = atof(x_temp);
                 double y = atof(y_temp);
                 double r = atof(r_temp);
+                if (maiorID < id) {
+                    maiorID = id;
+                }
                 Circulo c = CriarCirculo(id, x, y, r, corB, corP);
                 inserirFila(chao ,CriarPacote(c,CIRCULO));
             }
@@ -68,6 +76,9 @@ void criarFormasNoChao(Arquivo geo, Fila chao) {
                 double y = atof(y_temp);
                 double w = atof(w_temp);
                 double h = atof(h_temp);
+                if (maiorID < id) {
+                    maiorID = id;
+                }
                 Retangulo r = CriarRetangulo(id, x, y, w, h, corB, corP);
                 inserirFila(chao,CriarPacote(r,RETANGULO));
             }
@@ -85,6 +96,9 @@ void criarFormasNoChao(Arquivo geo, Fila chao) {
                 double y = atof(y_temp);
                 double x2 = atof(x2_temp);
                 double y2 = atof(y2_temp);
+                if (maiorID < id) {
+                    maiorID = id;
+                }
                 Linha l = CriarLinha(id, x, y, x2, y2, cor);
                 inserirFila(chao,CriarPacote(l,LINHA));
             }
@@ -105,6 +119,9 @@ void criarFormasNoChao(Arquivo geo, Fila chao) {
                 double x = atof(x_temp);
                 double y = atof(y_temp);
                 char a = a_temp[0];
+                if (maiorID < id) {
+                    maiorID = id;
+                }
                 Texto t = CriarTexto(id, x, y, corB, corP, a, txto);
                 inserirFila(chao,CriarPacote(t,TEXTO));
             }
@@ -117,5 +134,5 @@ void criarFormasNoChao(Arquivo geo, Fila chao) {
             printf("Comando desconhecido: '%s'\n", comando);
         }
     }
-    fclose(geo);
+    armazenaMaiorId(maiorID);
 }

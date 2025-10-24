@@ -3,6 +3,7 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 #include "circulo.h"
 #include "retangulo.h"
@@ -10,15 +11,19 @@
 #include "texto.h"
 #include "forma.h"
 
+static int MAIOR_ID = 0;
+
 typedef struct {
     Forma form;
     TipoForma tipo;
 }pacote;
 
 Pacote CriarPacote(Forma g,TipoForma tipo) {
-    pacote* p = (Pacote)malloc(sizeof(pacote*));
+    pacote* p = (Pacote)malloc(sizeof(pacote));
     if (p == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criarPacote!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     p->form = g;
@@ -114,7 +119,7 @@ char* getCorPForma(Pacote p) {
             return getCorPRetangulo(r);
         case LINHA:
             Linha l = getDadosForma(p);
-            return getCorLinha(l);
+            return CorComplementarLinha(l);
         case TEXTO:
             Texto t = getDadosForma(p);
             return getCorPTexto(t);
@@ -156,8 +161,7 @@ void setCorPForma(Pacote p, char* corP) {
             Retangulo r = getDadosForma(p);
             return setCorBRetangulo(r,corP);
         case LINHA:
-            Linha l = getDadosForma(p);
-            return setCorLinha(l,corP);
+            break;
         case TEXTO:
             Texto t = getDadosForma(p);
             return setCorBTexto(t,corP);
@@ -166,50 +170,64 @@ void setCorPForma(Pacote p, char* corP) {
     }
 }
 
+void armazenaMaiorId(int maior_id) {
+    MAIOR_ID = maior_id + 1;
+}
+
+int getMaiorId() {
+    return MAIOR_ID;
+}
+
 Pacote clonarForma(Pacote p) {
     TipoForma tipo = getTipoForma(p);
+
+    int novo_id = getMaiorId();
 
     switch (tipo) {
         case CIRCULO: {
             Circulo c = getDadosForma(p);
-            Circulo clone = CriarCirculo(getIDCirculo(c),
+            Circulo clone = CriarCirculo(novo_id,
                 getXCirculo(c),
                 getYCirculo(c),
                 getRCirculo(c),
                 getCorBCirculo(c),
                 getCorPCirculo(c));
+            MAIOR_ID++;
             return CriarPacote(clone,CIRCULO);
         }
         case RETANGULO: {
             Retangulo r = getDadosForma(p);
-            Retangulo clone = CriarRetangulo(getIDRetangulo(r),
+            Retangulo clone = CriarRetangulo(novo_id,
                 getXRetangulo(r),
                 getYRetangulo(r),
                 getWRetangulo(r),
                 getHRetangulo(r),
                 getCorBForma(r),
                 getCorPRetangulo(r));
+            MAIOR_ID++;
             return CriarPacote(clone,RETANGULO);
         }
         case LINHA: {
             Linha l = getDadosForma(p);
-            Linha clone = CriarLinha(getIDLinha(l),
+            Linha clone = CriarLinha(novo_id,
                 getX1Linha(l),
                 getY1Linha(l),
                 getX2Linha(l),
                 getY2Linha(l),
                 getCorLinha(l));
+            MAIOR_ID++;
             return CriarPacote(clone,LINHA);
         }
         case TEXTO: {
             Texto t = getDadosForma(p);
-            Texto clone = CriarTexto(getIDTexto(t),
+            Texto clone = CriarTexto(novo_id,
                 getXTexto(t),
                 getYTexto(t),
                 getCorBTexto(t),
                 getCorPTexto(t),
                 getATexto(t),
                 getTxtoTexto(t));
+            MAIOR_ID++;
             return CriarPacote(clone,TEXTO);
         }
         default:

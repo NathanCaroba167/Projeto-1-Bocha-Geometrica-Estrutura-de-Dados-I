@@ -22,16 +22,16 @@ typedef void* Texto;
 Estilo CriarEstilo(char* fFamily ,char* fWeight, char* fSize);
 
 /// @brief Cria um texto com os atributos indicados
-/// @param i Identificador unico que se refere ao texto
+/// @param id Identificador unico que se refere ao texto
 /// @param x Coordenada x do ponto âncora do texto
 /// @param y Coordenada y do ponto âncora do texto
-/// @param corB Cor de borda do texto
-/// @param corP Cor de preenchimento do texto
+/// @param corB Cor de borda do texto no padrão RGB (Ex: #FFFFFF)
+/// @param corP Cor de preenchimento do texto no padrão RGB (Ex: #AA543B)
 /// @param a Ponto âncora do texto ('i' - Inìcio // 'm' - Meio // 'f' - Fim)
 /// @param txto O conteúdo do texto (o texto em si)
 /// @return Ponteiro para o texto criado
 /// @warning
-Texto CriarTexto(int i, double x, double y, char* corB, char* corP, char a, char* txto);
+Texto CriarTexto(int id, double x, double y, char* corB, char* corP, char a, char* txto);
 
 /// @brief Pega o ID do texto sem modifica-lo
 /// @param t Ponteiro para o texto analisada
@@ -159,20 +159,11 @@ void setFontSizeTexto(Texto t, char* size);
 /// @warning
 Estilo getEstilo(Texto t);
 
-/// @brief Calcula os pontos extremos do texto(inicio e fim)
-/// @param t Ponteiro para o texto analisado
-/// @warning
-///void calcExtremosTexto(Texto t);///
-
 /// @brief Pega a quantidade de caracteres o texto possui
 /// @param t Ponteiro para texto analisado
 /// @return A quantidade de caracteres do texto
 /// @warning
 size_t quantidadeCaracteresTexto(Texto t);
-
-/// @brief Transforma uma forma texto em uma forma linha
-/// @warning
-///Linha transformarTextoLinha(Texto t);
 
 /// @brief Calcula a área do texto
 /// @param t Ponteiro para o texto analisado

@@ -5,39 +5,47 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <errno.h>
+
 #include "circulo.h"
 
 #define PI 3.14159265
 
 typedef struct{
-  int i;
+  int id;
   double x,y;
   double r;
   char* corB,*corP;
 }circulo;
 
-Circulo CriarCirculo(int i, double x, double y, double r, char* corB,char* corP){
+Circulo CriarCirculo(int id, double x, double y, double r, char* corB,char* corP){
   circulo* c  = (circulo*)malloc(sizeof(circulo));
 
   if(c==NULL){
-    printf("Erro ao alocar memoria!\n");
+    printf("Erro ao alocar memória ao criarCirculo!\n");
+
+    perror("Motivo do erro");
     exit(1);
   }
 
-  c->i = i;
+  c->id = id;
   c->x = x;
   c->y = y;
   c->r = r;
   c->corB = (char*) malloc (strlen(corB) + 1);
   if (c->corB == NULL) {
-    printf("Erro ao alocar memoria!\n");
+    printf("Erro ao alocar memória ao criar cor de borda do círculo!\n");
+
+    perror("Motivo do erro");
     exit(1);
   }
   strcpy(c->corB,corB);
 
   c->corP = (char*) malloc (strlen(corP) + 1);
   if (c->corP == NULL) {
-    printf("Erro ao alocar memoria!\n");
+    printf("Erro ao alocar memória ao criar cor de preenchimento do círculo!\n");
+
+    perror("Motivo do erro");
     exit(1);
   }
   strcpy(c->corP,corP);
@@ -46,11 +54,11 @@ Circulo CriarCirculo(int i, double x, double y, double r, char* corB,char* corP)
 }
 
 int getIDCirculo(Circulo c){
-  return ((circulo*)c)->i;
+  return ((circulo*)c)->id;
 }
 
 void setIDCirculo(Circulo c, int id){
-  ((circulo*)c)->i = id;
+  ((circulo*)c)->id = id;
 }
 
 double getXCirculo(Circulo c){
@@ -85,7 +93,9 @@ void setCorBCirculo(Circulo c,char* corB) {
   circulo* circ = (circulo*)c;
   circ->corB = realloc (circ->corB,strlen(corB) + 1);
   if (circ->corB == NULL) {
-    printf("Erro ao realocar memoria!\n");
+    printf("Erro ao realocar memória da cor de borda do círculo!\n");
+
+    perror("Motivo do erro");
     exit(1);
   }
   strcpy(circ->corB,corB);
@@ -99,7 +109,9 @@ void setCorPCirculo(Circulo c, char* corP) {
   circulo* circ = (circulo*)c;
   circ->corP = realloc (circ->corP,strlen(corP) + 1);
   if (circ->corP == NULL) {
-    printf("Erro ao realocar memoria!\n");
+    printf("Erro ao realocar memória da cor de preenchimento do círculo!\n");
+
+    perror("Motivo do erro");
     exit(1);
   }
   strcpy(circ->corP,corP);

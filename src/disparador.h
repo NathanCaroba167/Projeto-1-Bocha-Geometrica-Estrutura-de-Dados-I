@@ -87,13 +87,6 @@ void setCarregadoresDisparador(Disparador d,Carregador esq,Carregador dir);
 /// @warning
 void desarmarDisparador(Disparador d);
 
-/// @brief Dispara formas na arena
-/// @param d Ponteiro para o disparador que fará o disparo
-/// @param dx Quantidade de acrescimo na coordenada x
-/// @param dy Quantidade de acrescimo na coordenada y
-/// @param arena Ponteiro para a arena que receberá as formas
-//void dispararDisparador(Disparador d, double dx, double dy, Fila arena);
-
 /// @brief Liberar a memória alocada para o disparador
 /// @param d Ponteiro para o disparador que será liberado
 /// @warning

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <errno.h>
 
 #include "circulo.h"
 #include "retangulo.h"
@@ -137,7 +138,7 @@ int main(int argc, char* argv[]) {
             liberarEstoqueCarregadores(carregadores);
             return 1;
         }
-        LerComandosExecutar(arqTxt,arqQry, chao, arena, disparadores, carregadores);///
+        LerComandosExecutar(arqTxt,arqQry, chao, arena, disparadores, carregadores);
         fclose(arqQry);
         fclose(arqTxt);
 

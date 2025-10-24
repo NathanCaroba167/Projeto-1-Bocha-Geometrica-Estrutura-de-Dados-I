@@ -5,26 +5,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 #include "arquivos.h"
 
 
 char* getNomeBase(char* nomeArq) {
-    char* ponto = strrchr(nomeArq, '.');
+
+    char* barra = strrchr(nomeArq, '/');
+    char* Nome = (barra != NULL) ? barra + 1 : nomeArq;
+
+    char* ponto = strrchr(Nome, '.');
     int tamanhoBase;
 
     if (ponto == NULL) {
-        tamanhoBase = strlen(nomeArq);
+        tamanhoBase = strlen(Nome);
     }else {
-        tamanhoBase = ponto - nomeArq;
+        tamanhoBase = ponto - Nome;
     }
 
     char* nomeBase = (char*) malloc(tamanhoBase + 1);
     if (nomeBase == NULL) {
-        printf("Erro ao alocar memoria\n");
-        return NULL;
+        printf("Erro ao alocar memória de nomeBase!\n");
+
+        perror("Motivo do erro");
+        exit(1);
     }
 
-    strncpy(nomeBase, nomeArq, tamanhoBase);
+    strncpy(nomeBase, Nome, tamanhoBase);
     nomeBase[tamanhoBase] = '\0';
 
     return nomeBase;

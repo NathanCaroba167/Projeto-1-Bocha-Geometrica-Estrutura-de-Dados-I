@@ -14,15 +14,15 @@
 typedef void* Circulo;
 
 /// @brief Cria um círculo com os atributos indicados
-/// @param i Identificador unico que se refere ao circulo
+/// @param id Identificador unico que se refere ao circulo
 /// @param x Coordenada x do centro do círculo
 /// @param y Coordenada y do centro do círculo
 /// @param r Raio do círculo
-/// @param corB Cor de borda do círculo
-/// @param corP Cor de preenchimento do círculo
+/// @param corB Cor de borda do círculo no padrão RGB (Ex: #FFFFFF)
+/// @param corP Cor de preenchimento do círculo no padrão RGB (Ex: #AA543B)
 /// @return Ponteiro para o círculo criado
 /// @warning
-Circulo CriarCirculo(int i, double x, double y, double r, char* corB,char* corP);
+Circulo CriarCirculo(int id, double x, double y, double r, char* corB,char* corP);
 
 /// @brief Pega o ID do círculo sem modifica-lo
 /// @param c Ponteiro para o círculo analisado
@@ -100,7 +100,7 @@ void setCorPCirculo(Circulo c, char* corP);
 /// @param c Ponteiro para o círculo analisado
 /// @return Um double que representa a área do círculo
 /// @warning
-double calcAreaCirculo(Circulo c);///
+double calcAreaCirculo(Circulo c);
 
 /// @brief Libera a memória alocada para o círculo
 /// @param c Ponteiro para o círculo que será eliminado

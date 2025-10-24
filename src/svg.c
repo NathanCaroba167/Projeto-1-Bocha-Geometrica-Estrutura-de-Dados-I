@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <errno.h>
 
 #include "circulo.h"
 #include "retangulo.h"
@@ -22,7 +23,9 @@
 Arquivo abrirSVG(Nome arquivo) {
     Arquivo svg = fopen(arquivo,"w");
     if (svg == NULL) {
-        printf("Erro ao abrir o arquivo\n");
+        printf("Erro ao abrir o arquivo svg!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     return svg;
@@ -266,5 +269,4 @@ void gerarSVG(Fila chao, char* caminho) {
     desenharFormasDaFila(arqSvg, chao);
     fecharSVG(arqSvg);
     fclose(arqSvg);
-
 }

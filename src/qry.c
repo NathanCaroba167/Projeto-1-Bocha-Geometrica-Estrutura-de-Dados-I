@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <errno.h>
 
 #include "circulo.h"
 #include "linha.h"
@@ -28,7 +29,9 @@
 Arquivo abrirQry(Nome arquivo) {
     Arquivo qry = fopen(arquivo,"r");
     if (qry == NULL) {
-        printf("Erro ao abrir o arquivo\n");
+        printf("Erro ao abrir o arquivo qry!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     return qry;
@@ -39,9 +42,10 @@ void pd(EstoqueD e, int id, double x, double y) {
     if (d == NULL) {
         Disparador d1 = CriarDisparador(id, x, y);
         adicionarDisparador(e,d1);
+    } else {
+        setXDisparador(d,x);
+        setYDisparador(d,y);
     }
-    setXDisparador(d,x);
-    setYDisparador(d,y);
 }
 
 void lc(Arquivo txt,EstoqueC e,int id,int n,Fila chao) {
@@ -52,9 +56,10 @@ void lc(Arquivo txt,EstoqueC e,int id,int n,Fila chao) {
         for (int i = 0 ; i < n ; i++) {
             carregarCarregador(txt,c1,chao);
         }
-    }
-    for (int i = 0 ; i < n ; i++) {
-        carregarCarregador(txt,c,chao);
+    }else {
+        for (int i = 0 ; i < n ; i++) {
+            carregarCarregador(txt,c,chao);
+        }
     }
 }
 
@@ -330,5 +335,4 @@ void LerComandosExecutar(Arquivo txt,Arquivo qry, Fila chao, Fila arena, Estoque
         }
     }
     reportarResultadosFinais(txt,areaTotal, instrucoes, disparos, formas_esmagadas, formas_clonadas);
-    fclose(qry);
 }

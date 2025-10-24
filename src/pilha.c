@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <errno.h>
+
 #include "forma.h"
 #include "pilha.h"
 
@@ -23,7 +25,9 @@ typedef struct Pilha {
 Pilha iniciarPilha() {
     pilha* p = (pilha*) malloc(sizeof(pilha));
     if (p == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao iniciarPilha!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     p->topo = NULL;
@@ -35,7 +39,9 @@ void empilharPilha(Pilha p, Pacote g) {
     pilha* PILHA = (pilha*)p;
     pont nova = (Elemento*) malloc(sizeof(Elemento));
     if (nova == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criar novo elemento na pilha!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     nova->form = g;

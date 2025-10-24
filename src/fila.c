@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+
 #include "forma.h"
 #include "fila.h"
 
@@ -23,7 +25,9 @@ typedef struct {
 Fila iniciarFila() {
     fila* f = (fila*) malloc(sizeof(fila));
     if (f == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao iniciarFila!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     f->inicio = NULL;
@@ -36,7 +40,9 @@ void inserirFila(Fila f, Pacote p) {
     fila* FILA = (fila*)f;
     pont nova = (Elemento*) malloc(sizeof(Elemento));
     if (nova == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criar novo elemento na fila!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     nova->form = p;
@@ -54,7 +60,7 @@ void inserirFila(Fila f, Pacote p) {
 void removerFila(Fila f) {
     fila* FILA = (fila*)f;
     if (filavazia(f)) {
-        printf("Pilha vazia!\n");
+        printf("Fila vazia!\n");
         exit(1);
     }
     pont elemInicio = FILA->inicio;

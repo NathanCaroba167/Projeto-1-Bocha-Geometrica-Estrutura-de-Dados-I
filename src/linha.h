@@ -14,15 +14,15 @@
 typedef void* Linha;
 
 /// @brief Cria uma linha com os atributos indicados
-/// @param i Identificador unico que se refere a linha
+/// @param id Identificador unico que se refere a linha
 /// @param x1 Coordenada x do ponto do início da linha
 /// @param y1 Coordenada y do ponto do início da linha
 /// @param x2 Coordenada x do ponto do final da linha
 /// @param y2 Coordenada y do ponto do final da linha
-/// @param cor Cor da linha
+/// @param cor Cor da linha no padrão RGB (Ex: #FFFFFF)
 /// @return Ponteiro para a linha criada
 /// @warning
-Linha CriarLinha(int i, double x1, double y1, double x2, double y2 ,char* cor);
+Linha CriarLinha(int id, double x1, double y1, double x2, double y2 ,char* cor);
 
 /// @brief Pega o ID da linha sem modifica-lo
 /// @param l Ponteiro para a linha analisada
@@ -95,6 +95,11 @@ char* getCorLinha(Linha l);
 /// @param cor Nova cor da linha que será definida
 /// @warning
 void setCorLinha(Linha l, char* cor);
+
+/// @brief Acha a cor complementar da cor da linha
+/// @param l Ponteiro para linha analisada
+/// @return String com a cor complementar no formato RGB
+char* CorComplementarLinha(Linha l);
 
 /// @brief Calcula a área da linha
 /// @param l Ponteiro para a linha analisada

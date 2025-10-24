@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 #include "circulo.h"
 #include "retangulo.h"
@@ -20,13 +21,16 @@
 Arquivo abrirTXT(Nome arquivo) {
     Arquivo txt = fopen(arquivo,"w");
     if (txt == NULL) {
-        printf("Erro ao abrir o arquivo\n");
+        printf("Erro ao abrir o arquivo txt!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     return txt;
 }
 
 void reportarForma(Arquivo txt,Pacote p) {
+
     TipoForma tipo = getTipoForma(p);
 
     switch (tipo) {

@@ -77,6 +77,16 @@ void setCorBForma(Pacote p, char* corB);
 /// @warning
 void setCorPForma(Pacote p, char* corP);
 
+/// @brief Armazena o maior ID do jogo
+/// @param maior_id Maior ID do jogo
+/// @warning
+void armazenaMaiorId(int maior_id);
+
+/// @brief Pega o Maior ID a ser definido
+/// @return Maior ID a ser definido
+/// @warning
+int getMaiorId();
+
 /// @brief Clona uma forma
 /// @param p Ponteiro para forma que será clonada
 /// @return Ponteiro para forma clonada

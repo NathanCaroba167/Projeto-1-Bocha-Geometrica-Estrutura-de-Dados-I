@@ -81,6 +81,7 @@ Box getBox(Pacote g1) {
             box.xmax = fmax(x1, x2);
             box.ymin = getYTexto(t);
             box.ymax = getYTexto(t);
+            break;
         }
         default:
             box.xmin = box.ymin = box.xmax = box.ymax = 0;
@@ -242,6 +243,68 @@ bool SobrepoeLinhaRetangulo(Linha l, Retangulo r) {
     return false;
 }
 
+bool SobrepoeTextoTexto(Box b1,Box b2) {
+    Ponto p1 ={b1.xmin, b1.ymin};
+    Ponto p2 ={b1.xmax, b1.ymax};
+    Ponto p3 = {b2.xmin, b2.ymin};
+    Ponto p4 = {b2.xmax, b2.ymax};
+
+    return verificarIntersecaoSegmentos(p1,p2,p3,p4);
+}
+
+bool SobrepoeTextoRetangulo(Box b1, Retangulo r) {
+    Ponto p1 ={b1.xmin, b1.ymin};
+    Ponto p2 ={b1.xmax, b1.ymax};
+
+    if (pontoDentroRetangulo(r,p1) || pontoDentroRetangulo(r,p2)) {
+        return true;
+    }
+
+    double rx = getXRetangulo(r);
+    double ry = getYRetangulo(r);
+    double rw = getWRetangulo(r);
+    double rh = getHRetangulo(r);
+
+    Ponto c1 = {rx, ry};
+    Ponto c2 = {rx + rw, ry};
+    Ponto c3 = {rx + rw, ry + rh};
+    Ponto c4 = {rx, ry + rh};
+
+    if (verificarIntersecaoSegmentos(p1,p2,c2,c2)) {
+        return true;
+    }
+    if (verificarIntersecaoSegmentos(p1,p2,c4,c3)) {
+        return true;
+    }
+    if (verificarIntersecaoSegmentos(p1,p2,c1,c4)) {
+        return true;
+    }
+    if (verificarIntersecaoSegmentos(p1,p2,c2,c3)) {
+        return true;
+    }
+
+    return false;
+}
+
+bool SobrepoeTextoCirculo(Box b1, Circulo c) {
+    double PontoX_MaisProximo = max(b1.xmin, min(getXCirculo(c),(b1.xmin + b1.xmax)));
+    double PontoY_MaisProximo = max(b1.ymin, min(getYCirculo(c),(b1.ymin + b1.ymax)));
+
+    if (PontoX_MaisProximo == getXCirculo(c) && PontoY_MaisProximo ==  getYCirculo(c)) {
+        return true;
+    }
+
+    double distX = getXCirculo(c) - PontoX_MaisProximo;
+    double distY = getYCirculo(c) - PontoY_MaisProximo;
+
+    double distTotal = (distX * distX) + (distY * distY);
+    double raioQuadrado = getRCirculo(c) * getRCirculo(c);
+
+    if (distTotal <= raioQuadrado) {
+        return true;
+    }
+    return false;
+}
 
 bool verificarSobreposicao(Pacote g1,Pacote g2) {
 
@@ -296,6 +359,24 @@ bool verificarSobreposicao(Pacote g1,Pacote g2) {
             Linha l = getDadosForma(g2);
             Retangulo r = getDadosForma(g1);
             return SobrepoeLinhaRetangulo(l,r);
+        }
+    } else if (t1 == TEXTO && t2 == TEXTO) {
+        return SobrepoeTextoTexto(b1,b2);
+    }else if ((t1 == TEXTO && t2 == RETANGULO) || (t1 == RETANGULO && t2 == TEXTO)) {
+        if (t1 == TEXTO) {
+            Retangulo r = getDadosForma(g2);
+            return SobrepoeTextoRetangulo(b1,r);
+        }else {
+            Retangulo r = getDadosForma(g1);
+            return SobrepoeTextoRetangulo(b2,r);
+        }
+    } else if ((t1 == TEXTO && t2 == CIRCULO) || (t1 == CIRCULO && t2 == TEXTO)) {
+        if (t1 == TEXTO) {
+            Circulo c = getDadosForma(g2);
+            return SobrepoeTextoCirculo(b1,c);
+        } else {
+            Circulo c = getDadosForma(g1);
+            return SobrepoeTextoCirculo(b2,c);
         }
     }
     return false;

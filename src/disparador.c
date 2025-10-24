@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <errno.h>
+
 #include "forma.h"
 #include "pilha.h"
 #include "fila.h"
@@ -25,7 +27,9 @@ typedef struct {
 Disparador CriarDisparador(int id,double x ,double y) {
     disparador* d = (disparador*) malloc (sizeof (disparador));
     if (d == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criarDisparador!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     d->id = id;
@@ -80,10 +84,6 @@ void setCarregadoresDisparador(Disparador d, Carregador esq, Carregador dir) {
 void desarmarDisparador(Disparador d) {
     free(((disparador*)d)->formaDisparo);
 }
-
-/*void dispararDisparador(Disparador d, double dx,double dy, Fila arena) {
-
-}*/
 
 void eliminarDisparador(Disparador d) {
     disparador* dis = ((disparador*)d);

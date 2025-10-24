@@ -5,7 +5,7 @@
 #ifndef RETANGULO_H
 #define RETANGULO_H
 /*
-Módulo encarregado de coordenar um retângulo com operações de criar, get, set, calcularArea e eliminar
+ Módulo encarregado de coordenar um retângulo com operações de criar, get, set, calcularArea e eliminar
 */
 
 /*
@@ -14,16 +14,16 @@ Módulo encarregado de coordenar um retângulo com operações de criar, get, se
 typedef void* Retangulo;
 
 /// @brief Cria um retângulo com os atributos indicados
-/// @param i Identificador unico que se refere ao retângulo
+/// @param id Identificador unico que se refere ao retângulo
 /// @param x Coordenada x do ponto ancora (canto inferior esquerdo) do retângulo
 /// @param y Coordenada y do ponto ancora (canto inferior esquerdo) do retângulo
 /// @param w Largura do retângulo
 /// @param h Altura do retângulo
-/// @param corB Cor de borda do retângulo
-/// @param corP Cor de preenchimento do retângulo
+/// @param corB Cor de borda do retângulo no padrão RGB (Ex: #FFFFFF)
+/// @param corP Cor de preenchimento do retângulo no padrão RGB (Ex: #AA543B)
 /// @return Ponteiro para o retângulo criado
 /// @warning
-Retangulo CriarRetangulo(int i,double x,double y,double w,double h,char* corB,char* corP );
+Retangulo CriarRetangulo(int id,double x,double y,double w,double h,char* corB,char* corP );
 
 /// @brief Pega o ID do retângulo sem modifica-lo
 /// @param r Ponteiro para o retângulo analisado

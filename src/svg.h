@@ -16,7 +16,6 @@
 typedef FILE* Arquivo;
 typedef char* Nome;
 
-
 /// @brief Cria e abre o arquivo SVG para escrita
 /// @param arquivo Ponteiro para o nome do arquivo que será criado e aberto
 /// @return Ponteiro para o arquivo que será criado e aberto
@@ -84,7 +83,5 @@ void fecharSVG(Arquivo svg);
 /// @param caminho Caminho para o arquivo SVG
 /// @warning
 void gerarSVG(Fila chao, char* caminho);
-
-
 
 #endif //SVG_H

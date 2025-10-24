@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <errno.h>
+
 #include "forma.h"
 #include "pilha.h"
 #include "fila.h"
@@ -22,7 +24,9 @@ Carregador CriarCarregador(int id) {
     carregador* cr = (carregador*)malloc(sizeof(carregador));
 
     if (cr == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criarCarregador!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
 
@@ -46,8 +50,8 @@ Pilha getPilhaCarregador(Carregador cr) {
 
 void carregarCarregador(Arquivo txt, Carregador cr, Fila chao) {
     carregador* carr = (carregador*)cr;
-    Pacote p = getPrimeiraFormaPilha(chao);
-    empilharPilha(carr->p, getPrimeiraFormaFila(chao));
+    Pacote p = getPrimeiraFormaFila(chao);
+    empilharPilha(carr->p, p);
     reportarForma(txt,p);
     removerFila(chao);
 }

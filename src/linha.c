@@ -5,31 +5,36 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <errno.h>
+
 #include "linha.h"
 
 typedef struct{
-    int i;
+    int id;
     double x1,y1;
     double x2,y2;
     char* cor;
 }linha;
 
-Linha CriarLinha(int i,double x1,double y1, double x2,double y2,char* cor) {
+Linha CriarLinha(int id,double x1,double y1, double x2,double y2,char* cor) {
     linha* l = (linha*)malloc(sizeof(linha));
-
     if(l == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criarLinha!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
 
-    l->i = i;
+    l->id = id;
     l->x1 = x1;
     l->y1 = y1;
     l->x2 = x2;
     l->y2 = y2;
     l->cor = (char*) malloc (strlen(cor) + 1);
     if (l->cor == NULL) {
-        printf("Erro ao alocar memoria!\n");
+        printf("Erro ao alocar memória ao criar cor da linha!\n");
+
+        perror("Motivo do erro");
         exit(1);
     }
     strcpy(l->cor,cor);
@@ -37,11 +42,11 @@ Linha CriarLinha(int i,double x1,double y1, double x2,double y2,char* cor) {
 }
 
 int getIDLinha(Linha l) {
-    return ((linha*)l)->i;
+    return ((linha*)l)->id;
 }
 
 void setIDLinha(Linha l, int id) {
-    ((linha*)l)->i = id;
+    ((linha*)l)->id = id;
 }
 
 double getX1Linha(Linha l) {
@@ -88,6 +93,36 @@ void setCorLinha(Linha l, char* cor) {
         exit(1);
     }
     strcpy(lin->cor,cor);
+}
+
+char* CorComplementarLinha(Linha l) {
+    linha* lin = (linha*)l;
+    char* corB = lin->cor;
+    char* corComplementar = (char*) malloc (8 * sizeof(char));
+    if (corComplementar == NULL) {
+        printf("Erro ao alocar memoria ao criar cor complementar!\n");
+
+        perror("Motivo do erro");
+        exit(1);
+    }
+    if (corB == NULL) {
+        strcpy(corComplementar,"#FFFFFF");
+        return corComplementar;
+    }
+
+    int r, g, b;
+
+    if (corB[0] == '#') {
+        sscanf(corB + 1,"%2x%2x%2x", &r, &g, &b);
+    }else {
+        sscanf(corB ,"%2x%2x%2x", &r, &g, &b);
+    }
+
+    r = 255 - r;
+    g = 255 - g;
+    b = 255 - b;
+    sprintf(corComplementar, "#%02X%02X%02X", r, g, b);
+    return corComplementar;
 }
 
 double calcAreaLinha(Linha l) {
