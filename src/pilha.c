@@ -54,13 +54,12 @@ void desempilharPilha(Pilha p) {
     pilha* PILHA = (pilha*)p;
     if (pilhavazia(p)) {
         printf("Pilha vazia!\n");
-        exit(1);
+        return;
     }
     pont elemTopo = PILHA->topo;
 
     PILHA->topo = PILHA->topo->prox;
     PILHA->tamanho--;
-    free(elemTopo -> form);
     free(elemTopo);
 }
 

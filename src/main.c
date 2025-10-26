@@ -23,7 +23,9 @@
 #include "qry.h"
 #include "svg.h"
 
-#define MAX_CAMINHO 512
+#define MAX_CAMINHO 256
+
+static Estilo EstiloGlobalTexto = NULL;
 
 int main(int argc, char* argv[]) {
     char* dirEntrada = NULL; // -e
@@ -110,7 +112,6 @@ int main(int argc, char* argv[]) {
     arqGeo = abrirGeo(caminhoCompletoGeo);
     if (arqGeo == NULL) {
         printf("ERRO: ao tentar abrir o arquivo .geo");
-        free(nomeBaseGeo);
         liberarFila(chao);
         liberarFila(arena);
         liberarEstoqueDisparadores(disparadores);
@@ -118,10 +119,10 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    criarFormasNoChao(arqGeo, chao);
+    criarFormasNoChao(arqGeo, chao,&EstiloGlobalTexto);
     fclose(arqGeo);
 
-    gerarSVG(chao,caminhoSaidaSvgInicial);
+    gerarSVG(chao,caminhoSaidaSvgInicial,EstiloGlobalTexto);
 
 
     if (nomeArqQry != NULL) {
@@ -131,7 +132,6 @@ int main(int argc, char* argv[]) {
         arqTxt = abrirTXT(caminhoSaidaTxt);
         if (arqQry == NULL) {
             printf("ERRO: ao tentar abrir o arquivo .qry");
-            free(nomeBaseGeo);
             liberarFila(chao);
             liberarFila(arena);
             liberarEstoqueDisparadores(disparadores);
@@ -142,7 +142,7 @@ int main(int argc, char* argv[]) {
         fclose(arqQry);
         fclose(arqTxt);
 
-        gerarSVG(chao,caminhoSaidaSvgFinal);
+        gerarSVG(chao,caminhoSaidaSvgFinal,EstiloGlobalTexto);
     }
 
     printf("Limpando a memória ...\n");

@@ -23,6 +23,7 @@ Arquivo abrirGeo(Nome arquivo);
 /// @brief Cria formas lidas do (.geo) e coloca-as no chao
 /// @param geo Ponteiro para o arquivo que será lido
 /// @param chao Ponteiro para o chao que receberá as formas
-void criarFormasNoChao(Arquivo geo,Fila chao);
+/// @param EstiloPonteiro Ponteiro para o estilo global do texto
+void criarFormasNoChao(Arquivo geo,Fila chao,Estilo* EstiloPonteiro);
 
 #endif //GEO_H

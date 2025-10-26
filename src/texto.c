@@ -9,8 +9,6 @@
 
 #include "texto.h"
 
-
-
 typedef struct{
     char* fFamily;
     char* fWeight;
@@ -24,7 +22,6 @@ typedef struct{
     char* corP;
     char a;
     char* txto;
-    Estilo Estilo;
 }texto;
 
 Estilo CriarEstilo(char* fFamily, char* fWeight, char* fSize) {
@@ -238,16 +235,20 @@ void setFontSizeTexto(Estilo e, char* size) {
     strcpy (est->fSize,size);
 }
 
-Estilo getEstilo(Texto t) {
-    return ((texto*)t)->Estilo;
-}
-
 size_t quantidadeCaracteresTexto(Texto t) {
     return strlen(((texto*)t)->txto);
 }
 
 double calcAreaTexto(Texto t) {
     return 20 * (double) strlen(getTxtoTexto(t));
+}
+
+void eliminarEstilo(Estilo e) {
+    estilo* est = (estilo*)e;
+    free(est->fFamily);
+    free(est->fWeight);
+    free(est->fSize);
+    free(est);
 }
 
 void eliminarTexto(Texto t) {

@@ -71,7 +71,6 @@ void removerFila(Fila f) {
     }
 
     FILA->tamanho--;
-    free(elemInicio -> form);
     free(elemInicio);
 }
 
@@ -110,14 +109,26 @@ int getNumeroElementosFila(Fila f) {
 
 void liberarFila(Fila f) {
     fila* FILA = (fila*)f;
-    pont elemInicio = FILA->inicio;
-    while (!filavazia(f)) {
-        pont proxInicio = elemInicio->prox;
-        free(elemInicio);
-        elemInicio = proxInicio;
+
+    pont atual = FILA->inicio;
+    pont proximo;
+
+    while (atual != NULL) {
+        proximo = atual->prox;
+
+        if (atual->form != NULL) {
+            liberarForma(atual->form);
+        }
+
+        free(atual);
+
+        atual = proximo;
     }
+
+
     FILA->inicio = NULL;
     FILA->fim = NULL;
     FILA->tamanho = 0;
+
     free(FILA);
 }

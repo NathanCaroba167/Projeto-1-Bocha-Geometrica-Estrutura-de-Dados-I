@@ -70,8 +70,9 @@ void desenharDimensoesDisparoSVG(Arquivo svg, Disparador d, double dx, double dy
 /// @brief Desenha formas da fila no arquivo SVG
 /// @param svg Ponteiro para o arquivo SVG que receberá o desenho
 /// @param chao Fila chao que mandará as formas
+/// @param EstiloGlobalTexto Estilo global do texto
 /// @warning
-void desenharFormasDaFila(Arquivo svg, Fila chao);
+void desenharFormasDaFila(Arquivo svg, Fila chao,Estilo EstiloGlobalTexto);
 
 /// @brief Fecha o arquivo SVG
 /// @param svg Ponteiro para o arquivo que será fechado
@@ -81,7 +82,8 @@ void fecharSVG(Arquivo svg);
 /// @brief Gera arquivo SVG após a leitura da fila
 /// @param chao Fila chao que mandará as formas
 /// @param caminho Caminho para o arquivo SVG
+/// @param EstiloGlobalTexto Estilo global do texto
 /// @warning
-void gerarSVG(Fila chao, char* caminho);
+void gerarSVG(Fila chao, char* caminho, Estilo EstiloGlobalTexto);
 
 #endif //SVG_H

@@ -11,6 +11,7 @@
 #include "forma.h"
 #include "pilha.h"
 #include "fila.h"
+#include "texto.h"
 #include "geo.h"
 #include "txt.h"
 #include "carregador.h"
@@ -51,6 +52,10 @@ Pilha getPilhaCarregador(Carregador cr) {
 void carregarCarregador(Arquivo txt, Carregador cr, Fila chao) {
     carregador* carr = (carregador*)cr;
     Pacote p = getPrimeiraFormaFila(chao);
+    if (p == NULL) {
+        printf("Erro ao carregar Carregador de Fila vazia!\n");
+        return;
+    }
     empilharPilha(carr->p, p);
     reportarForma(txt,p);
     removerFila(chao);

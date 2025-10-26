@@ -153,12 +153,6 @@ char* getFontSizeTexto(Estilo e);
 /// @warning
 void setFontSizeTexto(Texto t, char* size);
 
-/// @brief Pega o estilo do texto sem modifica-lo
-/// @param t Ponteiro para o texto analisado
-/// @return Ponteiro para o estilo do texto
-/// @warning
-Estilo getEstilo(Texto t);
-
 /// @brief Pega a quantidade de caracteres o texto possui
 /// @param t Ponteiro para texto analisado
 /// @return A quantidade de caracteres do texto
@@ -171,6 +165,11 @@ size_t quantidadeCaracteresTexto(Texto t);
 /// @warning
 /// @details 20 * número de caracteres
 double calcAreaTexto(Texto t);
+
+/// @brief Libera a memória alocada para o estilo
+/// @param e Ponteiro para o o estilo analisado
+/// @warning
+void eliminarEstilo(Estilo e);
 
 /// @brief Libera a memória alocada para o texto
 /// @param t Ponteiro para o texto analisado

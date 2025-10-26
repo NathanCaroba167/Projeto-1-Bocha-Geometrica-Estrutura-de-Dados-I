@@ -29,7 +29,7 @@ Arquivo abrirGeo(Nome arquivo) {
     return geo;
 }
 
-void criarFormasNoChao(Arquivo geo, Fila chao) {
+void criarFormasNoChao(Arquivo geo, Fila chao,Estilo* EstiloPonteiro) {
     int maiorID = 0;
     char buffer[TAMANHO_MAX_BUFFER];
     while(fgets(buffer,sizeof(buffer),geo) != NULL) {
@@ -129,7 +129,11 @@ void criarFormasNoChao(Arquivo geo, Fila chao) {
             char* fFamily  = strtok(NULL," ");
             char* fWeight = strtok(NULL," ");
             char* fSize = strtok(NULL," ");
-            CriarEstilo(fFamily,fWeight,fSize);
+            if (*EstiloPonteiro != NULL) {
+                eliminarEstilo(*EstiloPonteiro);
+            }
+
+            *EstiloPonteiro = CriarEstilo(fFamily,fWeight,fSize);
         }else {
             printf("Comando desconhecido: '%s'\n", comando);
         }

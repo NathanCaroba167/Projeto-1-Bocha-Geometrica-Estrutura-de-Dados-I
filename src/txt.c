@@ -164,11 +164,11 @@ void reportarÁreaTotalEsmagada(Arquivo txt, double areaRound, double areaTotal)
 }
 
 void reportarResultadosFinais(Arquivo txt, double areaTotal, int instrucoes, int disparos, int formas_esmagadas, int formas_clonadas) {
-    fprintf(txt, "Pontuação Final: %lf"
-                 "Número total de instruções executadas: %d"
-                 "Número total de disparos: %d"
-                 "Número total de formas esmagadas: %d"
-                 "Número total de formas clonadas: %d"
+    fprintf(txt, "Pontuação Final: %lf \n"
+                 "Número total de instruções executadas: %d \n"
+                 "Número total de disparos: %d \n"
+                 "Número total de formas esmagadas: %d \n"
+                 "Número total de formas clonadas: %d \n"
                  "\n",
                  areaTotal,
                  instrucoes,

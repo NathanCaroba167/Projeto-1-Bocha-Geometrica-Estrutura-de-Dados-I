@@ -10,6 +10,7 @@
 #include "forma.h"
 #include "pilha.h"
 #include "fila.h"
+#include "texto.h"
 #include "geo.h"
 #include "carregador.h"
 #include "disparador.h"
@@ -36,6 +37,8 @@ Disparador CriarDisparador(int id,double x ,double y) {
     d->x = x;
     d->y = y;
     d->formaDisparo = NULL;
+    d->carregadorDir = NULL;
+    d->carregadorEsq = NULL;
 
     return d;
 }
@@ -82,7 +85,9 @@ void setCarregadoresDisparador(Disparador d, Carregador esq, Carregador dir) {
 }
 
 void desarmarDisparador(Disparador d) {
-    free(((disparador*)d)->formaDisparo);
+    disparador* dis = ((disparador*)d);
+
+    dis->formaDisparo = NULL;
 }
 
 void eliminarDisparador(Disparador d) {

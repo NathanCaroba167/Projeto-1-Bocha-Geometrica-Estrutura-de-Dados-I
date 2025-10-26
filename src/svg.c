@@ -222,14 +222,15 @@ void desenharDimensoesDisparoSVG(Arquivo svg, Disparador d, double dx, double dy
                  22);
 }
 
-void desenharFormasDaFila(Arquivo svg, Fila chao) {
+void desenharFormasDaFila(Arquivo svg, Fila chao, Estilo EstiloGlobalTexto) {
     if (chao == NULL || filavazia(chao)) {
         exit(1);
     }
 
-    pont atual = getProximoElementoFila(chao);
+    pont atual = getPrimeiroElementoFila(chao);
+
     while (atual != NULL) {
-        Pacote p = getPrimeiraFormaFila(chao);
+        Pacote p = getFormaElementoFila(atual);
 
         TipoForma tipo = getTipoForma(p);
         Forma forma = getDadosForma(p);
@@ -245,7 +246,7 @@ void desenharFormasDaFila(Arquivo svg, Fila chao) {
                 desenharLinhaSVG(svg, forma);
                 break;
             case TEXTO:
-                desenharTextoSVG(svg, forma, getEstilo(forma));
+                desenharTextoSVG(svg, forma, EstiloGlobalTexto);
                 break;
             default:
                 break;
@@ -263,10 +264,10 @@ void fecharSVG(Arquivo svg) {
 
 }
 
-void gerarSVG(Fila chao, char* caminho) {
+void gerarSVG(Fila chao, char* caminho,Estilo EstiloGlobalTexto) {
     Arquivo arqSvg = abrirSVG(caminho);
     inicializarSVG(arqSvg);
-    desenharFormasDaFila(arqSvg, chao);
+    desenharFormasDaFila(arqSvg, chao,EstiloGlobalTexto);
     fecharSVG(arqSvg);
     fclose(arqSvg);
 }

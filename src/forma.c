@@ -64,6 +64,9 @@ double getAreaForma(Pacote p) {
 }
 
 int getIDForma(Pacote p) {
+    if (p == NULL) {
+        return 0;
+    }
     TipoForma tipo = getTipoForma(p);
 
     switch (tipo) {
@@ -86,6 +89,9 @@ int getIDForma(Pacote p) {
 }
 
 char* getCorBForma(Pacote p) {
+    if (p == NULL) {
+        return NULL;
+    }
     TipoForma tipo = getTipoForma(p);
 
     switch (tipo) {
@@ -108,6 +114,9 @@ char* getCorBForma(Pacote p) {
 }
 
 char* getCorPForma(Pacote p) {
+    if (p == NULL) {
+        return NULL;
+    }
     TipoForma tipo = getTipoForma(p);
 
     switch (tipo) {
@@ -130,43 +139,58 @@ char* getCorPForma(Pacote p) {
 }
 
 void setCorBForma(Pacote p, char* corB) {
+    if (p == NULL) {
+        return;
+    }
     TipoForma tipo = getTipoForma(p);
 
     switch (tipo) {
         case CIRCULO:
             Circulo c = getDadosForma(p);
-            return setCorBCirculo(c,corB);
+            setCorBCirculo(c,corB);
+            break;
         case RETANGULO:
             Retangulo r = getDadosForma(p);
-            return setCorBRetangulo(r,corB);
+            setCorBRetangulo(r,corB);
+            break;
         case LINHA:
             Linha l = getDadosForma(p);
-            return setCorLinha(l,corB);
+            setCorLinha(l,corB);
+            break;
         case TEXTO:
             Texto t = getDadosForma(p);
-            return setCorBTexto(t,corB);
+            setCorBTexto(t,corB);
+            break;
         default:
             printf("ERRO: tipo inválido!\n");
+            return;
     }
 }
 
 void setCorPForma(Pacote p, char* corP) {
+    if (p == NULL) {
+        return;
+    }
     TipoForma tipo = getTipoForma(p);
 
     switch (tipo) {
         case CIRCULO:
             Circulo c = getDadosForma(p);
-            return setCorBCirculo(c,corP);
+            setCorBCirculo(c,corP);
+            break;
         case RETANGULO:
             Retangulo r = getDadosForma(p);
-            return setCorBRetangulo(r,corP);
+            setCorBRetangulo(r,corP);
+            break;
         case LINHA:
             break;
         case TEXTO:
             Texto t = getDadosForma(p);
-            return setCorBTexto(t,corP);
+            setCorBTexto(t,corP);
+            break;
         default:
             printf("ERRO: tipo inválido!\n");
+            return;
     }
 }
 
@@ -202,7 +226,7 @@ Pacote clonarForma(Pacote p) {
                 getYRetangulo(r),
                 getWRetangulo(r),
                 getHRetangulo(r),
-                getCorBForma(r),
+                getCorBRetangulo(r),
                 getCorPRetangulo(r));
             MAIOR_ID++;
             return CriarPacote(clone,RETANGULO);
@@ -237,5 +261,31 @@ Pacote clonarForma(Pacote p) {
 }
 
 void liberarForma(Pacote p) {
+    if (p == NULL) {
+        return;
+    }
+    TipoForma tipo = getTipoForma(p);
+
+    switch (tipo) {
+        case CIRCULO:
+            Circulo c = getDadosForma(p);
+            eliminarCirculo(c);
+            break;
+        case RETANGULO:
+            Retangulo r = getDadosForma(p);
+            eliminarRetangulo(r);
+            break;
+        case LINHA:
+            Linha l = getDadosForma(p);
+            eliminarLinha(l);
+            break;
+        case TEXTO:
+            Texto t = getDadosForma(p);
+            eliminarTexto(t);
+            break;
+        default:
+            printf("ERRO: tipo inválido encontrado em liberarForma!\n");
+            return;
+    }
     free(p);
 }
