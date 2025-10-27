@@ -29,6 +29,6 @@ Arquivo abrirQry(Nome arquivo);
 /// @param disparadores Ponteiro para o estoque de disparadores
 /// @param carregadores Ponteiro para o estoque de carregadores
 /// @warning
-void LerComandosExecutar(Arquivo txt,Arquivo qry,Fila chao,Fila arena,EstoqueD disparadores, EstoqueC carregadores);
+void LerComandosExecutar(Arquivo svg,Arquivo txt,Arquivo qry,Fila chao,Fila arena,EstoqueD disparadores, EstoqueC carregadores);
 
 #endif //QRY_H

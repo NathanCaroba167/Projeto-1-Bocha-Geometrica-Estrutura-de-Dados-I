@@ -81,9 +81,9 @@ void fecharSVG(Arquivo svg);
 
 /// @brief Gera arquivo SVG após a leitura da fila
 /// @param chao Fila chao que mandará as formas
-/// @param caminho Caminho para o arquivo SVG
+/// @param arqSvg Ponteiro para o arquivo SVG
 /// @param EstiloGlobalTexto Estilo global do texto
 /// @warning
-void gerarSVG(Fila chao, char* caminho, Estilo EstiloGlobalTexto);
+void gerarSVG(Fila chao, Arquivo arqSvg, Estilo EstiloGlobalTexto);
 
 #endif //SVG_H

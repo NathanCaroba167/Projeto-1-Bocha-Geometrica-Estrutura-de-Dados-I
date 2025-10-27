@@ -10,6 +10,8 @@
 #include "forma.h"
 #include "pilha.h"
 
+#include "fila.h"
+
 typedef struct Elemento {
     Pacote form;
     struct Elemento* prox;
@@ -85,12 +87,21 @@ int getNumeroElementosPilha(Pilha p) {
 
 void liberarPilha(Pilha p) {
     pilha* PILHA = (pilha*)p;
-    pont elemTopo = PILHA->topo;
-    while (!pilhavazia(p)) {
-        pont proxTopo = elemTopo->prox;
-        free(elemTopo);
-        elemTopo = proxTopo;
+    pont atual = PILHA->topo;
+    pont proximo;
+
+    while (atual != NULL) {
+        proximo = atual->prox;
+
+        if (atual->form != NULL) {
+            liberarForma(atual->form);
+        }
+
+        free(atual);
+
+        atual = proximo;
     }
+
     PILHA->topo = NULL;
     PILHA->tamanho = 0;
     free(PILHA);

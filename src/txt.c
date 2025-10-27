@@ -156,7 +156,7 @@ void reportarPosiçãoFinal(Arquivo txt, Pacote p) {
 }
 
 void reportarÁreaTotalEsmagada(Arquivo txt, double areaRound, double areaTotal) {
-    fprintf(txt, "Área do Round Esmagada: %lf\n"
+    fprintf(txt, "\nÁrea do Round Esmagada: %lf\n"
                  "Área Total Esmagada: %lf"
                  "\n",
                  areaRound,
@@ -164,7 +164,7 @@ void reportarÁreaTotalEsmagada(Arquivo txt, double areaRound, double areaTotal)
 }
 
 void reportarResultadosFinais(Arquivo txt, double areaTotal, int instrucoes, int disparos, int formas_esmagadas, int formas_clonadas) {
-    fprintf(txt, "Pontuação Final: %lf \n"
+    fprintf(txt, "\nPontuação Final: %lf \n"
                  "Número total de instruções executadas: %d \n"
                  "Número total de disparos: %d \n"
                  "Número total de formas esmagadas: %d \n"

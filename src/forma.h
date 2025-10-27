@@ -51,7 +51,20 @@ double getAreaForma(Pacote p);
 /// @brief Pega o ID da forma sem modifica-la
 /// @param p Ponteiro para a forma que será pego o ID
 /// @return O ID da forma
+/// @warning
 int getIDForma(Pacote p);
+
+/// @brief Pega a coordenada x da forma sem modifica-la
+/// @param p Ponteiro para a forma que será pego a coordenada x
+/// @return A coordenada X da forma
+/// @warning
+double getXForma(Pacote p);
+
+/// @brief Pega a coordenada y da forma sem modifica-la
+/// @param p Ponteiro para a forma que será pego a coordenada y
+/// @return A coordenada Y da forma
+/// @warning
+double getYForma(Pacote p);
 
 /// @brief Pega a cor de borda da forma sem modifica-la
 /// @param p Ponteiro para a forma que será pega a cor de borda
@@ -90,10 +103,12 @@ int getMaiorId();
 /// @brief Clona uma forma
 /// @param p Ponteiro para forma que será clonada
 /// @return Ponteiro para forma clonada
+/// @warning
 Pacote clonarForma(Pacote p);
 
 /// @brief Libera a memoria alocada para o pacote
 /// @param p Ponteiro para o pacote analisado
+/// @warning
 void liberarForma(Pacote p);
 
 #endif //FORMA_H

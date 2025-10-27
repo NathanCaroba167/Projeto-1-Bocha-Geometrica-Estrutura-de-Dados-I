@@ -68,6 +68,8 @@ bool carregadorvazio(Carregador cr) {
 
 void eliminarCarregador(Carregador cr) {
     carregador* carr = ((carregador*)cr);
-    liberarPilha(carr->p);
+    if (carr->p != NULL) {
+        liberarPilha(carr->p);
+    }
     free(carr);
 }

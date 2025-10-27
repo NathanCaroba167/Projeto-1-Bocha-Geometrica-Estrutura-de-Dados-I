@@ -264,10 +264,7 @@ void fecharSVG(Arquivo svg) {
 
 }
 
-void gerarSVG(Fila chao, char* caminho,Estilo EstiloGlobalTexto) {
-    Arquivo arqSvg = abrirSVG(caminho);
-    inicializarSVG(arqSvg);
+void gerarSVG(Fila chao, Arquivo arqSvg,Estilo EstiloGlobalTexto) {
     desenharFormasDaFila(arqSvg, chao,EstiloGlobalTexto);
     fecharSVG(arqSvg);
-    fclose(arqSvg);
 }

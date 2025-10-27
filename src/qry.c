@@ -101,10 +101,14 @@ void shft(Arquivo txt,EstoqueD e,int id,char botao, int n) {
     if (botao == 'e') {
         for (int i = 0 ; i < n ; i++) {
             Pacote p = getFormaDisparador(d);
+            Pacote p2 = getPrimeiraFormaPilha(pilhaDir);
+            if (p2 == NULL) {
+                printf("ERRO: Pilha Direita vazia!\n");
+                break;
+            }
             if (p != NULL) {
                 empilharPilha(pilhaEsq,p);
             }
-            Pacote p2 = getPrimeiraFormaPilha(pilhaDir);
             setFormaDisparador(d,p2);
             desempilharPilha(pilhaDir);
         }
@@ -131,7 +135,7 @@ void shft(Arquivo txt,EstoqueD e,int id,char botao, int n) {
     reportarForma(txt,p);
 }
 
-void dsp(int n_eh_rjd,int* disparos,Arquivo txt,EstoqueD e, Fila arena, int id, double dx, double dy) {
+void dsp(int n_eh_rjd, int* disparos,Arquivo svg, Arquivo txt, EstoqueD e, Fila arena, int id, double dx, double dy, char vis_modo) {
     Disparador d = getDisparadorPorId(e,id);
     double formaX = getXDisparador(d) + dx;
     double formaY = getYDisparador(d) + dy;
@@ -193,10 +197,14 @@ void dsp(int n_eh_rjd,int* disparos,Arquivo txt,EstoqueD e, Fila arena, int id, 
     }
     (*disparos)++;
 
+    if (vis_modo == 'v') {
+        desenharDimensoesDisparoSVG(svg,d,dx,dy);
+    }
+
     desarmarDisparador(d);
 }
 
-void rjd(Arquivo txt,int* disparos,EstoqueD e, Fila arena, int id, char botao, double dx, double dy, double ix, double iy) {
+void rjd(Arquivo svg,Arquivo txt,int* disparos,EstoqueD e, Fila arena, int id, char botao, double dx, double dy, double ix, double iy) {
     Disparador d = getDisparadorPorId(e,id);
     if (d == NULL) {
         printf("ERRO rjd: Disparador %d nao encontrado!\n", id);
@@ -214,14 +222,14 @@ void rjd(Arquivo txt,int* disparos,EstoqueD e, Fila arena, int id, char botao, d
         double corrente_dx = dx + i * ix;
         double corrente_dy = dy + i * iy;
 
-        dsp(0,disparos,txt,e,arena,id,corrente_dx,corrente_dy);
+        dsp(0,disparos,svg,txt,e,arena,id,corrente_dx,corrente_dy,'i');
 
         i++;
     }
 
 }
 
-void calc(Arquivo txt,Fila arena, Fila chao,double* areaTotal,int* formas_esmagadas, int* formas_clonadas) {
+void calc(Arquivo svg,Arquivo txt,Fila arena, Fila chao,double* areaTotal,int* formas_esmagadas, int* formas_clonadas) {
     double areaRound = 0;
 
     pont atual;
@@ -243,6 +251,8 @@ void calc(Arquivo txt,Fila arena, Fila chao,double* areaTotal,int* formas_esmaga
                 fprintf(txt,"Forma %d (área %lf) sobrepoe Forma %d (área %lf): Forma %d destruída!\n",getIDForma(p1),a1,getIDForma(p2),a2,getIDForma(p1));
                 areaRound += a1;
                 (*formas_esmagadas)++;
+
+                desenharAsteriscoSVG(svg,getXForma(p1),getYForma(p1));
 
                 removerFila(arena);
                 removerFila(arena);
@@ -291,7 +301,7 @@ void calc(Arquivo txt,Fila arena, Fila chao,double* areaTotal,int* formas_esmaga
     reportarÁreaTotalEsmagada(txt,areaRound,*areaTotal);
 }
 
-void LerComandosExecutar(Arquivo txt,Arquivo qry, Fila chao, Fila arena, EstoqueD disparadores, EstoqueC carregadores) {
+void LerComandosExecutar(Arquivo svg,Arquivo txt,Arquivo qry, Fila chao, Fila arena, EstoqueD disparadores, EstoqueC carregadores) {
     char buffer[TAMANHO_MAX_BUFFER];
     double areaTotal = 0;
     int instrucoes = 0;
@@ -368,16 +378,21 @@ void LerComandosExecutar(Arquivo txt,Arquivo qry, Fila chao, Fila arena, Estoque
             char* id_temp = strtok(NULL," ");
             char* dx_temp = strtok(NULL," ");
             char* dy_temp = strtok(NULL," ");
-            //char* vis_temp = strtok(NULL," ");//
-
-            //char vis = atof(vis_temp);*//
+            char* vis_temp = strtok(NULL," ");
 
             if (id_temp && dx_temp && dy_temp) {
                 int id = atoi(id_temp);
                 double dx = atof(dx_temp);
                 double dy = atof(dy_temp);
 
-                dsp(1,&disparos,txt,disparadores,arena,id,dx,dy);
+                char vis_modo;
+                if (vis_temp != NULL) {
+                    vis_modo = vis_temp[0];
+                }else {
+                    vis_modo = 'n';
+                }
+
+                dsp(1,&disparos,svg,txt,disparadores,arena,id,dx,dy,vis_modo);
                 instrucoes++;
             }
         }else if(strcmp(comando, "rjd") == 0) {
@@ -396,12 +411,12 @@ void LerComandosExecutar(Arquivo txt,Arquivo qry, Fila chao, Fila arena, Estoque
                 double ix = atof(ix_temp);
                 double iy = atof(iy_temp);
 
-                rjd(txt,&disparos,disparadores,arena,id,botao,dx,dy,ix,iy);
+                rjd(svg,txt,&disparos,disparadores,arena,id,botao,dx,dy,ix,iy);
                 instrucoes++;
             }
 
         }else if (strcmp(comando, "calc") == 0) {
-            calc(txt,arena,chao,&areaTotal,&formas_esmagadas,&formas_clonadas);
+            calc(svg,txt,arena,chao,&areaTotal,&formas_esmagadas,&formas_clonadas);
         }else{
             printf("Comando desconhecido: '%s' \n", comando);
         }

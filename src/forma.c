@@ -88,6 +88,48 @@ int getIDForma(Pacote p) {
     }
 }
 
+double getXForma(Pacote p) {
+    TipoForma tipo = getTipoForma(p);
+    switch (tipo) {
+        case CIRCULO:
+            Circulo c = getDadosForma(p);
+            return getXCirculo(c);
+        case RETANGULO:
+            Retangulo r = getDadosForma(p);
+            return getXRetangulo(r);
+        case LINHA:
+            Linha l = getDadosForma(p);
+            return getX1Linha(l);
+        case TEXTO:
+            Texto t = getDadosForma(p);
+            return getXTexto(t);
+        default:
+            printf("ERRO: tipo inválido!\n");
+            return 0.0;
+    }
+}
+
+double getYForma(Pacote p) {
+    TipoForma tipo = getTipoForma(p);
+    switch (tipo) {
+        case CIRCULO:
+            Circulo c = getDadosForma(p);
+            return getYCirculo(c);
+        case RETANGULO:
+            Retangulo r = getDadosForma(p);
+            return getYRetangulo(r);
+        case LINHA:
+            Linha l = getDadosForma(p);
+            return getY1Linha(l);
+        case TEXTO:
+            Texto t = getDadosForma(p);
+            return getYTexto(t);
+        default:
+            printf("ERRO: tipo inválido!\n");
+            return 0.0;
+    }
+}
+
 char* getCorBForma(Pacote p) {
     if (p == NULL) {
         return NULL;

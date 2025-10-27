@@ -101,12 +101,18 @@ int main(int argc, char* argv[]) {
 
     free(nomeBaseGeo);
 
+    if (EstiloGlobalTexto == NULL) {
+        EstiloGlobalTexto = CriarEstilo("Arial, sans-serif", "normal", "12px");
+        if (EstiloGlobalTexto == NULL) {
+            printf("ERRO: Falha ao inicializar o estilo padrão de texto!\n");
+            return 1;
+        }
+    }
+
     chao = iniciarFila();
     arena = iniciarFila();
     EstoqueD disparadores = CriarEstoqueDisparadores(5);
     EstoqueC carregadores = CriarEstoqueCarregadores(10);
-
-
 
     Arquivo arqGeo = NULL;
     arqGeo = abrirGeo(caminhoCompletoGeo);
@@ -122,7 +128,11 @@ int main(int argc, char* argv[]) {
     criarFormasNoChao(arqGeo, chao,&EstiloGlobalTexto);
     fclose(arqGeo);
 
-    gerarSVG(chao,caminhoSaidaSvgInicial,EstiloGlobalTexto);
+    Arquivo arqSvg = NULL;
+    arqSvg = abrirSVG(caminhoSaidaSvgInicial);
+    inicializarSVG(arqSvg);
+
+    gerarSVG(chao,arqSvg,EstiloGlobalTexto);
 
 
     if (nomeArqQry != NULL) {
@@ -130,6 +140,9 @@ int main(int argc, char* argv[]) {
         arqQry = abrirQry(caminhoCompletoQry);
         Arquivo arqTxt = NULL;
         arqTxt = abrirTXT(caminhoSaidaTxt);
+        Arquivo arqSvgFinal = NULL;
+        arqSvgFinal = abrirSVG(caminhoSaidaSvgFinal);
+        inicializarSVG(arqSvgFinal);
         if (arqQry == NULL) {
             printf("ERRO: ao tentar abrir o arquivo .qry");
             liberarFila(chao);
@@ -138,18 +151,24 @@ int main(int argc, char* argv[]) {
             liberarEstoqueCarregadores(carregadores);
             return 1;
         }
-        LerComandosExecutar(arqTxt,arqQry, chao, arena, disparadores, carregadores);
+        LerComandosExecutar(arqSvgFinal, arqTxt,arqQry, chao, arena, disparadores, carregadores);
         fclose(arqQry);
         fclose(arqTxt);
 
-        gerarSVG(chao,caminhoSaidaSvgFinal,EstiloGlobalTexto);
+        gerarSVG(chao,arqSvgFinal,EstiloGlobalTexto);
+        fclose(arqSvgFinal);
     }
+
+    fclose(arqSvg);
 
     printf("Limpando a memória ...\n");
     liberarFila(chao);
     liberarFila(arena);
     liberarEstoqueDisparadores(disparadores);
     liberarEstoqueCarregadores(carregadores);
+    if (EstiloGlobalTexto != NULL) {
+        eliminarEstilo(EstiloGlobalTexto);
+    }
 
     return 0;
 }
