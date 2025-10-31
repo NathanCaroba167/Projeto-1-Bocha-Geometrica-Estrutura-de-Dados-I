@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <errno.h>
+#include <math.h>
 
 #include "circulo.h"
 #include "linha.h"
@@ -50,6 +51,8 @@ void pd(EstoqueD e, int id, double x, double y) {
 
 void lc(Arquivo txt,EstoqueC e,int id,int n,Fila chao) {
     Carregador c = getCarregadorPorId(e,id);
+    fprintf(txt,"\n");
+    fprintf(txt,"Formas carregadas:\n\n");
     if (c == NULL) {
         Carregador c1 = CriarCarregador(id);
         adicionarCarregador(e,c1);
@@ -132,6 +135,7 @@ void shft(Arquivo txt,EstoqueD e,int id,char botao, int n) {
         printf("ERRO: Disparador %d vazio após shft.\n", id);
         return;
     }
+    fprintf(txt,"\nForma na posição de disparo → ");
     reportarForma(txt,p);
 }
 
@@ -147,6 +151,7 @@ void dsp(int n_eh_rjd, int* disparos,Arquivo svg, Arquivo txt, EstoqueD e, Fila 
     switch (tipo) {
         case CIRCULO:
             if (n_eh_rjd) {
+                fprintf(txt, "\nForma disparada → ");
                 reportarForma(txt,p);
             }
             setXCirculo(f,formaX);
@@ -158,6 +163,7 @@ void dsp(int n_eh_rjd, int* disparos,Arquivo svg, Arquivo txt, EstoqueD e, Fila 
             break;
         case RETANGULO:
             if (n_eh_rjd) {
+                fprintf(txt, "\nForma disparada → ");
                 reportarForma(txt,p);
             }
             setXRetangulo(f,formaX);
@@ -169,12 +175,16 @@ void dsp(int n_eh_rjd, int* disparos,Arquivo svg, Arquivo txt, EstoqueD e, Fila 
             break;
         case LINHA:
             if (n_eh_rjd) {
+                fprintf(txt, "\nForma disparada → ");
                 reportarForma(txt,p);
             }
+            double difX = fabs(getX1Linha(f) - getX2Linha(f));
+            double difY = fabs(getY1Linha(f) - getY2Linha(f));
             setX1Linha(f,formaX);
             setY1Linha(f,formaY);
-            setX2Linha(f,formaX);
-            setY2Linha(f,formaY);
+
+            setX2Linha(f,formaX + difX);
+            setY2Linha(f,formaY + difY);
             if (n_eh_rjd) {
                 reportarPosiçãoFinal(txt,p);
             }
@@ -182,6 +192,7 @@ void dsp(int n_eh_rjd, int* disparos,Arquivo svg, Arquivo txt, EstoqueD e, Fila 
             break;
         case TEXTO:
             if (n_eh_rjd) {
+                fprintf(txt, "\nForma disparada → ");
                 reportarForma(txt,p);
             }
             setXTexto(f,formaX);
@@ -206,10 +217,12 @@ void dsp(int n_eh_rjd, int* disparos,Arquivo svg, Arquivo txt, EstoqueD e, Fila 
 
 void rjd(Arquivo svg,Arquivo txt,int* disparos,EstoqueD e, Fila arena, int id, char botao, double dx, double dy, double ix, double iy) {
     Disparador d = getDisparadorPorId(e,id);
+    fprintf(txt,"\n");
     if (d == NULL) {
         printf("ERRO rjd: Disparador %d nao encontrado!\n", id);
         return;
     }
+    fprintf(txt, "Formas disparadas:\n");
     int i = 0;
     while (1) {
         shft(txt,e,id,botao,1);
@@ -232,6 +245,8 @@ void rjd(Arquivo svg,Arquivo txt,int* disparos,EstoqueD e, Fila arena, int id, c
 void calc(Arquivo svg,Arquivo txt,Fila arena, Fila chao,double* areaTotal,int* formas_esmagadas, int* formas_clonadas) {
     double areaRound = 0;
 
+    fprintf(txt,"\n");
+
     pont atual;
     pont proximo;
 
@@ -248,7 +263,7 @@ void calc(Arquivo svg,Arquivo txt,Fila arena, Fila chao,double* areaTotal,int* f
             double a1 = getAreaForma(p1);
             double a2 = getAreaForma(p2);
             if (a1 < a2) {
-                fprintf(txt,"Forma %d (área %lf) sobrepoe Forma %d (área %lf): Forma %d destruída!\n",getIDForma(p1),a1,getIDForma(p2),a2,getIDForma(p1));
+                fprintf(txt,"Forma %d (área %lf) sobrepõe Forma %d (área %lf): Forma %d destruída!\n",getIDForma(p1),a1,getIDForma(p2),a2,getIDForma(p1));
                 areaRound += a1;
                 (*formas_esmagadas)++;
 
@@ -259,7 +274,7 @@ void calc(Arquivo svg,Arquivo txt,Fila arena, Fila chao,double* areaTotal,int* f
                 inserirFila(chao,p2);
                 liberarForma(p1);
             }else {
-                fprintf(txt,"Forma %d (área %lf) sobrepoe Forma %d (área %lf): Forma %d alterada e Forma %d clonada!!\n",getIDForma(p1),a1,getIDForma(p2),a2,getIDForma(p2),getIDForma(p1));
+                fprintf(txt,"Forma %d (área %lf) sobrepõe Forma %d (área %lf): Forma %d alterada e Forma %d clonada!!\n",getIDForma(p1),a1,getIDForma(p2),a2,getIDForma(p2),getIDForma(p1));
                 char* corPp1 = getCorPForma(p1);
                 char* corBp1 = getCorBForma(p1);
 
@@ -278,7 +293,7 @@ void calc(Arquivo svg,Arquivo txt,Fila arena, Fila chao,double* areaTotal,int* f
                 (*formas_clonadas)++;
             }
         } else {
-            fprintf(txt,"Forma %d e Forma %d: Não se sobrepoem!\n",getIDForma(p1),getIDForma(p2));
+            fprintf(txt,"Forma %d e Forma %d: Não se sobrepõem!\n",getIDForma(p1),getIDForma(p2));
 
             removerFila(arena);
             removerFila(arena);
@@ -316,6 +331,8 @@ void LerComandosExecutar(Arquivo svg,Arquivo txt,Arquivo qry, Fila chao, Fila ar
         if (buffer[0] == '\n' || buffer[0] == '\0') {
             continue;
         }
+
+        fprintf(txt,"\n[*] %s\n", buffer);
 
         char* comando = strtok(buffer," ");
         if (comando == NULL) {
@@ -417,6 +434,7 @@ void LerComandosExecutar(Arquivo svg,Arquivo txt,Arquivo qry, Fila chao, Fila ar
 
         }else if (strcmp(comando, "calc") == 0) {
             calc(svg,txt,arena,chao,&areaTotal,&formas_esmagadas,&formas_clonadas);
+            instrucoes++;
         }else{
             printf("Comando desconhecido: '%s' \n", comando);
         }

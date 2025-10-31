@@ -3,6 +3,7 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <errno.h>
 
 #include "circulo.h"
@@ -99,7 +100,7 @@ double getXForma(Pacote p) {
             return getXRetangulo(r);
         case LINHA:
             Linha l = getDadosForma(p);
-            return getX1Linha(l);
+            return fmin(getX1Linha(l),getX2Linha(l));
         case TEXTO:
             Texto t = getDadosForma(p);
             return getXTexto(t);
@@ -120,7 +121,17 @@ double getYForma(Pacote p) {
             return getYRetangulo(r);
         case LINHA:
             Linha l = getDadosForma(p);
-            return getY1Linha(l);
+            double menorX = fmin(getX1Linha(l),getX2Linha(l));
+
+            if (getX1Linha(l) == getX2Linha(l)) {
+                return fmin(getY1Linha(l),getY2Linha(l));
+            }
+
+            if (menorX == getX1Linha(l)) {
+                return getY1Linha(l);
+            }
+
+            return getY2Linha(l);
         case TEXTO:
             Texto t = getDadosForma(p);
             return getYTexto(t);
@@ -218,17 +229,17 @@ void setCorPForma(Pacote p, char* corP) {
     switch (tipo) {
         case CIRCULO:
             Circulo c = getDadosForma(p);
-            setCorBCirculo(c,corP);
+            setCorPCirculo(c,corP);
             break;
         case RETANGULO:
             Retangulo r = getDadosForma(p);
-            setCorBRetangulo(r,corP);
+            setCorPRetangulo(r,corP);
             break;
         case LINHA:
             break;
         case TEXTO:
             Texto t = getDadosForma(p);
-            setCorBTexto(t,corP);
+            setCorPTexto(t,corP);
             break;
         default:
             printf("ERRO: tipo inválido!\n");

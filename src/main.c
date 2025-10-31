@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
     }
 
     if (nomeArqGeo == NULL || dirSaida == NULL) {
-        printf("ERRO: Parâmetros obrigatórios -f (.geo) e -o (diretorio saida) não fornecidos!!\n");
+        printf("ERRO: Parâmetros obrigatórios -f (.geo) e -o (diretorio saida1) não fornecidos!!\n");
         return 1;
     }
 

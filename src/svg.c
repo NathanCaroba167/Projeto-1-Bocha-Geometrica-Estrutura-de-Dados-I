@@ -209,17 +209,6 @@ void desenharDimensoesDisparoSVG(Arquivo svg, Disparador d, double dx, double dy
                  (2 * getYDisparador(d) + dy)/2,
                  18,
                  dy);
-
-    fprintf(svg, "\t<text x=\"%lf\" "
-                 "y=\"%lf\" "
-                 "fill=\"red\" "
-                 "font-size=\"%d\" "
-                 "text-anchor=\"middle\" "
-                 "dominant-baseline=\"middle\" "
-                 ">*</text>\n",
-                 getXDisparador(d) + dx,
-                 getYDisparador(d) + dy,
-                 22);
 }
 
 void desenharFormasDaFila(Arquivo svg, Fila chao, Estilo EstiloGlobalTexto) {

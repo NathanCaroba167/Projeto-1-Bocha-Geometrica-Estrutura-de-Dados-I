@@ -29,7 +29,7 @@ int getIDCarregador(Carregador cr);
 /// @param cr Ponteiro para o carregador que a forma será pega
 /// @return Ponteiro para forma que foi pega ou NULL se o carregador estiver vazio
 /// @warning
-Pacote getPrimeiraFormaCarregador(Carregador cr);///
+Pacote getPrimeiraFormaCarregador(Carregador cr);
 
 /// @brief Pega a pilha relacionada ao carregador
 /// @param cr Ponteiro para o carregador que a pilha será pega
@@ -46,7 +46,7 @@ void carregarCarregador(Arquivo txt,Carregador cr, Fila chao);
 /// @param cr Ponteiro para o carregador que será verificado
 /// @return True(1) se o carregador estiver vazio ou  False(0) se o carregador não estiver vazio
 /// @warning
-bool carregadorvazio(Carregador cr);///
+bool carregadorvazio(Carregador cr);
 
 /// @brief Libera a memória do carregador e de todas as formas dele
 /// @param cr Ponteiro para o carregador que será liberado

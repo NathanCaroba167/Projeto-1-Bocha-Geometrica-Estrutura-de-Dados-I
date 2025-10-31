@@ -36,13 +36,12 @@ void reportarForma(Arquivo txt,Pacote p) {
     switch (tipo) {
         case CIRCULO:
             Circulo c = getDadosForma(p);
-            fprintf(txt, "Círculo ID =\"%d\" "
-                 "Centro = X=\"%lf\" "
-                 "Y =\"%lf\" "
-                 "Raio =\"%lf\" "
-                 "Cor de Borda =\"%s\" "
-                 "Cor de Preenchimento =\"%s\" "
-                 "\n",
+            fprintf(txt, "Círculo - (ID: %d) | | "
+                 "Centro: X = %lf "
+                 "Y = %lf | | "
+                 "Raio: %lf "
+                 "Cor de Borda: %s | | "
+                 "Cor de Preenchimento: %s ",
                  getIDCirculo(c),
                  getXCirculo(c),
                  getYCirculo(c),
@@ -52,14 +51,13 @@ void reportarForma(Arquivo txt,Pacote p) {
             break;
         case RETANGULO:
             Retangulo r = getDadosForma(p);
-            fprintf(txt, "Retângulo ID =\"%d\" "
-                 "Âncora(Ponto Inferior Esquerdo)= X =\"%lf\" "
-                 "Y =\"%lf\" "
-                 "Largura =\"%lf\" "
-                 "Altura =\"%lf\" "
-                 "Cor de Borda =\"%s\" "
-                 "Cor de Preenchimento =\"%s\" "
-                 "\n",
+            fprintf(txt, "Retângulo - (ID: %d) | | "
+                 "Âncora (Ponto Inferior Esquerdo): X = %lf "
+                 "Y = %lf | | "
+                 "Largura: %lf | | "
+                 "Altura: %lf | | "
+                 "Cor de Borda: %s | | "
+                 "Cor de Preenchimento: %s ",
                  getIDRetangulo(r),
                  getXRetangulo(r),
                  getYRetangulo(r),
@@ -70,13 +68,12 @@ void reportarForma(Arquivo txt,Pacote p) {
             break;
         case LINHA:
             Linha l = getDadosForma(p);
-            fprintf(txt, "Linha ID =\"%d\" "
-                 "Ponto de Ínicio = X =\"%lf\" "
-                 "Y =\"%lf\" "
-                 "Ponto de Fim = X2 = \"%lf\" "
-                 "Y2 =\"%lf\" "
-                 "Cor =\"%s\" "
-                 "\n",
+            fprintf(txt, "Linha - (ID: %d) | | "
+                 "Ponto de Ínicio: X = %lf "
+                 "Y = %lf | | "
+                 "Ponto de Fim: X2 = %lf "
+                 "Y2 = %lf | | "
+                 "Cor: %s ",
                  getIDLinha(l),
                  getX1Linha(l),
                  getY1Linha(l),
@@ -86,13 +83,13 @@ void reportarForma(Arquivo txt,Pacote p) {
             break;
         case TEXTO:
             Texto t = getDadosForma(p);
-            fprintf(txt, "Texto ID =\"%d\" "
-                 "Âncora = X =\"%lf\" "
-                 "Y =\"%lf\" "
-                 "Cor de Borda =\"%s\" "
-                 "Cor de Preenchimento =\"%s\" "
-                 "Local da Âncora =\"%c\" "
-                 "Conteúdo =\"%s\" "
+            fprintf(txt, "Texto - (ID: %d) | | "
+                 "Âncora: X = %lf "
+                 "Y = %lf | | "
+                 "Cor de Borda: %s | | "
+                 "Cor de Preenchimento: %s | | "
+                 "Local da Âncora: %c | | "
+                 "Conteúdo: %s "
                  "\n",
                  getIDTexto(t),
                  getXTexto(t),
@@ -110,31 +107,31 @@ void reportarForma(Arquivo txt,Pacote p) {
 
 void reportarPosiçãoFinal(Arquivo txt, Pacote p) {
     TipoForma tipo = getTipoForma(p);
-    fprintf(txt, "Posição final - ");
+    fprintf(txt, "\nPosição final → ");
 
     switch (tipo) {
         case CIRCULO:
             Circulo c = getDadosForma(p);
-            fprintf(txt, "X =\"%lf\" "
-                 "Y =\"%lf\" "
+            fprintf(txt, "X = %lf "
+                 "Y = %lf "
                  "\n",
                  getXCirculo(c),
                  getYCirculo(c));
             break;
         case RETANGULO:
             Retangulo r = getDadosForma(p);
-            fprintf(txt, "X =\"%lf\" "
-                 "Y =\"%lf\" "
+            fprintf(txt, "X = %lf "
+                 "Y = %lf "
                  "\n",
                  getXRetangulo(r),
                  getYRetangulo(r));
             break;
         case LINHA:
             Linha l = getDadosForma(p);
-            fprintf(txt, "X =\"%lf\" "
-                "Y =\"%lf\" "
-                "X2 =\"%lf\" "
-                "Y2 =\"%lf\" "
+            fprintf(txt, "X1 = %lf "
+                "Y1 = %lf "
+                "X2 = %lf "
+                "Y2 = %lf "
                 "\n",
                 getX1Linha(l),
                 getY1Linha(l),
@@ -143,8 +140,8 @@ void reportarPosiçãoFinal(Arquivo txt, Pacote p) {
             break;
         case TEXTO:
             Texto t = getDadosForma(p);
-            fprintf(txt, "X =\"%lf\" "
-                "Y =\"%lf\" "
+            fprintf(txt, "X = %lf "
+                "Y = %lf "
                 "\n",
                 getXTexto(t),
                 getYTexto(t));
@@ -164,7 +161,8 @@ void reportarÁreaTotalEsmagada(Arquivo txt, double areaRound, double areaTotal)
 }
 
 void reportarResultadosFinais(Arquivo txt, double areaTotal, int instrucoes, int disparos, int formas_esmagadas, int formas_clonadas) {
-    fprintf(txt, "\nPontuação Final: %lf \n"
+    fprintf(txt, "\nResultados Finais:\n"
+                 "\nPontuação Final: %lf \n"
                  "Número total de instruções executadas: %d \n"
                  "Número total de disparos: %d \n"
                  "Número total de formas esmagadas: %d \n"
