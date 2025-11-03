@@ -11,10 +11,10 @@
 
 typedef struct{
     int id;
-    double x,y;
-    double w,h;
-    char* corB;
-    char* corP;
+    double x,y; // Ponto âncora (canto inferior esquerdo)
+    double w,h; // Largura e Altura
+    char* corB; // Cor de Borda (alocada dinamicamente)
+    char* corP; // Cor de Preenchimento (alocada dinamicamente)
 }retangulo;
 
 Retangulo CriarRetangulo(int id,double x,double y,double w,double h,char* corB,char* corP) {
@@ -32,18 +32,24 @@ Retangulo CriarRetangulo(int id,double x,double y,double w,double h,char* corB,c
     r->y = y;
     r->w = w;
     r->h = h;
+
+    // Alocação de Cor de Borda
     r->corB = (char*) malloc (strlen(corB) + 1);
     if (r->corB == NULL) {
         printf("Erro ao alocar memória ao criar cor de borda do retângulo!\n");
+        free(r); // Libera a struct principal
 
         perror("Motivo do erro");
         exit(1);
     }
     strcpy(r->corB,corB);
 
+    // Alocação da Cor de Preenchimento
     r->corP = (char*) malloc (strlen(corP) + 1);
     if (r->corP == NULL) {
         printf("Erro ao alocar memória ao criar cor de preenchimento do retângulo!\n");
+        free(r->corB); // Libera o que foi alocado
+        free(r);
 
         perror("Motivo do erro");
         exit(1);
@@ -105,6 +111,7 @@ char* getCorBRetangulo(Retangulo r) {
 
 void setCorBRetangulo(Retangulo r,char* corB) {
     retangulo* retan = (retangulo*)r;
+    // Realoca para o novo tamanho (strlen(corB) + 1)
     retan->corB = realloc (retan->corB,strlen(corB) + 1);
     if (retan->corB == NULL) {
         printf("Erro ao realocar memória da cor de borda do retângulo!\n");
@@ -122,6 +129,7 @@ char* getCorPRetangulo(Retangulo r) {
 
 void setCorPRetangulo(Retangulo r,char* corP) {
     retangulo* retan = (retangulo*)r;
+    // Realoca para o novo tamanho (strlen(corB) + 1)
     retan->corP = realloc (retan->corP,strlen(corP) + 1);
     if (retan->corP == NULL) {
         printf("Erro ao realocar memória da cor de preenchimento do retângulo!\n");
@@ -138,8 +146,10 @@ double calcAreaRetangulo(Retangulo r) {
 
 void eliminarRetangulo(Retangulo r) {
     retangulo* retan = (retangulo*)r;
+    // Libera as strings de cor
     free(retan->corB);
     free(retan->corP);
+    // Libera a struct principal
     free(retan);
 }
 

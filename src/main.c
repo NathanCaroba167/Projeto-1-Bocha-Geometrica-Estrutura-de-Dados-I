@@ -25,16 +25,21 @@
 
 #define MAX_CAMINHO 256
 
+// O estilo deve ser inicializado antes de ser passado para criarFormasNoChao
 static Estilo EstiloGlobalTexto = NULL;
 
 int main(int argc, char* argv[]) {
+    // Variáveis de Argumentos
     char* dirEntrada = NULL; // -e
     char* nomeArqGeo = NULL; // -f
     char* nomeArqQry = NULL; // -q
     char* dirSaida = NULL; // -o
+
+    // Variáveis de Estruturas de Dados
     Fila chao = NULL;
     Fila arena = NULL;
 
+    // Análise de argumentos
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-e") == 0 && i + 1 < argc) {
             dirEntrada = argv[i + 1];
@@ -58,6 +63,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    // Construção de caminhos geo (necessário para SVG inicial)
     char caminhoCompletoGeo[MAX_CAMINHO];
     if (dirEntrada != NULL) {
         snprintf(caminhoCompletoGeo,MAX_CAMINHO, "%s/%s", dirEntrada, nomeArqGeo);
@@ -74,6 +80,7 @@ int main(int argc, char* argv[]) {
     char caminhoSaidaSvgInicial[MAX_CAMINHO];
     snprintf(caminhoSaidaSvgInicial,MAX_CAMINHO, "%s/%s.svg", dirSaida, nomeBaseGeo);
 
+    // Construção de caminhos qry (se existir)
     char caminhoCompletoQry[MAX_CAMINHO];
     char caminhoSaidaSvgFinal[MAX_CAMINHO];
     char caminhoSaidaTxt[MAX_CAMINHO];
@@ -101,8 +108,9 @@ int main(int argc, char* argv[]) {
 
     free(nomeBaseGeo);
 
+    // Inicialização do estilo padrão (será substituído se 'ts' for encontrado no .geo)
     if (EstiloGlobalTexto == NULL) {
-        EstiloGlobalTexto = CriarEstilo("Arial, sans-serif", "normal", "12px");
+        EstiloGlobalTexto = CriarEstilo("Arial, sans-serif", "normal", "12");
         if (EstiloGlobalTexto == NULL) {
             printf("ERRO: Falha ao inicializar o estilo padrão de texto!\n");
             return 1;
@@ -114,6 +122,8 @@ int main(int argc, char* argv[]) {
     EstoqueD disparadores = CriarEstoqueDisparadores(5);
     EstoqueC carregadores = CriarEstoqueCarregadores(10);
 
+
+    // Execução do fluxo .geo
     Arquivo arqGeo = NULL;
     arqGeo = abrirGeo(caminhoCompletoGeo);
     if (arqGeo == NULL) {
@@ -128,13 +138,14 @@ int main(int argc, char* argv[]) {
     criarFormasNoChao(arqGeo, chao,&EstiloGlobalTexto);
     fclose(arqGeo);
 
+    // Geração do SVG Inicial
     Arquivo arqSvg = NULL;
     arqSvg = abrirSVG(caminhoSaidaSvgInicial);
     inicializarSVG(arqSvg);
 
     gerarSVG(chao,arqSvg,EstiloGlobalTexto);
 
-
+    // Execução do fluxo .qry (se especificado)
     if (nomeArqQry != NULL) {
         Arquivo arqQry = NULL;
         arqQry = abrirQry(caminhoCompletoQry);
@@ -155,12 +166,14 @@ int main(int argc, char* argv[]) {
         fclose(arqQry);
         fclose(arqTxt);
 
+        // Geração do SVG Final
         gerarSVG(chao,arqSvgFinal,EstiloGlobalTexto);
         fclose(arqSvgFinal);
     }
 
     fclose(arqSvg);
 
+    // Limpeza da memória
     printf("Limpando a memória ...\n");
     liberarFila(chao);
     liberarFila(arena);

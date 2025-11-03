@@ -32,6 +32,7 @@ Carregador CriarCarregador(int id) {
     }
 
     cr->id = id;
+    // Inicializa a pilha interna, que deve ser uma pilha vazia
     cr->p = iniciarPilha();
     return cr;
 }
@@ -53,23 +54,33 @@ void carregarCarregador(Arquivo txt, Carregador cr, Fila chao) {
     carregador* carr = (carregador*)cr;
     Pacote p = getPrimeiraFormaFila(chao);
     if (p == NULL) {
+        // Isso pode ocorrer se o chão estiver vazio.
         printf("Erro ao carregar Carregador de Fila vazia!\n");
         return;
     }
+    // Coloca a forma na pilha do carregador
     empilharPilha(carr->p, p);
+
+    // Registra o carregamento no arquivo txt
     reportarForma(txt,p);
+
+    // Remove a forma da fila (chão)
     removerFila(chao);
 }
 
 bool carregadorvazio(Carregador cr) {
     carregador* carr = (carregador*)cr;
+    // Delega a verificação de vazio para o módulo pilha
     return pilhavazia(carr->p);
 }
 
 void eliminarCarregador(Carregador cr) {
     carregador* carr = ((carregador*)cr);
+
+    // Libera a memória da pilha interna e suas formas (se não for NULL)
     if (carr->p != NULL) {
         liberarPilha(carr->p);
     }
+    // Libera a memória da estrutura Carregador
     free(carr);
 }

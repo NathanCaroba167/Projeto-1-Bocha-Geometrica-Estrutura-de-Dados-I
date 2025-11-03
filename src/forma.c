@@ -45,19 +45,16 @@ TipoForma getTipoForma(Pacote p) {
 
 double getAreaForma(Pacote p) {
     TipoForma tipo = getTipoForma(p);
+    Forma g = getDadosForma(p);
     switch (tipo) {
         case CIRCULO:
-            Circulo c = getDadosForma(p);
-            return calcAreaCirculo(c);
+            return calcAreaCirculo(g);
         case RETANGULO:
-            Retangulo r = getDadosForma(p);
-            return calcAreaRetangulo(r);
+            return calcAreaRetangulo(g);
         case LINHA:
-            Linha l = getDadosForma(p);
-            return calcAreaLinha(l);
+            return calcAreaLinha(g);
         case TEXTO:
-            Texto t = getDadosForma(p);
-            return calcAreaTexto(t);
+            return calcAreaTexto(g);
         default:
             printf("ERRO: tipo inválido!\n");
             return 0.0;
@@ -69,20 +66,17 @@ int getIDForma(Pacote p) {
         return 0;
     }
     TipoForma tipo = getTipoForma(p);
+    Forma g = getDadosForma(p);
 
     switch (tipo) {
         case CIRCULO:
-            Circulo c = getDadosForma(p);
-            return getIDCirculo(c);
+            return getIDCirculo(g);
         case RETANGULO:
-            Retangulo r = getDadosForma(p);
-            return getIDRetangulo(r);
+            return getIDRetangulo(g);
         case LINHA:
-            Linha l = getDadosForma(p);
-            return getIDLinha(l);
+            return getIDLinha(g);
         case TEXTO:
-            Texto t = getDadosForma(p);
-            return getIDTexto(t);
+            return getIDTexto(g);
         default:
             printf("ERRO: tipo inválido!\n");
             return 0;
@@ -91,19 +85,17 @@ int getIDForma(Pacote p) {
 
 double getXForma(Pacote p) {
     TipoForma tipo = getTipoForma(p);
+    Forma g = getDadosForma(p);
     switch (tipo) {
         case CIRCULO:
-            Circulo c = getDadosForma(p);
-            return getXCirculo(c);
+            return getXCirculo(g);
         case RETANGULO:
-            Retangulo r = getDadosForma(p);
-            return getXRetangulo(r);
+            return getXRetangulo(g);
         case LINHA:
-            Linha l = getDadosForma(p);
-            return fmin(getX1Linha(l),getX2Linha(l));
+            // Retorna o X mínimo da box da linha
+            return fmin(getX1Linha(g),getX2Linha(g));
         case TEXTO:
-            Texto t = getDadosForma(p);
-            return getXTexto(t);
+            return getXTexto(g);
         default:
             printf("ERRO: tipo inválido!\n");
             return 0.0;
@@ -112,29 +104,26 @@ double getXForma(Pacote p) {
 
 double getYForma(Pacote p) {
     TipoForma tipo = getTipoForma(p);
+    Forma g = getDadosForma(p);
     switch (tipo) {
         case CIRCULO:
-            Circulo c = getDadosForma(p);
-            return getYCirculo(c);
+            return getYCirculo(g);
         case RETANGULO:
-            Retangulo r = getDadosForma(p);
-            return getYRetangulo(r);
+            return getYRetangulo(g);
         case LINHA:
-            Linha l = getDadosForma(p);
-            double menorX = fmin(getX1Linha(l),getX2Linha(l));
+            double menorX = fmin(getX1Linha(g),getX2Linha(g));
 
-            if (getX1Linha(l) == getX2Linha(l)) {
-                return fmin(getY1Linha(l),getY2Linha(l));
+            if (getX1Linha(g) == getX2Linha(g)) {
+                return fmin(getY1Linha(g),getY2Linha(g));
             }
 
-            if (menorX == getX1Linha(l)) {
-                return getY1Linha(l);
+            if (menorX == getX1Linha(g)) {
+                return getY1Linha(g);
             }
 
-            return getY2Linha(l);
+            return getY2Linha(g);
         case TEXTO:
-            Texto t = getDadosForma(p);
-            return getYTexto(t);
+            return getYTexto(g);
         default:
             printf("ERRO: tipo inválido!\n");
             return 0.0;
@@ -146,20 +135,17 @@ char* getCorBForma(Pacote p) {
         return NULL;
     }
     TipoForma tipo = getTipoForma(p);
+    Forma g = getDadosForma(p);
 
     switch (tipo) {
         case CIRCULO:
-            Circulo c = getDadosForma(p);
-            return getCorBCirculo(c);
+            return getCorBCirculo(g);
         case RETANGULO:
-            Retangulo r = getDadosForma(p);
-            return getCorBRetangulo(r);
+            return getCorBRetangulo(g);
         case LINHA:
-            Linha l = getDadosForma(p);
-            return getCorLinha(l);
+            return getCorLinha(g);
         case TEXTO:
-            Texto t = getDadosForma(p);
-            return getCorBTexto(t);
+            return getCorBTexto(g);
         default:
             printf("ERRO: tipo inválido!\n");
             return NULL;
@@ -171,20 +157,18 @@ char* getCorPForma(Pacote p) {
         return NULL;
     }
     TipoForma tipo = getTipoForma(p);
+    Forma g = getDadosForma(p);
 
     switch (tipo) {
         case CIRCULO:
-            Circulo c = getDadosForma(p);
-            return getCorPCirculo(c);
+            return getCorPCirculo(g);
         case RETANGULO:
-            Retangulo r = getDadosForma(p);
-            return getCorPRetangulo(r);
+            return getCorPRetangulo(g);
         case LINHA:
-            Linha l = getDadosForma(p);
-            return CorComplementarLinha(l);
+            // Cor de preenchimento da linha é a cor complementar da cor de borda
+            return CorComplementarLinha(g);
         case TEXTO:
-            Texto t = getDadosForma(p);
-            return getCorPTexto(t);
+            return getCorPTexto(g);
         default:
             printf("ERRO: tipo inválido!\n");
             return NULL;
@@ -196,23 +180,20 @@ void setCorBForma(Pacote p, char* corB) {
         return;
     }
     TipoForma tipo = getTipoForma(p);
+    Forma g = getDadosForma(p);
 
     switch (tipo) {
         case CIRCULO:
-            Circulo c = getDadosForma(p);
-            setCorBCirculo(c,corB);
+            setCorBCirculo(g,corB);
             break;
         case RETANGULO:
-            Retangulo r = getDadosForma(p);
-            setCorBRetangulo(r,corB);
+            setCorBRetangulo(g,corB);
             break;
         case LINHA:
-            Linha l = getDadosForma(p);
-            setCorLinha(l,corB);
+            setCorLinha(g,corB);
             break;
         case TEXTO:
-            Texto t = getDadosForma(p);
-            setCorBTexto(t,corB);
+            setCorBTexto(g,corB);
             break;
         default:
             printf("ERRO: tipo inválido!\n");
@@ -225,21 +206,19 @@ void setCorPForma(Pacote p, char* corP) {
         return;
     }
     TipoForma tipo = getTipoForma(p);
+    Forma g = getDadosForma(p);
 
     switch (tipo) {
         case CIRCULO:
-            Circulo c = getDadosForma(p);
-            setCorPCirculo(c,corP);
+            setCorPCirculo(g,corP);
             break;
         case RETANGULO:
-            Retangulo r = getDadosForma(p);
-            setCorPRetangulo(r,corP);
+            setCorPRetangulo(g,corP);
             break;
         case LINHA:
             break;
         case TEXTO:
-            Texto t = getDadosForma(p);
-            setCorPTexto(t,corP);
+            setCorPTexto(g,corP);
             break;
         default:
             printf("ERRO: tipo inválido!\n");
@@ -318,27 +297,24 @@ void liberarForma(Pacote p) {
         return;
     }
     TipoForma tipo = getTipoForma(p);
+    Forma g = getDadosForma(p);
 
     switch (tipo) {
         case CIRCULO:
-            Circulo c = getDadosForma(p);
-            eliminarCirculo(c);
+            eliminarCirculo(g);
             break;
         case RETANGULO:
-            Retangulo r = getDadosForma(p);
-            eliminarRetangulo(r);
+            eliminarRetangulo(g);
             break;
         case LINHA:
-            Linha l = getDadosForma(p);
-            eliminarLinha(l);
+            eliminarLinha(g);
             break;
         case TEXTO:
-            Texto t = getDadosForma(p);
-            eliminarTexto(t);
+            eliminarTexto(g);
             break;
         default:
             printf("ERRO: tipo inválido encontrado em liberarForma!\n");
             return;
     }
-    free(p);
+    free(p); // Libera a struct Pacote
 }

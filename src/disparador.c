@@ -15,7 +15,6 @@
 #include "carregador.h"
 #include "disparador.h"
 
-
 typedef struct {
     int id;
     double x;
@@ -33,10 +32,11 @@ Disparador CriarDisparador(int id,double x ,double y) {
         perror("Motivo do erro");
         exit(1);
     }
+    // Inicialização da struct
     d->id = id;
     d->x = x;
     d->y = y;
-    d->formaDisparo = NULL;
+    d->formaDisparo = NULL; // O disparador começa desarmado
     d->carregadorDir = NULL;
     d->carregadorEsq = NULL;
 
@@ -85,12 +85,16 @@ void setCarregadoresDisparador(Disparador d, Carregador esq, Carregador dir) {
 }
 
 void desarmarDisparador(Disparador d) {
+    // Simplesmente remove a referência à forma, mas não a destrói
     disparador* dis = ((disparador*)d);
 
     dis->formaDisparo = NULL;
 }
 
 void eliminarDisparador(Disparador d) {
+    // Note: Assume que a formaDisparo (Pacote) e os Carregadores
+    // serão eliminados ou liberados pelo módulo principal (main) ou por
+    // outra função de gerenciamento de memória, e não por esta função
     disparador* dis = ((disparador*)d);
     free(dis);
 }

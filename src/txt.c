@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <errno.h>
 
 #include "circulo.h"
@@ -19,6 +20,7 @@
 #include "txt.h"
 
 Arquivo abrirTXT(Nome arquivo) {
+    // Abrindo o arquivo para escrita ('w')
     Arquivo txt = fopen(arquivo,"w");
     if (txt == NULL) {
         printf("Erro ao abrir o arquivo txt!\n");
@@ -30,6 +32,7 @@ Arquivo abrirTXT(Nome arquivo) {
 }
 
 void reportarForma(Arquivo txt,Pacote p) {
+    if (txt == NULL || p == NULL) return;
 
     TipoForma tipo = getTipoForma(p);
 
@@ -106,6 +109,8 @@ void reportarForma(Arquivo txt,Pacote p) {
 }
 
 void reportarPosiçãoFinal(Arquivo txt, Pacote p) {
+    if (txt == NULL || p == NULL) return;
+
     TipoForma tipo = getTipoForma(p);
     fprintf(txt, "\nPosição final → ");
 
@@ -153,6 +158,7 @@ void reportarPosiçãoFinal(Arquivo txt, Pacote p) {
 }
 
 void reportarÁreaTotalEsmagada(Arquivo txt, double areaRound, double areaTotal) {
+    if (txt == NULL) return;
     fprintf(txt, "\nÁrea do Round Esmagada: %lf\n"
                  "Área Total Esmagada: %lf"
                  "\n",
@@ -161,6 +167,7 @@ void reportarÁreaTotalEsmagada(Arquivo txt, double areaRound, double areaTotal)
 }
 
 void reportarResultadosFinais(Arquivo txt, double areaTotal, int instrucoes, int disparos, int formas_esmagadas, int formas_clonadas) {
+    if (txt == NULL) return;
     fprintf(txt, "\nResultados Finais:\n"
                  "\nPontuação Final: %lf \n"
                  "Número total de instruções executadas: %d \n"

@@ -13,7 +13,7 @@
 #include "fila.h"
 
 typedef struct Elemento {
-    Pacote form;
+    Pacote form; // O Pacote (Forma) armazenado
     struct Elemento* prox;
 }Elemento;
 
@@ -21,7 +21,7 @@ typedef Elemento* pont;
 
 typedef struct Pilha {
     int tamanho;
-    pont topo;
+    pont topo; // Topo da pilha (para inserção e remoção)
 }pilha;
 
 Pilha iniciarPilha() {
@@ -47,7 +47,9 @@ void empilharPilha(Pilha p, Pacote g) {
         exit(1);
     }
     nova->form = g;
+    // O novo elemento aponta para o topo anterior
     nova->prox = PILHA->topo;
+    // O novo elemento se torna o novo topo
     PILHA->topo = nova;
     PILHA->tamanho++;
 }
@@ -60,8 +62,11 @@ void desempilharPilha(Pilha p) {
     }
     pont elemTopo = PILHA->topo;
 
+    // O topo avança para o próximo elemento
     PILHA->topo = PILHA->topo->prox;
     PILHA->tamanho--;
+
+    // O Pacote (form) NÃO é liberado aqui; o nó é liberado
     free(elemTopo);
 }
 
@@ -90,6 +95,7 @@ void liberarPilha(Pilha p) {
     pont atual = PILHA->topo;
     pont proximo;
 
+    // Percorre a pilha, liberando Pacote e depois o nó
     while (atual != NULL) {
         proximo = atual->prox;
 
@@ -97,11 +103,12 @@ void liberarPilha(Pilha p) {
             liberarForma(atual->form);
         }
 
-        free(atual);
+        free(atual); // Libera o nó (Elemento)
 
         atual = proximo;
     }
 
+    // Limpa os campos e libera a struct principal
     PILHA->topo = NULL;
     PILHA->tamanho = 0;
     free(PILHA);

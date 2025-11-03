@@ -9,20 +9,21 @@
 
 #include "circulo.h"
 
-#define PI 3.14159265
+#define PI 3.14159265358979323846
 
 typedef struct{
   int id;
   double x,y;
   double r;
-  char* corB,*corP;
+  char* corB; // Cor de Borda (alocada dinamicamente)
+  char* corP; // Cor de Preenchimento (alocada dinamicamente)
 }circulo;
 
 Circulo CriarCirculo(int id, double x, double y, double r, char* corB,char* corP){
   circulo* c  = (circulo*)malloc(sizeof(circulo));
 
   if(c==NULL){
-    printf("Erro ao alocar memória ao criarCirculo!\n");
+    printf("Erro ao alocar memória ao CriarCirculo!\n");
 
     perror("Motivo do erro");
     exit(1);
@@ -32,18 +33,23 @@ Circulo CriarCirculo(int id, double x, double y, double r, char* corB,char* corP
   c->x = x;
   c->y = y;
   c->r = r;
+  // Alocação da Cor de Borda
   c->corB = (char*) malloc (strlen(corB) + 1);
   if (c->corB == NULL) {
     printf("Erro ao alocar memória ao criar cor de borda do círculo!\n");
+    free(c); // Libera a struct antes de sair
 
     perror("Motivo do erro");
     exit(1);
   }
   strcpy(c->corB,corB);
 
+  // Alocação da Cor de Preenchimento
   c->corP = (char*) malloc (strlen(corP) + 1);
   if (c->corP == NULL) {
     printf("Erro ao alocar memória ao criar cor de preenchimento do círculo!\n");
+    free(c->corB); // Libera o que foi alocado anteriormente
+    free(c);
 
     perror("Motivo do erro");
     exit(1);
@@ -91,8 +97,10 @@ char* getCorBCirculo(Circulo c){
 
 void setCorBCirculo(Circulo c,char* corB) {
   circulo* circ = (circulo*)c;
+  // Realoque o ponteiro existente para o novo tamanho da string (strlen(corB) + 1)
   circ->corB = realloc (circ->corB,strlen(corB) + 1);
   if (circ->corB == NULL) {
+    // Se realloc falhar, a memória original (circ->corB) permanece válida
     printf("Erro ao realocar memória da cor de borda do círculo!\n");
 
     perror("Motivo do erro");
@@ -107,8 +115,10 @@ char* getCorPCirculo(Circulo c){
 
 void setCorPCirculo(Circulo c, char* corP) {
   circulo* circ = (circulo*)c;
+  // Realoque o ponteiro existente para o novo tamanho da string (strlen(corP) + 1)
   circ->corP = realloc (circ->corP,strlen(corP) + 1);
   if (circ->corP == NULL) {
+    // Se realloc falhar, a memória original (circ->corP) permanece válida
     printf("Erro ao realocar memória da cor de preenchimento do círculo!\n");
 
     perror("Motivo do erro");
@@ -118,12 +128,15 @@ void setCorPCirculo(Circulo c, char* corP) {
 }
 
 double calcAreaCirculo(Circulo c) {
+  // Usa a constante PI definida acima
   return PI*pow(getRCirculo(c) ,2);
 }
 
 void eliminarCirculo(Circulo c) {
   circulo* circ = (circulo*)c;
+  // Libera as strings alocadas dinamicamente
   free(circ->corB);
   free(circ->corP);
+  // Libera a struct principal
   free(circ);
 }

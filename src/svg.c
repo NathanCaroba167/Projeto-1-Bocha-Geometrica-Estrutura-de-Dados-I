@@ -32,12 +32,14 @@ Arquivo abrirSVG(Nome arquivo) {
 }
 
 void inicializarSVG(Arquivo svg) {
+    if (svg == NULL) return;
     fprintf(svg,"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n");
     fprintf(svg,"<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" width=\"1000\" height=\"1000\">\n");
     fprintf(svg,"\t<g>\n");
 }
 
 void desenharCirculoSVG(Arquivo svg, Circulo c) {
+    if (svg == NULL || c == NULL) return;
     fprintf(svg, "<circle id=\"%d\" "
                  "cx=\"%lf\" "
                  "cy=\"%lf\" "
@@ -58,6 +60,7 @@ void desenharCirculoSVG(Arquivo svg, Circulo c) {
 }
 
 void desenharRetanguloSVG(Arquivo svg, Retangulo r) {
+    if (svg == NULL || r == NULL) return;
     fprintf(svg, "\t<rect id=\"%d\" "
                  "x=\"%lf\" "
                  "y=\"%lf\" "
@@ -81,6 +84,7 @@ void desenharRetanguloSVG(Arquivo svg, Retangulo r) {
 }
 
 void desenharLinhaSVG(Arquivo svg, Linha l) {
+    if (svg == NULL || l == NULL) return;
     fprintf(svg, "\t<line id=\"%d\" "
                  "x1=\"%lf\" "
                  "y1=\"%lf\" "
@@ -100,6 +104,7 @@ void desenharLinhaSVG(Arquivo svg, Linha l) {
 }
 
 void desenharTextoSVG(Arquivo svg, Texto t, Estilo e) {
+    if (svg == NULL || t == NULL || e == NULL) return;
     fprintf(svg, "\t<text id=\"%d\" "
                  "x=\"%lf\" "
                  "y=\"%lf\" "
@@ -136,6 +141,7 @@ void desenharTextoSVG(Arquivo svg, Texto t, Estilo e) {
 }
 
 void desenharAsteriscoSVG(Arquivo svg, double x, double y) {
+    if (svg == NULL) return;
     fprintf(svg, "\t<text x=\"%lf\" "
                  "y=\"%lf\" "
                  "fill=\"red\" "
@@ -147,6 +153,9 @@ void desenharAsteriscoSVG(Arquivo svg, double x, double y) {
 }
 
 void desenharDimensoesDisparoSVG(Arquivo svg, Disparador d, double dx, double dy) {
+    if (svg == NULL || d == NULL) return;
+
+    // Linha principal do disparo
     fprintf(svg, "\t<line x1=\"%lf\" "
                  "y1=\"%lf\" "
                  "x2=\"%lf\" "
@@ -160,6 +169,7 @@ void desenharDimensoesDisparoSVG(Arquivo svg, Disparador d, double dx, double dy
                  getYDisparador(d) + dy,
                  1.5);
 
+    // Linha tracejada vertical (dy)
     fprintf(svg, "\t<line x1=\"%lf\" "
                  "y1=\"%lf\" "
                  "x2=\"%lf\" "
@@ -174,6 +184,7 @@ void desenharDimensoesDisparoSVG(Arquivo svg, Disparador d, double dx, double dy
                  getYDisparador(d) + dy,
                  1.2);
 
+    // Linha tracejada horizontal (dx)
     fprintf(svg, "\t<line x1=\"%lf\" "
                  "y1=\"%lf\" "
                  "x2=\"%lf\" "
@@ -188,17 +199,19 @@ void desenharDimensoesDisparoSVG(Arquivo svg, Disparador d, double dx, double dy
                  getYDisparador(d) + dy,
                  1.2);
 
+    // Número de dimensão X (horizontal)
     fprintf(svg, "\t<text x=\"%lf\" "
                  "y=\"%lf\" "
                  "fill=\"purple\" "
                  "font-size=\"%d\" "
                  "text-anchor=\"middle\" "
                  ">%.2lf</text>\n",
-                 (2 * getXDisparador(d) + dx)/2,
+                 (2 * getXDisparador(d) + dx)/2, // Ponto médio X
                  getYDisparador(d) - 5,
                  18,
                  dx);
 
+    // Texto de dimensão Y (vertical)
     fprintf(svg, "\t<text x=\"%lf\" "
                  "y=\"%lf\" "
                  "fill=\"purple\" "
@@ -206,13 +219,13 @@ void desenharDimensoesDisparoSVG(Arquivo svg, Disparador d, double dx, double dy
                  "text-anchor=\"end\" "
                  ">%.2lf</text>\n",
                  getXDisparador(d) + dx + 5,
-                 (2 * getYDisparador(d) + dy)/2,
+                 (2 * getYDisparador(d) + dy)/2, // Ponto médio Y
                  18,
                  dy);
 }
 
 void desenharFormasDaFila(Arquivo svg, Fila chao, Estilo EstiloGlobalTexto) {
-    if (chao == NULL || filavazia(chao)) {
+    if (svg == NULL || chao == NULL || filavazia(chao)) {
         exit(1);
     }
 
@@ -238,6 +251,7 @@ void desenharFormasDaFila(Arquivo svg, Fila chao, Estilo EstiloGlobalTexto) {
                 desenharTextoSVG(svg, forma, EstiloGlobalTexto);
                 break;
             default:
+                printf("ERRO: tipo inválido!\n");
                 break;
         }
 
@@ -246,6 +260,7 @@ void desenharFormasDaFila(Arquivo svg, Fila chao, Estilo EstiloGlobalTexto) {
 }
 
 void fecharSVG(Arquivo svg) {
+    if (svg == NULL) return;
     fprintf(svg, "</g>\n");
     fprintf(svg,"</svg>\n");
 

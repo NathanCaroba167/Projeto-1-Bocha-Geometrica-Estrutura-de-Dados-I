@@ -212,7 +212,7 @@ void dsp(int n_eh_rjd, int* disparos,Arquivo svg, Arquivo txt, EstoqueD e, Fila 
         desenharDimensoesDisparoSVG(svg,d,dx,dy);
     }
 
-    desarmarDisparador(d);
+    desarmarDisparador(d); // Remove a forma do disparador
 }
 
 void rjd(Arquivo svg,Arquivo txt,int* disparos,EstoqueD e, Fila arena, int id, char botao, double dx, double dy, double ix, double iy) {
@@ -229,6 +229,7 @@ void rjd(Arquivo svg,Arquivo txt,int* disparos,EstoqueD e, Fila arena, int id, c
 
         Pacote p = getFormaDisparador(d);
         if (p == NULL) {
+            // Se o shft moveu todas as formas para o outro lado, ou se a pilha acabou
             break;
         }
 
@@ -250,11 +251,12 @@ void calc(Arquivo svg,Arquivo txt,Fila arena, Fila chao,double* areaTotal,int* f
     pont atual;
     pont proximo;
 
+    // Loop principal: processa pares na arena (atual e proximo)
     while ((atual = getPrimeiroElementoFila(arena)) != NULL) {
 
         proximo = getProximoElementoFila(atual);
         if (proximo == NULL) {
-            break;
+            break; // Apenas uma forma restante, será tratada no final
         }
         Pacote p1 = getFormaElementoFila(atual);
         Pacote p2 = getFormaElementoFila(proximo);
@@ -263,30 +265,33 @@ void calc(Arquivo svg,Arquivo txt,Fila arena, Fila chao,double* areaTotal,int* f
             double a1 = getAreaForma(p1);
             double a2 = getAreaForma(p2);
             if (a1 < a2) {
+                // p1 (menor) esmagada
                 fprintf(txt,"Forma %d (área %lf) sobrepõe Forma %d (área %lf): Forma %d destruída!\n",getIDForma(p1),a1,getIDForma(p2),a2,getIDForma(p1));
                 areaRound += a1;
                 (*formas_esmagadas)++;
 
                 desenharAsteriscoSVG(svg,getXForma(p1),getYForma(p1));
 
-                removerFila(arena);
-                removerFila(arena);
-                inserirFila(chao,p2);
-                liberarForma(p1);
+                removerFila(arena); // Remove p1
+                removerFila(arena); // Remove p2
+                inserirFila(chao,p2); // p2 vai para o chao
+                liberarForma(p1); // p1 é liberado/destruído
             }else {
+                // p2 (menor ou igual) alterada e p1 clonada
                 fprintf(txt,"Forma %d (área %lf) sobrepõe Forma %d (área %lf): Forma %d alterada e Forma %d clonada!!\n",getIDForma(p1),a1,getIDForma(p2),a2,getIDForma(p2),getIDForma(p1));
                 char* corPp1 = getCorPForma(p1);
                 char* corBp1 = getCorBForma(p1);
 
-                setCorBForma(p2,corPp1);
+                setCorBForma(p2,corPp1); // p2 muda a cor de borda
                 Pacote clone = clonarForma(p1);
 
-                removerFila(arena);
-                removerFila(arena);
+                removerFila(arena); // Remove p1
+                removerFila(arena); // Remove p2
 
-                inserirFila(chao,p1);
-                inserirFila(chao,p2);
+                inserirFila(chao,p1); // p1 original para o chao
+                inserirFila(chao,p2); // p2 alterada para o chao
 
+                // O clone (que é uma cópia de p1) é alterado e vai para o chao
                 setCorBForma(clone,corPp1);
                 setCorPForma(clone,corBp1);
                 inserirFila(chao,clone);
@@ -304,6 +309,7 @@ void calc(Arquivo svg,Arquivo txt,Fila arena, Fila chao,double* areaTotal,int* f
         }
     }
 
+    // Última forma restante
     if ((atual = getPrimeiroElementoFila(arena)) != NULL) {
         Pacote unico = getFormaElementoFila(atual);
         fprintf(txt, "Forma %d: Única restante na arena. Movida para o chao!\n", getIDForma(unico));
@@ -338,7 +344,6 @@ void LerComandosExecutar(Arquivo svg,Arquivo txt,Arquivo qry, Fila chao, Fila ar
         if (comando == NULL) {
             continue;
         }
-        printf("comando: %s\n",comando);
 
         if (strcmp(comando, "pd") == 0) {
             char* id_temp = strtok(NULL," ");

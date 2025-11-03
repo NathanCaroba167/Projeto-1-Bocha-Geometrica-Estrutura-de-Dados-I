@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <errno.h>
 
 #include "forma.h"
@@ -19,6 +20,7 @@
 #define TAMANHO_MAX_BUFFER 256
 
 Arquivo abrirGeo(Nome arquivo) {
+    // Abrindo o arquivo para leitura ('r')
     Arquivo geo = fopen(arquivo,"r");
     if (geo == NULL) {
         printf("Erro ao abrir o arquivo geo!\n");
@@ -30,10 +32,17 @@ Arquivo abrirGeo(Nome arquivo) {
 }
 
 void criarFormasNoChao(Arquivo geo, Fila chao,Estilo* EstiloPonteiro) {
+    if (geo == NULL || chao == NULL || EstiloPonteiro == NULL) {
+        printf("ERRO: Argumentos NULL em criarFormasNoChao.\n");
+        return;
+    }
+
     int maiorID = 0;
     char buffer[TAMANHO_MAX_BUFFER];
+
     while(fgets(buffer,sizeof(buffer),geo) != NULL) {
-        if (buffer[0] == '\n') {
+        // Remove quebras de linha e trata linhas vazias
+        if (buffer[0] == '\n' || buffer[0] == '\r') {
             continue;
         }
 
@@ -55,6 +64,7 @@ void criarFormasNoChao(Arquivo geo, Fila chao,Estilo* EstiloPonteiro) {
                 double x = atof(x_temp);
                 double y = atof(y_temp);
                 double r = atof(r_temp);
+
                 if (maiorID < id) {
                     maiorID = id;
                 }
@@ -110,6 +120,8 @@ void criarFormasNoChao(Arquivo geo, Fila chao,Estilo* EstiloPonteiro) {
             char* corP = strtok(NULL," ");
             char* a_temp = strtok(NULL," ");
             char* txto = a_temp + strlen(a_temp) + 1;
+
+            // Move o ponteiro para o início real do texto (ignorando espaços após 'a_temp')
             while (*txto == ' ') {
                 txto++;
             }
@@ -119,6 +131,7 @@ void criarFormasNoChao(Arquivo geo, Fila chao,Estilo* EstiloPonteiro) {
                 double x = atof(x_temp);
                 double y = atof(y_temp);
                 char a = a_temp[0];
+
                 if (maiorID < id) {
                     maiorID = id;
                 }
@@ -129,14 +142,19 @@ void criarFormasNoChao(Arquivo geo, Fila chao,Estilo* EstiloPonteiro) {
             char* fFamily  = strtok(NULL," ");
             char* fWeight = strtok(NULL," ");
             char* fSize = strtok(NULL," ");
-            if (*EstiloPonteiro != NULL) {
-                eliminarEstilo(*EstiloPonteiro);
-            }
 
-            *EstiloPonteiro = CriarEstilo(fFamily,fWeight,fSize);
+            if (fFamily && fWeight && fSize) {
+                // Se o EstiloPonteiro já contém um estilo alocado, ele deve ser liberado
+                if (*EstiloPonteiro != NULL) {
+                    eliminarEstilo(*EstiloPonteiro);
+                }
+
+                *EstiloPonteiro = CriarEstilo(fFamily,fWeight,fSize);
+            }
         }else {
             printf("Comando desconhecido: '%s'\n", comando);
         }
     }
+    // Armazena o maior ID encontrado para ser usado na geração de novos IDs
     armazenaMaiorId(maiorID);
 }

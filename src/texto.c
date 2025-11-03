@@ -13,16 +13,16 @@ typedef struct{
     char* fFamily;
     char* fWeight;
     char* fSize;
-}estilo;
+}estilo; // Corresponde ao Estilo
 
 typedef struct{
     int id;
     double x,y;
-    char* corB;
-    char* corP;
-    char a;
-    char* txto;
-}texto;
+    char* corB; // Cor de Borda
+    char* corP; // Cor de Preenchimento
+    char a;     // Âncora ('i', 'm', 'f')
+    char* txto; // Conteúdo do texto
+}texto; // Corresponde ao Texto
 
 Estilo CriarEstilo(char* fFamily, char* fWeight, char* fSize) {
     estilo* e = (estilo*)malloc(sizeof(estilo));
@@ -240,6 +240,7 @@ size_t quantidadeCaracteresTexto(Texto t) {
 }
 
 double calcAreaTexto(Texto t) {
+    // A área é calculada como 20 * número de caracteres
     return 20 * (double) strlen(getTxtoTexto(t));
 }
 

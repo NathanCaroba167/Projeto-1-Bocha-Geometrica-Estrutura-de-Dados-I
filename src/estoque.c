@@ -39,6 +39,7 @@ EstoqueD CriarEstoqueDisparadores(int capacidadeInicial) {
     est->disparadores = (Disparador**)malloc(sizeof(Disparador*) * capacidadeInicial);
     if (est->disparadores == NULL) {
         printf("Erro ao alocar memoria ao criar vetor disparadores!\n");
+        free(est); // Libera a struct principal
 
         perror("Motivo do erro");
         exit(1);
@@ -51,6 +52,7 @@ EstoqueD CriarEstoqueDisparadores(int capacidadeInicial) {
 void adicionarDisparador(EstoqueD e, Disparador d) {
     estoque_disparadores* est = (estoque_disparadores*)e;
 
+    // Verifica e Realoca (Duplica a capacidade) se o estoque estiver cheio
     if (est->quantidadeD == est->capacidadeD) {
         est->capacidadeD *= 2;
         est->disparadores = realloc(est->disparadores, sizeof(Disparador*)*est->capacidadeD);
@@ -68,6 +70,7 @@ void adicionarDisparador(EstoqueD e, Disparador d) {
 Disparador getDisparadorPorId(EstoqueD e, int id) {
     estoque_disparadores* est = (estoque_disparadores*)e;
 
+    // Busca linear pelo ID
     for (int i = 0 ; i < est->quantidadeD; i++) {
         Disparador d = est->disparadores[i];
 
@@ -75,17 +78,20 @@ Disparador getDisparadorPorId(EstoqueD e, int id) {
             return d;
         }
     }
-    return NULL;
+    return NULL; // Não encontrado
 }
 
 void liberarEstoqueDisparadores(EstoqueD e) {
     estoque_disparadores* est = (estoque_disparadores*)e;
 
+    // Libera todos os Disparadores armazenados
     for (int i = 0 ; i < est->quantidadeD; i++) {
         eliminarDisparador(est->disparadores[i]);
     }
 
+    // Libera o vetor de ponteiros
     free(est->disparadores);
+    // Libera a struct do Estoque
     free(e);
 }
 
@@ -100,6 +106,7 @@ EstoqueC CriarEstoqueCarregadores(int capacidadeInicial) {
     est->carregadores = (Carregador**)malloc(sizeof(Carregador*) * capacidadeInicial);
     if (est->carregadores == NULL) {
         printf("Erro ao alocar memoria ao criar vetor carregadores!\n");
+        free(est); // Libera a struct principal
 
         perror("Motivo do erro");
         exit(1);
@@ -112,6 +119,7 @@ EstoqueC CriarEstoqueCarregadores(int capacidadeInicial) {
 void adicionarCarregador(EstoqueC e, Carregador cr) {
     estoque_carregadores* est = (estoque_carregadores*)e;
 
+    // Verifica e Realoca (Duplica a capacidade) se o estoque estiver cheio
     if (est->quantidadeC == est->capacidadeC) {
         est->capacidadeC *= 2;
         est->carregadores = realloc(est->carregadores, sizeof(Carregador*)*est->capacidadeC);
@@ -129,6 +137,7 @@ void adicionarCarregador(EstoqueC e, Carregador cr) {
 Carregador getCarregadorPorId(EstoqueC e, int id) {
     estoque_carregadores* est = (estoque_carregadores*)e;
 
+    // Busca linear pelo ID
     for (int i = 0 ; i < est->quantidadeC; i++) {
         Carregador cr = est->carregadores[i];
 
@@ -136,16 +145,19 @@ Carregador getCarregadorPorId(EstoqueC e, int id) {
             return cr;
         }
     }
-    return NULL;
+    return NULL; // Não encontrado
 }
 
 void liberarEstoqueCarregadores(EstoqueC e) {
     estoque_carregadores* est = (estoque_carregadores*)e;
 
+    // Libera todos os Carregadores armazenados
     for (int i = 0 ; i < est->quantidadeC; i++) {
         eliminarCarregador(est->carregadores[i]);
     }
 
+    // Libera o vetor de ponteiros
     free(est->carregadores);
+    // Libera a struct do Estoque
     free(e);
 }

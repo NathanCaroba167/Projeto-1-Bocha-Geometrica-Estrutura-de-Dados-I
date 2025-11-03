@@ -19,7 +19,6 @@ typedef struct {
     double x, y;
 }Ponto;
 
-
 typedef struct {
     double xmin,ymin,xmax,ymax;
 }Box;
@@ -59,6 +58,11 @@ Box getBox(Pacote g1) {
         case TEXTO: {
             Texto t = getDadosForma(g1);
 
+            double Altura_text = 0.0000001;
+
+            double Subida = Altura_text * 0.8;
+            double Descida = Altura_text * 0.2;
+
             double x1, x2;
             switch (getATexto(t)) {
                 case 'i':
@@ -79,8 +83,8 @@ Box getBox(Pacote g1) {
             }
             box.xmin = fmin(x1, x2);
             box.xmax = fmax(x1, x2);
-            box.ymin = getYTexto(t);
-            box.ymax = getYTexto(t);
+            box.ymin = getYTexto(t) - Descida;
+            box.ymax = getYTexto(t) + Subida;
             break;
         }
         default:
@@ -189,8 +193,14 @@ bool SobrepoeLinhaLinha(Linha l1, Linha l2) {
 }
 
 bool SobrepoeLinhaCirculo(Linha l, Circulo c) {
-    double PontoX_MaisProximo = max(getX1Linha(l), min(getXCirculo(c),(getX1Linha(l) + getX2Linha(l))));
-    double PontoY_MaisProximo = max(getY1Linha(l), min(getYCirculo(c),(getY1Linha(l) + getY2Linha(l))));
+
+    double x_min = fmin(getX1Linha(l), getX2Linha(l));
+    double y_min = fmin(getY1Linha(l), getY2Linha(l));
+    double x_max = fmax(getX1Linha(l), getX2Linha(l));
+    double y_max = fmax(getY1Linha(l), getY2Linha(l));
+
+    double PontoX_MaisProximo = max(x_min, min(getXCirculo(c),x_max));
+    double PontoY_MaisProximo = max(y_min, min(getYCirculo(c),y_max));
 
     if (PontoX_MaisProximo == getXCirculo(c) && PontoY_MaisProximo ==  getYCirculo(c)) {
         return true;
@@ -287,8 +297,8 @@ bool SobrepoeTextoRetangulo(Box b1, Retangulo r) {
 }
 
 bool SobrepoeTextoCirculo(Box b1, Circulo c) {
-    double PontoX_MaisProximo = max(b1.xmin, min(getXCirculo(c),(b1.xmin + b1.xmax)));
-    double PontoY_MaisProximo = max(b1.ymin, min(getYCirculo(c),(b1.ymin + b1.ymax)));
+    double PontoX_MaisProximo = max(b1.xmin, min(getXCirculo(c),b1.xmax));
+    double PontoY_MaisProximo = max(b1.ymin, min(getYCirculo(c),b1.ymax));
 
     if (PontoX_MaisProximo == getXCirculo(c) && PontoY_MaisProximo ==  getYCirculo(c)) {
         return true;
@@ -303,6 +313,39 @@ bool SobrepoeTextoCirculo(Box b1, Circulo c) {
     if (distTotal <= raioQuadrado) {
         return true;
     }
+    return false;
+}
+
+bool SobrepoeTextoLinha(Box b1, Linha l) {
+    Ponto p1 = {getX1Linha(l), getY1Linha(l)};
+    Ponto p2 = {getX2Linha(l), getY2Linha(l)};
+
+    if (p1.x >= b1.xmin && p1.x <= b1.xmax && p1.y >= b1.ymin && p1.y <= b1.ymax) {
+        return true;
+    }
+
+    if (p2.x >= b1.xmin && p2.x <= b1.xmax && p2.y >= b1.ymin && p2.y <= b1.ymax) {
+        return true;
+    }
+
+    Ponto c1 = {b1.xmin, b1.ymin};
+    Ponto c2 = {b1.xmax, b1.ymin};
+    Ponto c3 = {b1.xmax, b1.ymax};
+    Ponto c4 = {b1.xmin, b1.ymax};
+
+    if (verificarIntersecaoSegmentos(p1,p2,c1,c2)) {
+        return true;
+    }
+    if (verificarIntersecaoSegmentos(p1,p2,c2,c3)) {
+        return true;
+    }
+    if (verificarIntersecaoSegmentos(p1,p2,c3,c4)) {
+        return true;
+    }
+    if (verificarIntersecaoSegmentos(p1,p2,c4,c1)) {
+        return true;
+    }
+
     return false;
 }
 
@@ -377,6 +420,14 @@ bool verificarSobreposicao(Pacote g1,Pacote g2) {
         } else {
             Circulo c = getDadosForma(g1);
             return SobrepoeTextoCirculo(b2,c);
+        }
+    }else if ((t1 == TEXTO && t2 == LINHA) || (t1 == LINHA && t2 == TEXTO)) {
+        if (t1 == TEXTO) {
+            Linha l = getDadosForma(g2);
+            return SobrepoeTextoLinha(b1,l);
+        }else {
+            Linha l = getDadosForma(g1);
+            return SobrepoeTextoLinha(b2,l);
         }
     }
     return false;

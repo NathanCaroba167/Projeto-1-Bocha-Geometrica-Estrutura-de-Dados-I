@@ -4,22 +4,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include <errno.h>
 
 #include "forma.h"
 #include "fila.h"
 
+// Definição completa do nó
 typedef struct Elemento {
-    Pacote form;
+    Pacote form; // O Pacote (Forma) armazenado
     struct Elemento* prox;
 }Elemento;
 
 typedef Elemento* pont;
 
+// Definição da estrutura principal da fila
 typedef struct {
     int tamanho;
-    pont inicio;
-    pont fim;
+    pont inicio; // Ínicio da fila (para remoção)
+    pont fim;    // Fim da fila (para inserção)
 }fila;
 
 Fila iniciarFila() {
@@ -46,31 +49,35 @@ void inserirFila(Fila f, Pacote p) {
         exit(1);
     }
     nova->form = p;
-    nova->prox = NULL;
+    nova->prox = NULL; // Novo  elemento sempre vai para o fim
 
     if (filavazia(f)) {
         FILA->inicio = nova;
     }else {
         FILA->fim->prox = nova;
     }
-    FILA->fim = nova;
+    FILA->fim = nova; // O novo nó se torna o fim
     FILA->tamanho++;
 }
 
 void removerFila(Fila f) {
     fila* FILA = (fila*)f;
     if (filavazia(f)) {
+        // Erro fatal, tentando remover de fila vazia
         printf("Fila vazia!\n");
         exit(1);
     }
     pont elemInicio = FILA->inicio;
-    FILA->inicio = FILA->inicio->prox;
+    FILA->inicio = FILA->inicio->prox; // Atualiza o ínicio para o próximo nó
 
     if (filavazia(f)) {
-        FILA->fim = NULL;
+        FILA->fim = NULL; // Se ficou vazia, o fim também deve ser NULL
     }
 
     FILA->tamanho--;
+
+    // Note: O Pacote (form) NÃO é liberado aqui, pois a função 'liberarFila'
+    // ou a lógica de consumo é responsável por isso. Apenas o nó é liberado
     free(elemInicio);
 }
 
@@ -97,9 +104,9 @@ pont getProximoElementoFila(pont p) {
     return p->prox;
 }
 
-int filavazia(Fila f) {
+bool filavazia(Fila f) {
     fila* FILA = (fila*)f;
-    return FILA->inicio == NULL ? 1 : 0;
+    return FILA->inicio == NULL ? true : false;
 }
 
 int getNumeroElementosFila(Fila f) {
@@ -113,6 +120,7 @@ void liberarFila(Fila f) {
     pont atual = FILA->inicio;
     pont proximo;
 
+    // Percorre a fila, liberando Pacote e depois o nó
     while (atual != NULL) {
         proximo = atual->prox;
 
@@ -120,15 +128,15 @@ void liberarFila(Fila f) {
             liberarForma(atual->form);
         }
 
-        free(atual);
+        free(atual); // Libera o nó (Elemento)
 
         atual = proximo;
     }
 
-
+    // Apenas por segurança, embora free(FILA) elimine a struct
     FILA->inicio = NULL;
     FILA->fim = NULL;
     FILA->tamanho = 0;
 
-    free(FILA);
+    free(FILA); // Libera a struct principal da fila
 }
